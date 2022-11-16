@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+header {
+    background-color:turquoise;
+    color:white;
+    text-align:center;
+    padding:5px;	 
+}
+nav {
+    line-height:20px;
+    background-color:white;
+    height:600px;
+    width:200px;
+    float:left;
+    padding:5px;	      
+}
+section {
+    height:1610px;
+    width:910px;
+    background: url("background.gif");
+    background-repeat: repeat;
+    float:left;
+    padding:10px;	 	 
+}
+footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px;	 	 
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Info pentru toti</h1>
+</header>
+<nav>
+
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Acasa.html">Acasa</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Algoritmi%20cu%20cifrele%20unui%20numar.html">Algoritmi cu cifrele unui numar</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/CES%202016.html">CES 2016</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Cum%20faci%20rost%20de%20ringtone%20pe%20iPhone.html">Cum faci rost de ringtone pe iPhone?</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Cum%20instalezi%20un%20sistem%20de%20operare.html">Cum instalezi un sistem de operare(1)</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Cum%20restaurezi%20datele%20sterse%20permanent%20din%20computer.html">Cu restaurezi datele sterse permanent din computer?</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Cum%20schimbi%20ectensia%20unui%20document.html">Cum schimbi extensia unui document?</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Cum%20schimbi%20imaginea%20de%20logon.html">Cum schimbi imaginea de log-on?</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Cydia%20si%20Jailbreak.html">Cydia si Jailbreak</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Determinarea%20primelor%20n%20valori%20care%20indeplinesc%20o%20proprietate.html">Determinarea primelor n valori care indeplinesc o proptietate</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Fisiere%20in%20C++.html">Fisiere in C++</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Functii%20matematice%20in%20C++.html">Functii matematice in C++</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/HTML-introducere.html">HTML - introducere</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/Instructiuni%20repetitive%20in%20C++.html">Instructiuni repetitive in C++</a> <br>
+<a href="file:///C:/Users/pmt28/Desktop/info%20pt%20toti/USB%203.1.html">USB 3.1</a> <br>
+
+
+</nav>
+
+<section>
+<h style="font-size:160%"><h style="color:white"><b><u>Algoritmi cu cifrele unui numar</u></b></h>
+<p style="color:white">
+Acest tip de algoritmi lucreaza cu urmatoarele expresii:<br>
+n%10=ultima cifra a lui n <br>
+n/10= numarul n din care s-a eliminat ultima cifra <br>
+Algoritmii uzuali sunt: <br>
+     -    aflarea sumei cifrelor unui numar <br>
+-	aflarea numarului de cifre pe care le are un numar <br>
+-	aflarea oglinditului unui numar  <br>
+
+-	suma cifrelor unui numar daca n=732848, atunci suma cifrelor sale este 7+3+2+8+4+8=32 Pentru a afla suma cifrelor parcurgem pasii: <br>
+aflam ultima cifra din n o adunam la o variabila s initializata cu 0,
+eliminam cifra adunata din n repetam pasii anteriori pana cand n=0 in pseudocod, avem urmatorul algoritm:
+<br>citeste n <br>
+s=0 <br>
+cat timp n?0 executa <br>
+    c=n%10 <br>
+      s=s+c <br>
+n=n/10 <br>
+scrie s<br>
+- numarul cifrelor unui numar: daca n=732848, atunci numarul de cifre este 6 Pentru a afla numarul de  cifre parcurgem pasii:
+creste cu 1 o variabila contor nr initializata cu 0 eliminam cifra adunata din n repetam pasii anteriori pana cand n=0 in pseudocod, avem urmatorul algoritm:
+<br>citeste n<br>
+nr=0 <br>
+cat timp n?0 executa <br>
+      nr=nr+1 <br>
+      n=n/10 <br>
+
+scrie nr<br>
+ 
+- aflarea oglinditului unui numar: daca n=732848, atunci oglinditul sau este 848237 Pentru a afla oglinditul  parcurgem pasii:
+aflam ultima cifra din n o adaugam la sfarsitul unei variabile inv initializata cu 0, eliminam cifra adunata din n repetam pasii anteriori pana cand n=0 pentru exemplul dat avem urmatoarele operatii:
+n=732848 deci c=8 ; inv=8; n=73284 <br>
+n=73284 deci c=4; inv=84; n=7328 <br>
+n=7328 deci c=8; inv=848; n=732  //cum ajung de la 84 la 848 in calculul lui inv? ce operatie se foloseste? <br>
+n=732 deci c=2; inv=8482; n=73 <br>
+n=73 deci c=3; inv=84823; n=7 <br>
+n=7  deci c=7; inv=848237; n=0 <br>
+n=0 => ne oprim din structura repetitiva. <br>
+Ca sa adaugam la sfarsitul lui inv o cifra se foloseste operatia inv=inv*10+n%10 <br>
+ 
+in pseudocod, avem urmatorul algoritm: <br>
+citeste n<br>
+inv=0 <br>
+cat timp n?0 executa <br>
+    c=n%10 <br>
+      inv=inv*10+c //aici se adauga c la sf. lui inv. <br>
+      n=n/10 <br>
+
+scrie inv <br>
+ 
+Observatie: un numar este palindrom daca este egal cu oglinditul sau (exemplu: 11, 121, 3, 36763, etc.)
+
+
+ 
+</p>
+</section>
+
+<footer>
+ATENTIE!!! ACEASTA PAGINA ESTE INCA IN LUCRU! VA RUGAM SA ASTEPTATI... VA MULTUMIM!
+</footer>
+
+</body>
+</html>
