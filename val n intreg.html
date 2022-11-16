@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="tutoriale tic si info!">
+		<meta name="keywords" content="info, tic, programare, informatica, tutoriale">
+		<link rel="stylesheet" type="text/css" href="main2.css">
+		<title>Info pentru toti</title>
+	</head>
+	
+	<body>
+<div class="paragraph">
+<img src="c++.png" style="width:25%"><br>
+</div>
+<h1>Determinarea primelor n valori care &#523;ndeplinesc o proprietate</h1>
+<div class="paragraph2">
+<p>Cerin&#539;a: S&#259; se determine primele n numere cu suma cifrelor par&#259; <br>
+<pre><code>
+cin>>n;
+nr=0; 
+x=0;//primul nr cu suma cifrelor par&#259; 
+do 
+ {//fac suma cifrelor lui x 
+   s=0; 
+   y=x;//ca s&#259;-l pot afi&#537;a eventual 
+   while(y!=0) 
+    {s=s+y%10; 
+     y=y/10;} 
+   if(s%2==0) 
+         {cout<< x <<"";
+          nr++;} 
+  x++;} 
+    while(nr<=n);
+</code></pre>
+</p>
+
+</div>
+
+</div>
+</body>
+</html>
