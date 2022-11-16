@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="tutoriale tic si info!">
+		<meta name="keywords" content="info, tic, programare, informatica, tutoriale">
+		<link rel="stylesheet" type="text/css" href="main2.css">
+		<title>Info pentru toti</title>
+	</head>
+	
+	<body>
+
+<div class="paragraph">
+<img src="c++.png" style="width:25%"><br>
+</div>
+<h1 style="text-align:center">Fi&#537;iere &#523;n C++</h1>
+<div class="paragraph2">
+
+<p>&#522;n C++ se lucreaz&#259; cu fi&#537;iere text sau binare. Noi vom &#523;nv&#259;&#539;a s&#259; lucr&#259;m cu fi&#537;iere text.<br><br><br>
+<b>Defini&#539;ie:</b> Un fi&#537;ier este o colec&#539;ie omogen&#259; de date, identificat&#259; prin nume.extensie <br>
+<br>
+Opera&#539;iile permise asupra fi&#537;ierelor prin intermediul unui program C++ sunt:<br>
+•Citire din fi&#537;ier <br>
+•Scriere &#523;n fi&#537;ier <br>
+•Ad&#259;ugare la sf&#515;r&#537;itul unui fi&#537;ier<br>
+<br><b>Etapele de lucru cu fi&#537;iere:</b> <br>
+<br>
+1.
+<br><img src="1.png" style="float:right; width:60%; padding-right:200px; padding-left:40px; padding-top:40px">
+<br><br><br><br><br><br><br>    Un fi&#537;ier deschis pentru citire trebuie creat<br>
+        &#523;nainte de rularea programului, ca s&#259; salv&#259;m &#523;n el<br>
+        datele de intrare. Acest lucrul se face astfel:<br><br><br><br>
+
+<br><br><br><br><img src="2.png" style="float:right; width:60%; padding-right:200px; padding-left:40px; padding-top:40px">
+        <br><br><br><br><br><br><br><br>
+        Se salveaz&#259; fi&#537;ierul cu numele &#537;i extensia<br>
+        din problem&#259; &#537;i se d&#259; „salvare”. Apoi<br>
+        se scriu datele de intrare &#523;n el.<br>
+ 
+<br><br><br><br><br><img src="3.png" style="float:right; width:60%; padding-right:200px; padding-left:40px; padding-top:40px;"><br><br><br>
+        <br><br><br><br><br><br><br>
+        &#522;n mod asem&#259;n&#259;tor se creaz&#259; un fi&#537;ier gol<br>
+        cu numele &#537;i extensia din program<br>
+        pentru fi&#537;ierul de ie&#537;ire.<br>
+        Acesta va con&#539;ine dup&#259; rularea<br>
+        programului rezultatele problemei.<br>
+        <br><br><br><br><br><br><br><br><br><br>
+2. Includerea bibliotecii de lucru cu fi&#537;iere: <br>
+#include< fstream >* <br><br>
+3. Deschiderea fi&#537;ierului: <br><br>
+a)Pentru citire: c&#515;nd vrem s&#259; citim datele de intrare ale problemei din fi&#537;ier (ne va scuti de reintroduerea datelor de intrare la fiecare rulare a programului) <br>
+ifstream nl(“nume.ext”);<br>
+sau <br>
+fstream nl(“nume.ext”, ios::in);<br><br>
+b)Pentru scriere:  dac&#259; vrem ca rezultatele problemei s&#259; fie salvate &#523;ntr-un fi&#537;ier <br>
+ ofstream nl(“nume.ext”); <br>
+sau <br>
+fstream nl*(“nume.ext”, ios::out); <br><br>
+c)Pentru ad&#259;ugare: dac&#259; vrem s&#259; scriem datele de ie&#537;ire la sf&#515;r&#537;itul fi&#537;ierului are con&#539;ine date de intrare <br>
+fstream nl(“nume.ext”, ios::app);<br><br>
+
+4. Prelucrarea datelor din fi&#537;ier <br>
+a)Citire din fi&#537;ier (evident, din cel deschis pentru citire sau ad&#259;ugare)<br>
+nl>>var1>>var2>>…>>varn;<br>
+Exemplu:    f>>a>>b; (am citit din fi&#537;ierul f variabilele a &#537;i b)<br>
+<br>
+b)Scriere &#523;n fi&#537;ier  (&#523;n cel deschis pentru scriere sau ad&#259;ugare)<br>
+Exemplu:  g<<”a=”<<a<<’\n’;<br>
+
+<br>
+c)Parcurgerea unui fi&#537;ier deschis pentru citire/ad&#259;ugare<br>
+ 
+C.1. Dac&#259; se &#537;tie num&#259;rul de valori pe care le avem de parcurs:<br>
+ for(i=1;i<=nr valori;i++)<br>
+{ nl>>x;<br>
+  //prelucr&#259;m x}<br>
+ <br>
+C.2. Dac&#259; nu se &#537;tie num&#259;rul de valori pe care le citim<br>
+{//prelucr&#259;m x}<br>
+ <br>
+Sau<br>
+ <br>
+  //prelucr&#259;m x;}<br>
+
+<br><br>5.	&#522;nchiderea fi&#537;ierului<br>
+ 
+nl.close(); - pentru fiecare fi&#537;ier &#523;n parte pe care l-a&#539;i deschis &#523;n program.
+
+</p>
+</div>
+
+
+<div class="info">
+<p>*Dac&#259; in program avem si instructiunile cin, cout, atunci se va include si biblioteca < iostream >, altfel nu va mai fi nevoie de ea <br>
+**numele logic al fisierului (in identificator care va reprezenta fisierul in program. De exemplu: f, g, q, f1, etc.)<br>
+
+</p>
+</div>
+
+</body>
+</html>
+

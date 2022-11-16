@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="tutoriale tic si info!">
+		<meta name="keywords" content="info, tic, programare, informatica, tutoriale">
+		<link rel="stylesheet" type="text/css" href="main2.css">
+		<title>Info pentru toti</title>
+	</head>
+	
+	<body>
+
+<div class="paragraph">
+<img src="c++.png" style="width:25%"><br>
+</div>
+<h1>Algoritmi cu cifrele unui num&#259;r</h1>
+
+<div class="paragraph2">
+<p>Acest tip de algoritmi lucreaz&#259; cu urm&#259;toarele expresii:<br>
+n%10=ultima cifr&#259; a lui n <br>
+n/10= num&#259;rul n din care s-a eliminat ultim&#259; cifr&#259; <br>
+Algoritmii uzuali sunt: <br>
+     -    aflarea sumei cifrelor unui num&#259;r <br>
+-	aflarea num&#259;rului de cifre pe care le are un num&#259;r <br>
+-	aflarea oglinditului unui num&#259;r  <br>
+
+-	suma cifrelor unui num&#259;r dac&#259; n=732848, atunci suma cifrelor sale este 7+3+2+8+4+8=32 Pentru a afla suma cifrelor parcurgem pa&#537;ii: <br>
+afl&#259;m ultima cifr&#259; din n o adun&#259;m la o variabil&#259; s ini&#539;ializat&#259; cu 0,
+elimin&#259;m cifra adunat&#259; din n repet&#259;m pa&#537;ii anteriori p&#515;n&#259; c&#515;nd n=0 &#523;n pseudocod, avem urm&#259;torul algoritm:
+<br>cite&#537;te n <br>
+s=0 <br>
+c&#515;t timp n?0 execut&#259; <br>
+    c=n%10 <br>
+      s=s+c <br>
+n=n/10 <br>
+scrie s<br>
+- num&#259;rul cifrelor unui num&#259;r: dac&#259; n=732848, atunci num&#259;rul de cifre este 6 Pentru a afla num&#259;rul de  cifre parcurgem pa&#537;ii:
+cre&#537;te cu 1 o variabil&#259; contor nr ini&#539;ializat&#259; cu 0 elimin&#259;m cifra adunat&#259; din n repet&#259;m pa&#537;ii anteriori p&#515;n&#259; c&#515;nd n=0 &#523;n pseudocod, avem urm&#259;torul algoritm:
+<br>cite&#537;te n<br>
+nr=0 <br>
+c&#515;t timp n?0 execut&#259; <br>
+      nr=nr+1 <br>
+      n=n/10 <br>
+<br>
+scrie nr<br>
+ <br>
+- aflarea oglinditului unui num&#259;r: dac&#259; n=732848, atunci oglinditul s&#259;u este 848237 Pentru a afla oglinditul  parcurgem pa&#537;ii:
+afl&#259;m ultima cifr&#259; din n o ad&#259;ug&#259;m la sf&#515;r&#537;itul unei variabile inv ini&#539;ializat&#259; cu 0, elimin&#259;m cifra adunat&#259; din n repet&#259;m pa&#537;ii anteriori p&#515;n&#259; c&#515;nd n=0 pentru exemplul dat avem urm&#259;toarele opera&#539;ii:
+n=732848 deci c=8 ; inv=8; n=73284 <br>
+n=73284 deci c=4; inv=84; n=7328 <br>
+n=7328 deci c=8; inv=848; n=732  //cum ajung de la 84 la 848 &#523;n calculul lui inv? ce opera&#539;ie se folose&#537;te? <br>
+n=732 deci c=2; inv=8482; n=73 <br>
+n=73 deci c=3; inv=84823; n=7 <br>
+n=7  deci c=7; inv=848237; n=0 <br>
+n=0 => ne oprim din structura repetitiv&#259;. <br>
+Ca s&#259; adaug&#259;m la sf&#515;r&#537;itul lui inv o cifr&#259; se folose&#537;te opera&#539;ia inv=inv*10+n%10 <br>
+ <br>
+&#522;n pseudocod, avem urm&#259;torul algoritm: <br>
+cite&#537;te n<br>
+inv=0 <br>
+c&#515;t timp n=0 execut&#259; <br>
+    c=n%10 <br>
+      inv=inv*10+c //aici se adaug&#259; c la sf&#515;r&#537;itul lui inv. <br>
+      n=n/10 <br>
+<br>
+scrie inv <br>
+ <br>
+Observa&#539;ie: un num&#259;r este palindrom dac&#259; este egal cu oglinditul sau (exemplu: 11, 121, 3, 36763, etc.)
+</p>
+
+</div>
+
+</body>
+</html>

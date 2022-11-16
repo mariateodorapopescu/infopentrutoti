@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="tutoriale tic si info!">
+		<meta name="keywords" content="info, tic, programare, informatica, tutoriale">
+		<link rel="stylesheet" type="text/css" href="main1.css">
+		<title>Info pentru toti</title>
+	</head>
+	
+	<body>
+<br>
+<br>
+<h1><p style="font-size:50px">Bun venit la Info pentru to&#539;i!</p></h1>
+<br>
+<br>
+<div class="paragraph">
+
+<div class="mySlides fade">
+  <img src="setupisstartingservices.jpg" style="width:100%">
+  <div class="text"><a href="SO.html">&#522;n articolele ce urmeaz&#259; v&#259; voi explica cum se instaleaz&#259; un sistem de operare pe un computer...</a></div>
+</div>
+
+<div class="mySlides fade">
+  <img src="USB.jpg" style="width:100%">
+  <div class="text"><a href="usb 3.1.html">&#522;n acest articol vreau s&#259; discut&#259;m despre noile tehnologii de pe pia&#539;&#259;.<br>
+Voi &#523;ncerca s&#259; aduc &#523;n discu&#539;ie noul port USB despre care se tot vorbeste &#523;n perioada aceasta.<br> Este vorba, evident, despre USB Type C.</a></div>
+</div>
+
+<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+<a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+<br>
+
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  if (n > slides.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+  }
+  slides[slideIndex-1].style.display = "block";  
+}
+</script>
+
+<table style="width:100%">
+<tr>
+<th><img src="c++.png" style="width:25%"></th>
+<th><img src="c++.png" style="width:25%"></th>
+<th><img src="c++.png" style="width:25%"></th>
+<th><img src="c++.png" style="width:25%"></th>
+</tr>
+<tr>
+<th><a href="fctii.html">Func&#539;ii matematice &#523;n C++</a></th>
+<th><a href="intr rep.html">Instruc&#539;iuni repetitive &#523;n C++</a></th>
+<th><a href="alg cfr.html">Algoritm cu cifrele unui num&#259;r</a></th>
+<th><a href="val n intreg.html">Determinarea primelor n valori care &#523;ndeplinesc o proprietate</a><tr></tr>
+<tr>
+<th>Ce fuc&#539;ii matematice pute&#539;i folosi <br>&#523;n programare</th>
+<th>Instruc&#539;iuni de baz&#259;</th>
+<th>Din colec&#539;ia algoritmi fundamentali</th>
+<th>Problem&#259; rezolvat&#259;</th>
+</tr>
+<tr>
+<th><a href="fctii.html">ACCESA&#538;I</a></th>
+<th><a href="intr rep.html">ACCESA&#538;I</a></th>
+<th><a href="alg cfr.html">ACCESA&#538;I</a></th>
+<th><a href="val n intreg.html">ACCESA&#538;I</a><tr></tr>
+</tr>
+</table>          
+</div>
+</body>
+</html>
