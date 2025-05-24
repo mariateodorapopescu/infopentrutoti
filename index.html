@@ -1,113 +1,173 @@
 <!DOCTYPE html>
-
 <html>
-
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="tutoriale tic si info!">
-		<meta name="keywords" content="info, tic, programare, informatica, tutoriale">
-		<link rel="stylesheet" type="text/css" href="main.css">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="tutoriale tic si info!">
+    <meta name="keywords" content="info, tic, programare, informatica, tutoriale">
+    <title>Info pentru toti</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<title>Info pentru toti</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400">  <!-- Google web font "Segoe UI Light" -->
     <link rel="stylesheet" href="css/bootstrap.min.css">                                      <!-- Bootstrap style -->
     <link rel="stylesheet" href="css/style.css">      
-	</head>
-	
-	<body>
-		<header>
-			<div class="container2">
-<a href="acasa1.html" target="iframe_a"><img src="logo5.png" width="160px" height="45px"></a>
-</div>
-
-  <div class="container3">
-  <a href="acasa1.html" target="iframe_a">Acas&#259;</a>
-  </div>
-
-<div class="container">
-			<div class="dropdown">
-    <button class="dropbtn">Diverse</button>
-   	<div class="dropdown-content">
-	<a href="androidvsios.html" target="iframe_a">Android vs IOS</a>      
-	<a href="cydia.html" target="iframe_a">Despre cydia &#537;i jailbreak</a>
-	<a href="programs and features.html" target="iframe_a">Programs and Features. Indexing options. Default programs </a>
-    </div>
-</div>
-
-<div class="dropdown">
-    <button class="dropbtn">TIC</button>
-    <div class="dropdown-content">
-      <a href="SO.html" target="iframe_a">Cum instalezi un sistem de operare?</a>
-      <a href="SO2.html" target="iframe_a">Cum instalezi un sistem de operare?(2)</a>
-      <a href="date pierdute.html" target="iframe_a">Cum recuperezi datele &#537;terse permanent din PC?</a>
-      <a href="extensie.html" target="iframe_a">Cum schimbi extensia unui fi&#537;ier?</a>
-      <a href="log on.html" target="iframe_a">Cum schimbi imaginea de log on?</a>
-      <a href="USB 3.1.html"  target="iframe_a">USB 3.1</a>
-    </div>
-</div>
-
-<div class="dropdown">
-    <button class="dropbtn">Lec&#539;ii informatic&#259;</button>
-    <div class="dropdown-content">
-	<a href="echivalenta.html" target="iframe_a">Echivalen&#539;a structurilor repetitive</a>   
-      	<a href="fisiere.html"target="iframe_a">Fi&#537;iere &#523;n C++</a>
-	<a href="fctii.html" target="iframe_a">Func&#539;ii matematice &#523;n C++</a>
-	<a href="intr rep.html" target="iframe_a">Instruc&#539;iuni repetitive &#523;n C++</a>
-	<a href="notiunidealgoritm.html" target="iframe_a">No&#539;iuni de algoritm</a>
-	<a href="reprezentarea algoritmilor.html" target="iframe_a">Reprezentarea algoritmilor</a>
-    </div>
-</div>
-
-<div class="dropdown">
-    <button class="dropbtn">Probleme speciale informatic&#259;</button>
-    <div class="dropdown-content">
-      <a href="alg cfr.html" target="iframe_a">Algoritm cu cifrele unui num&#259;r</a>
-<a href="val n intreg.html" target="iframe_a">Determinarea primelor n valori care &#523;ndeplinesc o proprietate</a>
-    </div>
-</div>
-			
-			<input id="myInput" type="text" placeholder="C&#259;utare pe Google.ro..."
-onkeydown="if (event.keyCode == 13 || event.which == 13) { location='http://www.google.com/search?q=' + encodeURIComponent(document.getElementById('myInput').value);}"/>
-
-		</header>
-
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
 function autoResize(iframe) {
     $(iframe).height($(iframe).contents().find('html').height());
 }
 </script>
+</head>
 
-		
-<iframe onload="autoResize(this);" src="acasa1.html" name="iframe_a" marginheight="0" scrolling="no" frameborder="0"></iframe>		
+<body>
+    <header>
+        <div class="container2">
+            <a href="#" onclick="loadPage('acasa1.html')">
+                <img src="logo5.png" width="160px" height="45px" alt="Logo" onerror="this.style.display='none'">
+            </a>
+        </div>
 
-<div class="some">
-<p>
-  <a href="https://www.facebook.com/infopentrutoti/"><img src="fbo.png" style="float:left; width:5.55%; padding-right:0.625rem; padding-left:2.625rem; padding-bottom:0.625rem;"></a>  <a href="https://www.instagram.com/infopentrutoti/"><img src="insta.png" style="float:left; width:2.870%; padding-right:0.625rem"></a> 
-<br>sdfgyhjk</p>
-</div>
-	<div class="footer">
-<br>
-<br>
+        <div class="container3">
+            <a href="#" onclick="loadPage('acasa1.html')">Acasă</a>
+        </div>
 
-<table style="width:100%">
-<tr>
-<th><b>Poate v&#259; mai intereseaz&#259; &#537;i...</b></th>
-</tr>
-<tr><th><a href="cydia.html" target="iframe_a">Despre Cydia &#537;i Jailbreak</a></th></tr>
-<tr><th><a href="date pierdute.html" target="iframe_a">Cum recuperezi datele &#537;terse permanent?</a></th></tr></table>
-</div>
+        <div class="container">
+            <div class="dropdown">
+                <button class="dropbtn">Diverse</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="loadPage('androidvsios.html')">Android vs IOS</a>      
+                    <a href="#" onclick="loadPage('cydia.html')">Despre cydia și jailbreak</a>
+                    <a href="#" onclick="loadPage('programs and features.html')">Programs and Features. Indexing options. Default programs</a>
+                </div>
+            </div>
 
-<div class="something">
+            <div class="dropdown">
+                <button class="dropbtn">TIC</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="loadPage('SO.html')">Cum instalezi un sistem de operare?</a>
+                    <a href="#" onclick="loadPage('SO2.html')">Cum instalezi un sistem de operare?(2)</a>
+                    <a href="#" onclick="loadPage('date pierdute.html')">Cum recuperezi datele șterse permanent din PC?</a>
+                    <a href="#" onclick="loadPage('extensie.html')">Cum schimbi extensia unui fișier?</a>
+                    <a href="#" onclick="loadPage('log on.html')">Cum schimbi imaginea de log on?</a>
+                    <a href="#" onclick="loadPage('USB 3.1.html')">USB 3.1</a>
+                </div>
+            </div>
 
-<a href="contact.html" target="iframe_a">Date de contact/</a>
-<a href="despre.html" target="iframe_a">Despre noi/</a>
-&#9400;PMT2019
-</div>
-		
-	</body>
-	
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script src="main.js"></script>
+            <div class="dropdown">
+                <button class="dropbtn">Lecții informatică</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="loadPage('echivalenta.html')">Echivalența structurilor repetitive</a>   
+                    <a href="#" onclick="loadPage('fisiere.html')">Fișiere în C++</a>
+                    <a href="#" onclick="loadPage('fctii.html')">Funcții matematice în C++</a>
+                    <a href="#" onclick="loadPage('intr rep.html')">Instrucțiuni repetitive în C++</a>
+                    <a href="#" onclick="loadPage('notiunidealgoritm.html')">Noțiuni de algoritm</a>
+                    <a href="#" onclick="loadPage('reprezentarea algoritmilor.html')">Reprezentarea algoritmilor</a>
+                </div>
+            </div>
 
+            <div class="dropdown">
+                <button class="dropbtn">Probleme speciale informatică</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="loadPage('alg cfr.html')">Algoritm cu cifrele unui număr</a>
+                    <a href="#" onclick="loadPage('val n intreg.html')">Determinarea primelor n valori care îndeplinesc o proprietate</a>
+                </div>
+            </div>
+        </div>
+        
+        <input id="myInput" type="text" placeholder="Căutare pe Google.ro..." onkeydown="handleSearch(event)"/>
+    </header>
+
+    <!-- Main content iframe -->
+    <iframe id="content-iframe" src="acasa1.html"></iframe>
+
+    <div class="some">
+        <p>
+            <a href="https://www.facebook.com/infopentrutoti/">
+                <img src="fbo.png" style="float:left; width:5.55%; padding-right:0.625rem; padding-left:2.625rem; padding-bottom:0.625rem;" alt="Facebook" onerror="this.style.display='none'">
+            </a>  
+            <a href="https://www.instagram.com/infopentrutoti/">
+                <img src="insta.png" style="float:left; width:2.870%; padding-right:0.625rem" alt="Instagram" onerror="this.style.display='none'">
+            </a> 
+            <br>Urmărește-ne pe rețelele sociale!
+        </p>
+    </div>
+
+    <div class="footer">
+        <br><br>
+        <table style="width:100%">
+            <tr>
+                <th><b>Poate vă mai interesează și...</b></th>
+            </tr>
+            <tr><th><a href="#" onclick="loadPage('cydia.html')">Despre Cydia și Jailbreak</a></th></tr>
+            <tr><th><a href="#" onclick="loadPage('date pierdute.html')">Cum recuperezi datele șterse permanent?</a></th></tr>
+        </table>
+    </div>
+
+    <div class="something">
+        <a href="#" onclick="loadPage('contact.html')">Date de contact/</a>
+        <a href="#" onclick="loadPage('despre.html')">Despre noi/</a>
+        ©PMT2019
+    </div>
+
+    <script>
+        // Function to load pages in iframe
+        function loadPage(pageName) {
+            const iframe = document.getElementById('content-iframe');
+            iframe.src = pageName;
+            
+            // Handle iframe load event for resizing
+            iframe.onload = function() {
+                resizeIframe();
+            };
+        }
+
+        // Function to resize iframe based on content
+        function resizeIframe() {
+            const iframe = document.getElementById('content-iframe');
+            try {
+                // Try to access iframe content (will only work if same origin)
+                const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                const height = iframeDocument.body.scrollHeight || iframeDocument.documentElement.scrollHeight;
+                
+                if (height > 100) { // Minimum height check
+                    iframe.style.height = height + 'px';
+                } else {
+                    iframe.style.height = '600px'; // Default height
+                }
+            } catch (error) {
+                // If we can't access iframe content (cross-origin), use default height
+                console.log('Cannot resize iframe - cross-origin policy');
+                iframe.style.height = '600px';
+            }
+        }
+
+        // Handle search functionality
+        function handleSearch(event) {
+            if (event.keyCode === 13 || event.which === 13) {
+                const searchTerm = document.getElementById('myInput').value;
+                if (searchTerm.trim() !== '') {
+                    window.open('https://www.google.com/search?q=' + encodeURIComponent(searchTerm), '_blank');
+                }
+            }
+        }
+
+        // Initialize iframe resizing when page loads
+        window.addEventListener('load', function() {
+            resizeIframe();
+            
+            // Also try to resize after a short delay
+            setTimeout(resizeIframe, 1000);
+        });
+
+        // Fallback: periodically check and resize iframe
+        setInterval(function() {
+            resizeIframe();
+        }, 2000);
+
+        // Handle iframe load events
+        document.getElementById('content-iframe').addEventListener('load', function() {
+            resizeIframe();
+        });
+    </script>
+</body>
 </html>
