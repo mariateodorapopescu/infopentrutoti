@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lecție interactivă - Noțiuni fundamentale de algoritm">
+    <meta name="keywords" content="algoritm, programare, variabile, expresii, operatori">
+    <title>Algoritmi Fundamentali - Noțiuni de Bază</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --code-bg: #1e1e2e;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-light: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+        }
+        
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .element-float {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.1);
+            animation: floatElement 25s infinite linear;
+        }
+        
+        .element-float:nth-child(1) { left: 10%; animation-delay: 0s; content: '🧮'; }
+        .element-float:nth-child(2) { left: 30%; animation-delay: -8s; }
+        .element-float:nth-child(3) { left: 50%; animation-delay: -16s; }
+        .element-float:nth-child(4) { left: 70%; animation-delay: -24s; }
+        .element-float:nth-child(5) { left: 90%; animation-delay: -32s; }
+        
+        @keyframes floatElement {
+            0% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { 
+                transform: translateY(-100px) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+        
+        /* Hero section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .algorithm-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-gradient);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: var(--shadow-light);
+            font-size: 3rem;
+        }
+        
+        /* Characteristics showcase */
+        .characteristics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .characteristic-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .characteristic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+        
+        .characteristic-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .characteristic-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .characteristic-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .characteristic-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        /* Content sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .content-card.definition::before { background: var(--primary-gradient); }
+        .content-card.data::before { background: var(--secondary-gradient); }
+        .content-card.variables::before { background: var(--accent-gradient); }
+        .content-card.expressions::before { background: var(--success-gradient); }
+        .content-card.operators::before { background: var(--warning-gradient); }
+        
+        .content-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .content-card h2 .icon {
+            font-size: 2.5rem;
+        }
+        
+        /* Definition box */
+        .definition-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border-left: 4px solid #667eea;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .definition-box::before {
+            content: '📚';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .definition-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Data types grid */
+        .data-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .data-type-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .data-type-card:hover {
+            transform: translateY(-5px);
+            border-color: #f093fb;
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.2);
+        }
+        
+        .data-type-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .data-type-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Variable showcase */
+        .variable-showcase {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(79, 172, 254, 0.2);
+        }
+        
+        .variable-properties {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .property-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .property-title {
+            font-weight: 600;
+            color: #4facfe;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Operators showcase */
+        .operators-grid {
+            display: grid;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .operator-category {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .operator-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #f59e0b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .operator-list {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        
+        .operator-item {
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .operator-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+        }
+        
+        /* Logic table */
+        .logic-table {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+        
+        .logic-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .logic-table th, .logic-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .logic-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .logic-table tr:nth-child(even) {
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        /* Interactive demo */
+        .interactive-demo {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            border: 2px solid rgba(17, 153, 142, 0.2);
+        }
+        
+        .demo-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .demo-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+        }
+        
+        .demo-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .demo-input {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .demo-input label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .demo-input input, .demo-input select {
+            padding: 0.75rem;
+            border: 2px solid rgba(17, 153, 142, 0.3);
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .demo-input input:focus, .demo-input select:focus {
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+        }
+        
+        .demo-btn {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(17, 153, 142, 0.4);
+        }
+        
+        .demo-result {
+            background: #1e1e2e;
+            color: #e1e5e9;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 1rem;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-card {
+                padding: 2rem;
+            }
+            
+            .characteristics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-elements">
+        <div class="element-float">🧮</div>
+        <div class="element-float">📊</div>
+        <div class="element-float">⚡</div>
+        <div class="element-float">🔢</div>
+        <div class="element-float">💡</div>
+    </div>
+    
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge">
+                🎓 Algoritmi Fundamentali
+            </div>
+            <div class="algorithm-icon">🧠</div>
+            <h1>Noțiuni de Algoritm</h1>
+            <p class="subtitle">Descoperă fundamentele algoritmilor - de la definiție la implementare, toate conceptele esențiale pentru orice programator!</p>
+            
+            <div class="characteristics-grid">
+                <div class="characteristic-card">
+                    <span class="characteristic-icon">🎯</span>
+                    <h3 class="characteristic-title">Finalitatea</h3>
+                    <p class="characteristic-desc">Se termină după un număr finit de pași</p>
+                </div>
+                
+                <div class="characteristic-card">
+                    <span class="characteristic-icon">🌍</span>
+                    <h3 class="characteristic-title">Generalitatea</h3>
+                    <p class="characteristic-desc">Rezolvă orice problemă din categoria sa</p>
+                </div>
+                
+                <div class="characteristic-card">
+                    <span class="characteristic-icon">✅</span>
+                    <h3 class="characteristic-title">Corectitudinea</h3>
+                    <p class="characteristic-desc">Furnizează întotdeauna rezultatul corect</p>
+                </div>
+                
+                <div class="characteristic-card">
+                    <span class="characteristic-icon">💡</span>
+                    <h3 class="characteristic-title">Claritatea</h3>
+                    <p class="characteristic-desc">Pașii sunt clar descriși și înțelegi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="content-card definition scroll-reveal">
+            <h2><span class="icon">📚</span>Ce este un algoritm?</h2>
+            
+            <div class="definition-box">
+                <h4 class="definition-title">Definiție</h4>
+                <p>Se numește <strong>algoritm</strong> o metodă generală de rezolvare a unei categorii de probleme.</p>
+            </div>
+            
+            <p style="margin-bottom: 2rem;">Un algoritm este ca o rețetă de gătit - un set de instrucțiuni pas cu pas care, dacă sunt urmate corect, garantează obținerea rezultatului dorit. În programare, algoritmii sunt esența oricărei soluții software.</p>
+            
+            <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); border-radius: 20px; padding: 2rem; margin: 2rem 0; border: 2px solid rgba(102, 126, 234, 0.2);">
+                <h3 style="color: #667eea; margin-bottom: 1.5rem; text-align: center;">🏗️ Caracteristicile unui algoritm</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎯</div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Finalitatea</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Trebuie să se termine după un număr finit de pași</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌍</div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Generalitatea</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Rezolvă orice problemă din categoria pentru care este conceput</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Corectitudinea</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Trebuie să rezolve corect problema</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💡</div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Claritatea</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Pașii trebuie să fie clar descriși</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card data scroll-reveal">
+            <h2><span class="icon">📊</span>Datele - Informația algoritmilor</h2>
+            
+            <p style="margin-bottom: 2rem;">Datele sunt informațiile prelucrate de calculator. Ele reprezintă materia primă cu care lucrează algoritmii.</p>
+            
+            <div class="data-types-grid">
+                <div class="data-type-card">
+                    <span class="data-type-icon">📥</span>
+                    <h4 class="data-type-title">Date de intrare</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Informațiile primite de algoritm</p>
+                </div>
+                
+                <div class="data-type-card">
+                    <span class="data-type-icon">📤</span>
+                    <h4 class="data-type-title">Date de ieșire</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Rezultatul cerut (ce se cere)</p>
+                </div>
+                
+                <div class="data-type-card">
+                    <span class="data-type-icon">⚙️</span>
+                    <h4 class="data-type-title">Date de lucru</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Variabile auxiliare folosite în calcule</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card variables scroll-reveal">
+            <h2><span class="icon">📦</span>Variabilele - Cutiile de memorie</h2>
+            
+            <p style="margin-bottom: 2rem;">Variabilele sunt locații de memorie în care la un moment dat se rețin valori. Sunt ca niște cutii cu etichete care pot conține diferite tipuri de informații.</p>
+            
+            <div class="variable-showcase">
+                <h3 style="color: #4facfe; margin-bottom: 1.5rem; text-align: center;">🏷️ Caracteristicile unei variabile</h3>
+                
+                <div class="variable-properties">
+                    <div class="property-item">
+                        <h4 class="property-title">📝 Nume</h4>
+                        <p style="color: var(--text-secondary);">Un șir de caractere format din cifre, litere sau "_" care identifică variabila</p>
+                        <div style="background: #1e1e2e; color: #e1e5e9; padding: 0.5rem; border-radius: 5px; margin-top: 0.5rem; font-family: 'JetBrains Mono', monospace;">
+                            x, suma, numar_1, _temp
+                        </div>
+                    </div>
+                    
+                    <div class="property-item">
+                        <h4 class="property-title">🎯 Tip</h4>
+                        <p style="color: var(--text-secondary);">Mulțimea de valori de același fel din care face parte variabila</p>
+                        <div style="background: #1e1e2e; color: #e1e5e9; padding: 0.5rem; border-radius: 5px; margin-top: 0.5rem; font-family: 'JetBrains Mono', monospace;">
+                            întregi, reale, caracter, logice
+                        </div>
+                    </div>
+                    
+                    <div class="property-item">
+                        <h4 class="property-title">📍 Adresa de memorie</h4>
+                        <p style="color: var(--text-secondary);">Locul din memoria calculatorului unde este reținută variabila</p>
+                        <div style="background: #1e1e2e; color: #e1e5e9; padding: 0.5rem; border-radius: 5px; margin-top: 0.5rem; font-family: 'JetBrains Mono', monospace;">
+                            0x7fff5fbff6ac (baza 16)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card expressions scroll-reveal">
+            <h2><span class="icon">🧮</span>Expresiile - Calculele algoritmilor</h2>
+            
+            <p style="margin-bottom: 2rem;">Expresiile sunt combinații de variabile, constante și operatori specifici. Ele reprezintă calculele pe care le efectuează algoritmii.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                <div style="background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); border-radius: 20px; padding: 2rem; border: 2px solid rgba(17, 153, 142, 0.2);">
+                    <h4 style="color: #11998e; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        🔢 Expresii aritmetice
+                    </h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Calculează valori numerice</p>
+                    <div style="background: #1e1e2e; color: #e1e5e9; padding: 1rem; border-radius: 8px; font-family: 'JetBrains Mono', monospace;">
+                        a * b<br>
+                        (2 + 3) * 7<br>
+                        x + y - 5
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); border-radius: 20px; padding: 2rem; border: 2px solid rgba(245, 158, 11, 0.2);">
+                    <h4 style="color: #f59e0b; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        🎯 Expresii logice
+                    </h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Au valoarea adevărat sau fals</p>
+                    <div style="background: #1e1e2e; color: #e1e5e9; padding: 1rem; border-radius: 8px; font-family: 'JetBrains Mono', monospace;">
+                        a &lt; b<br>
+                        x + 3 &gt; 0<br>
+                        (x &gt; 5) && (y &lt; 10)
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card operators scroll-reveal">
+            <h2><span class="icon">⚡</span>Operatorii - Instrumentele de calcul</h2>
+            
+            <div class="operators-grid">
+                <div class="operator-category">
+                    <h3 class="operator-title">🔢 Operatori aritmetici</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Pentru calculele matematice de bază</p>
+                    <div class="operator-list">
+                        <span class="operator-item">+</span>
+                        <span class="operator-item">-</span>
+                        <span class="operator-item">*</span>
+                        <span class="operator-item">/</span>
+                        <span class="operator-item">%</span>
+                    </div>
+                </div>
+                
+                <div class="operator-category">
+                    <h3 class="operator-title">🎯 Operatori relațională</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Pentru comparații între valori</p>
+                    <div class="operator-list">
+                        <span class="operator-item">&lt;</span>
+                        <span class="operator-item">&gt;</span>
+                        <span class="operator-item">&lt;=</span>
+                        <span class="operator-item">&gt;=</span>
+                        <span class="operator-item">==</span>
+                        <span class="operator-item">!=</span>
+                    </div>
+                </div>
+                
+                <div class="operator-category">
+                    <h3 class="operator-title">🧠 Operatori logici</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Pentru operații cu valori logice</p>
+                    <div class="operator-list">
+                        <span class="operator-item">&&</span>
+                        <span class="operator-item">||</span>
+                        <span class="operator-item">!</span>
+                    </div>
+                    
+                    <div class="logic-table">
+                        <h4 style="margin-bottom: 1rem; color: var(--text-primary);">📋 Tabela de adevăr</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>p</th>
+                                    <th>q</th>
+                                    <th>p && q</th>
+                                    <th>p || q</th>
+                                    <th>!p</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.8); border-radius: 10px; padding: 1rem; margin-top: 1rem;">
+                        <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">🔄 Relațiile lui De Morgan</h4>
+                        <div style="font-family: 'JetBrains Mono', monospace; color: var(--text-primary);">
+                            !(p && q) = !p || !q<br>
+                            !(p || q) = !p && !q
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card interactive scroll-reveal">
+            <h2><span class="icon">🧪</span>Laborator interactiv</h2>
+            
+            <div class="interactive-demo">
+                <h3 class="demo-title">🚀 Testează operatorii în acțiune!</h3>
+                
+                <div class="demo-section">
+                    <h4 style="color: var(--text-primary); margin-bottom: 1rem;">🔢 Calculator expresii aritmetice</h4>
+                    <div class="demo-controls">
+                        <div class="demo-input">
+                            <label>Primul număr (a):</label>
+                            <input type="number" id="num1" value="10">
+                        </div>
+                        <div class="demo-input">
+                            <label>Operatorul:</label>
+                            <select id="operator">
+                                <option value="+">+ (adunare)</option>
+                                <option value="-">- (scădere)</option>
+                                <option value="*">* (înmulțire)</option>
+                                <option value="/">/ (împărțire)</option>
+                                <option value="%">% (modulo)</option>
+                            </select>
+                        </div>
+                        <div class="demo-input">
+                            <label>Al doilea număr (b):</label>
+                            <input type="number" id="num2" value="3">
+                        </div>
+                    </div>
+                    <button class="demo-btn" onclick="calculateArithmetic()">🧮 Calculează</button>
+                    <div class="demo-result" id="arithmetic-result">Rezultatul va apărea aici...</div>
+                </div>
+                
+                <div class="demo-section">
+                    <h4 style="color: var(--text-primary); margin-bottom: 1rem;">🎯 Evaluator expresii logice</h4>
+                    <div class="demo-controls">
+                        <div class="demo-input">
+                            <label>p (0 sau 1):</label>
+                            <select id="p-val">
+                                <option value="0">0 (fals)</option>
+                                <option value="1">1 (adevărat)</option>
+                            </select>
+                        </div>
+                        <div class="demo-input">
+                            <label>Operatorul logic:</label>
+                            <select id="logic-op">
+                                <option value="&&">&& (conjuncția)</option>
+                                <option value="||">|| (disjuncția)</option>
+                            </select>
+                        </div>
+                        <div class="demo-input">
+                            <label>q (0 sau 1):</label>
+                            <select id="q-val">
+                                <option value="0">0 (fals)</option>
+                                <option value="1">1 (adevărat)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="demo-btn" onclick="calculateLogic()">🧠 Evaluează</button>
+                        <button class="demo-btn" onclick="calculateNegation()">🔄 Calculează !p și !q</button>
+                        <button class="demo-btn" onclick="testDeMorgan()">⚡ Testează De Morgan</button>
+                    </div>
+                    <div class="demo-result" id="logic-result">Rezultatul va apărea aici...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Interactive demo functions
+        function calculateArithmetic() {
+            const num1 = parseFloat(document.getElementById('num1').value) || 0;
+            const num2 = parseFloat(document.getElementById('num2').value) || 0;
+            const operator = document.getElementById('operator').value;
+            const resultDiv = document.getElementById('arithmetic-result');
+            
+            let result;
+            let explanation = '';
+            
+            try {
+                switch (operator) {
+                    case '+':
+                        result = num1 + num2;
+                        explanation = `${num1} + ${num2} = ${result}`;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        explanation = `${num1} - ${num2} = ${result}`;
+                        break;
+                    case '*':
+                        result = num1 * num2;
+                        explanation = `${num1} * ${num2} = ${result}`;
+                        break;
+                    case '/':
+                        if (num2 === 0) {
+                            resultDiv.innerHTML = '❌ Eroare: Împărțire la zero!';
+                            return;
+                        }
+                        result = num1 / num2;
+                        explanation = `${num1} / ${num2} = ${result}`;
+                        break;
+                    case '%':
+                        if (num2 === 0) {
+                            resultDiv.innerHTML = '❌ Eroare: Modulo cu zero!';
+                            return;
+                        }
+                        result = num1 % num2;
+                        explanation = `${num1} % ${num2} = ${result} (restul împărțirii)`;
+                        break;
+                }
+                
+                resultDiv.innerHTML = `✅ ${explanation}`;
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Eroare: ${error.message}`;
+            }
+        }
+        
+        function calculateLogic() {
+            const p = parseInt(document.getElementById('p-val').value);
+            const q = parseInt(document.getElementById('q-val').value);
+            const operator = document.getElementById('logic-op').value;
+            const resultDiv = document.getElementById('logic-result');
+            
+            let result;
+            let explanation = '';
+            
+            switch (operator) {
+                case '&&':
+                    result = p && q ? 1 : 0;
+                    explanation = `${p} && ${q} = ${result} (conjuncția - adevărat doar dacă ambele sunt adevărate)`;
+                    break;
+                case '||':
+                    result = p || q ? 1 : 0;
+                    explanation = `${p} || ${q} = ${result} (disjuncția - fals doar dacă ambele sunt false)`;
+                    break;
+            }
+            
+            resultDiv.innerHTML = `✅ ${explanation}`;
+        }
+        
+        function calculateNegation() {
+            const p = parseInt(document.getElementById('p-val').value);
+            const q = parseInt(document.getElementById('q-val').value);
+            const resultDiv = document.getElementById('logic-result');
+            
+            const notP = p ? 0 : 1;
+            const notQ = q ? 0 : 1;
+            
+            const explanation = `!${p} = ${notP}, !${q} = ${notQ} (negația inversează valoarea)`;
+            
+            resultDiv.innerHTML = `✅ ${explanation}`;
+        }
+        
+        function testDeMorgan() {
+            const p = parseInt(document.getElementById('p-val').value);
+            const q = parseInt(document.getElementById('q-val').value);
+            const resultDiv = document.getElementById('logic-result');
+            
+            // Calculate De Morgan's laws
+            const leftSide1 = !(p && q) ? 1 : 0;
+            const rightSide1 = (!p || !q) ? 1 : 0;
+            
+            const leftSide2 = !(p || q) ? 1 : 0;
+            const rightSide2 = (!p && !q) ? 1 : 0;
+            
+            const explanation = `
+                🔄 Relațiile lui De Morgan:
+                !(${p} && ${q}) = ${leftSide1}, !${p} || !${q} = ${rightSide1} → ${leftSide1 === rightSide1 ? '✅ Corect' : '❌ Incorect'}
+                !(${p} || ${q}) = ${leftSide2}, !${p} && !${q} = ${rightSide2} → ${leftSide2 === rightSide2 ? '✅ Corect' : '❌ Incorect'}
+            `;
+            
+            resultDiv.innerHTML = explanation;
+        }
+        
+        // Add hover effects
+        document.querySelectorAll('.characteristic-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        document.querySelectorAll('.data-type-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.05)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        document.querySelectorAll('.operator-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+        
+        // Auto-calculate on input change
+        document.querySelectorAll('#num1, #num2, #operator').forEach(input => {
+            input.addEventListener('change', calculateArithmetic);
+        });
+        
+        document.querySelectorAll('#p-val, #q-val, #logic-op').forEach(input => {
+            input.addEventListener('change', calculateLogic);
+        });
+        
+        // Initialize with default calculation
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateArithmetic();
+            calculateLogic();
+        });
+    </script>
+</body>
+</html>

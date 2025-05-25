@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tutorial complet pentru instalarea Windows 7 pas cu pas">
+    <meta name="keywords" content="windows 7, instalare, sistem operare, tutorial, bootabil">
+    <title>Windows Mastery - Instalarea Windows 7</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --windows: #0078d4;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #0078d4 100%);
+            opacity: 0.1;
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        .shape:nth-child(1) { 
+            width: 80px; height: 80px; 
+            left: 10%; top: 20%; 
+            animation-delay: 0s; 
+        }
+        .shape:nth-child(2) { 
+            width: 120px; height: 120px; 
+            left: 70%; top: 60%; 
+            animation-delay: -5s; 
+        }
+        .shape:nth-child(3) { 
+            width: 60px; height: 60px; 
+            left: 50%; top: 10%; 
+            animation-delay: -10s; 
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        /* Header */
+        .header {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 120, 212, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .windows-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: 0 20px 40px rgba(0, 120, 212, 0.3);
+        }
+        
+        .windows-icon::after {
+            content: '🪟';
+            font-size: 2.5rem;
+        }
+        
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #0078d4 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        
+        /* Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--windows) 0%, var(--primary) 100%);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .section-icon.requirements { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .section-icon.bios { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .section-icon.bootable { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .section-icon.installation { background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%); }
+        .section-icon.completion { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
+        
+        .section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        .section h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        /* Requirements list */
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .requirement-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .requirement-card:hover {
+            border-color: var(--warning);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(245, 158, 11, 0.2);
+        }
+        
+        .requirement-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .requirement-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .requirement-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Step-by-step guide */
+        .steps {
+            display: grid;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .step {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* BIOS keys info */
+        .bios-keys {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .bios-key {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: var(--primary);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.75rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+        
+        .timeline-content {
+            background: rgba(99, 102, 241, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-desc {
+            color: var(--text-secondary);
+        }
+        
+        /* Warning/Note boxes */
+        .note {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .note::before {
+            content: '💡';
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+       .warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--warning);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .warning::before {
+            content: '⚠️';
+            background: var(--warning);
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--danger);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .danger::before {
+            content: '🚨';
+            background: var(--danger);
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 120, 212, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--windows);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .info-box::before {
+            content: 'ℹ️';
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            background: var(--windows);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 2rem;
+            }
+            
+            .requirements-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+            
+            .timeline {
+                padding-left: 1.5rem;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <header class="header">
+        <div class="header-content">
+            <div class="windows-icon"></div>
+            <h1>Instalarea Windows 7</h1>
+            <p class="subtitle">Ghidul complet pentru instalarea sistemului de operare Windows 7</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon requirements">📋</div>
+                <h2>Ce ai nevoie pentru instalare</h2>
+            </div>
+            
+            <p>Înainte de a începe procesul de instalare, asigură-te că ai toate elementele necesare și că calculatorul îndeplinește cerințele minime.</p>
+            
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <span class="requirement-icon">💿</span>
+                    <h4 class="requirement-title">Sistem de operare</h4>
+                    <p class="requirement-desc">Windows 7 ISO sau DVD original cu licență validă</p>
+                </div>
+                
+                <div class="requirement-card">
+                    <span class="requirement-icon">💾</span>
+                    <h4 class="requirement-title">Mediu bootabil</h4>
+                    <p class="requirement-desc">Stick USB (min 4GB) sau DVD pentru creare mediu bootabil</p>
+                </div>
+                
+                <div class="requirement-card">
+                    <span class="requirement-icon">💽</span>
+                    <h4 class="requirement-title">Spațiu de stocare</h4>
+                    <p class="requirement-desc">Minimum 16GB spațiu liber pe hard disk</p>
+                </div>
+                
+                <div class="requirement-card">
+                    <span class="requirement-icon">🔧</span>
+                    <h4 class="requirement-title">Backup-ul datelor</h4>
+                    <p class="requirement-desc">Salvarea datelor importante înainte de formatare</p>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <strong>Despre BIOS:</strong> BIOS-ul este un software de nivel scăzut, fiind primul program ce rulează atunci când pornești calculatorul. Controlează direct modul în care funcționează componentele calculatorului și permite sistemului de operare să interacționeze cu hardware-ul.
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon bios">⚙️</div>
+                <h2>Configurarea BIOS pentru boot</h2>
+            </div>
+            
+            <p>Pentru a instala Windows 7, trebuie să configurezi calculatorul să pornească de pe mediul bootabil (USB sau DVD) în loc de hard disk.</p>
+            
+            <h3>🔑 Accesarea BIOS</h3>
+            <p>Imediat cum pornește calculatorul, apasă una dintre aceste taste pentru a intra în BIOS:</p>
+            
+            <div class="bios-keys">
+                <span class="bios-key">F2</span>
+                <span class="bios-key">F8</span>
+                <span class="bios-key">F11</span>
+                <span class="bios-key">F12</span>
+                <span class="bios-key">Del</span>
+                <span class="bios-key">Esc</span>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Intrarea în BIOS</div>
+                    <div class="step-description">La pornirea calculatorului, apasă rapid și repetat una dintre tastele de mai sus până intri în meniul BIOS</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Navigarea la secțiunea Boot</div>
+                    <div class="step-description">Folosește săgețile pentru a naviga la secțiunea "Boot" sau "Boot Options"</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Modificarea ordinii de boot</div>
+                    <div class="step-description">Setează USB-ul sau DVD-ROM-ul ca primul dispozitiv de boot în "Boot Priority" sau "First Boot Device"</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Salvarea setărilor</div>
+                    <div class="step-description">Apasă F10 sau găsește opțiunea "Save & Exit" pentru a salva modificările și a ieși din BIOS</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon bootable">💿</div>
+                <h2>Crearea mediului bootabil</h2>
+            </div>
+            
+            <p>Dacă nu ai deja un DVD de Windows 7, poți crea un stick USB bootabil folosind Windows 7 USB DVD Download Tool de la Microsoft.</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-title">Descărcarea imaginii ISO</div>
+                        <div class="timeline-desc">Caută și descarcă o imagine ISO care conține Windows 7 de la o sursă oficială sau legitimă</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-title">Instalarea Windows 7 USB DVD Download Tool</div>
+                        <div class="timeline-desc">Descarcă și instalează acest program oficial de la Microsoft pentru crearea mediului bootabil</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-title">Selectarea imaginii ISO</div>
+                        <div class="timeline-desc">Primul pas în tool: Browse și selectează fișierul ISO descărcat</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-title">Alegerea mediului</div>
+                        <div class="timeline-desc">Al doilea pas: Alege "USB device" pentru stick USB sau "DVD" pentru disc optic</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-title">Selectarea dispozitivului</div>
+                        <div class="timeline-desc">Al treilea pas: Selectează stick-ul USB din listă și apasă "Begin Copying"</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning">
+                <strong>Atenție:</strong> Procesul de creare a mediului bootabil va șterge complet conținutul stick-ului USB. Asigură-te că ai salvat toate datele importante de pe el.
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon installation">🚀</div>
+                <h2>Procesul de instalare</h2>
+            </div>
+            
+            <p>Cu BIOS-ul configurat și mediul bootabil creat, poți începe instalarea propriu-zisă a Windows 7.</p>
+            
+            <h3>🎯 Pașii de instalare</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Pornirea de pe mediul bootabil</div>
+                    <div class="step-description">Inserează USB-ul sau DVD-ul și pornește calculatorul. Dacă BIOS-ul este configurat corect, va porni de pe mediul bootabil</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Selectarea limbii și regiunii</div>
+                    <div class="step-description">Va apărea o interfață unde poți selecta limba, timpul și metoda de introducere. Apoi dă "Next"</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Începerea instalării</div>
+                    <div class="step-description">Dă click pe "Install Now" pentru a începe procesul de instalare</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Acceptarea termenilor</div>
+                    <div class="step-description">Bifează caseta pentru acceptarea termenilor și condițiilor, apoi continuă</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Tipul de instalare</div>
+                    <div class="step-description">Pentru o instalare curată, selectează "Custom (advanced)" în loc de "Upgrade"</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Selectarea și formatarea hard disk-ului</div>
+                    <div class="step-description">Selectează partiția unde vrei să instalezi Windows. Pentru o instalare curată, formatează partiția folosind "Drive options (advanced)" → "Format"</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">7</div>
+                    <div class="step-title">Crearea de partiții (opțional)</div>
+                    <div class="step-description">Dacă vrei să creezi partiții noi, folosește "Drive Options (advanced)" → "New" și specifică mărimea dorită</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">8</div>
+                    <div class="step-title">Începerea copierii fișierelor</div>
+                    <div class="step-description">Selectează partiția finală și dă "Next". Windows va începe să copieze fișierele - procesul va dura aproximativ o oră</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon completion">✅</div>
+                <h2>Finalizarea și configurarea</h2>
+            </div>
+            
+            <p>După ce Windows 7 s-a instalat cu succes, urmează câțiva pași finali de configurare pentru a avea un sistem complet funcțional.</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Configurarea inițială</div>
+                    <div class="step-description">La prima pornire, Windows va cere configurarea datei, orei, locației și limbii</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Crearea contului de utilizator</div>
+                    <div class="step-description">Setează numele utilizatorului și parola pentru contul principal</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Instalarea driverelor</div>
+                    <div class="step-description">Pentru funcționare optimă, instalează driverele corespunzătoare pentru componentele calculatorului (placa grafică, placa de sunet, etc.)</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Windows Update</div>
+                    <div class="step-description">Activează și rulează Windows Update pentru a instala cele mai recente patch-uri de securitate</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Instalarea programelor esențiale</div>
+                    <div class="step-description">Instalează programele de care ai nevoie: antivirus, browser, suite office, etc.</div>
+                </div>
+            </div>
+            
+            <div class="note">
+                <strong>Backup final:</strong> Odată ce ai configurat complet sistemul, consideră crearea unui backup sau a unui punct de restaurare pentru a putea reveni rapid la această stare funcțională în caz de probleme viitoare.
+            </div>
+            
+            <div class="info-box">
+                <strong>Concluzie:</strong> Instalarea Windows 7 nu este atât de complicată pe cât pare la prima vedere. Urmând acești pași metodic, vei avea un sistem de operare fresh și funcțional într-un timp relativ scurt. Majoritatea procesului constă în așteptare, în timp ce Windows copiază și configurează fișierele automat.
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Add hover effects to requirement cards
+        document.querySelectorAll('.requirement-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-5px) scale(1)';
+            });
+        });
+        
+        // Add click animation to steps
+        document.querySelectorAll('.step').forEach(step => {
+            step.addEventListener('click', function() {
+                this.style.transform = 'translateX(15px) scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = 'translateX(10px) scale(1)';
+                }, 200);
+            });
+        });
+        
+        // Add animation to BIOS keys
+        document.querySelectorAll('.bios-key').forEach(key => {
+            key.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>

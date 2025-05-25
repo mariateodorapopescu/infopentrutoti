@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lecție interactivă - Reprezentarea algoritmilor în limbajul pseudocod">
+    <meta name="keywords" content="algoritmi, pseudocod, programare, structuri control">
+    <title>Pseudocod Interactive - Reprezentarea Algoritmilor</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #10b981 0%, #06d6a0 100%);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --code-bg: #1e1e2e;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-light: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M30 30m-2 0a2 2 0 1 1 4 0a2 2 0 1 1-4 0'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+        
+        /* Hero section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .algo-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-gradient);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: var(--shadow-light);
+            font-size: 3rem;
+        }
+        
+        /* Content sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .content-card.definition::before { background: var(--primary-gradient); }
+        .content-card.structure::before { background: var(--secondary-gradient); }
+        .content-card.examples::before { background: var(--accent-gradient); }
+        
+        .content-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .content-card h2 .icon {
+            font-size: 2.5rem;
+        }
+        
+        .definition-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border-left: 4px solid #6366f1;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .definition-box::before {
+            content: '📚';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #6366f1;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .definition-box h4 {
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Structure types */
+        .structure-grid {
+            display: grid;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .structure-item {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .structure-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .structure-item:hover {
+            transform: translateY(-10px);
+            border-color: #6366f1;
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+        
+        .structure-item:hover::before {
+            opacity: 1;
+        }
+        
+        .structure-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .structure-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .structure-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .structure-subtitle {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        .operation-list {
+            display: grid;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .operation-item {
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            border-left: 3px solid #6366f1;
+        }
+        
+        .operation-item h5 {
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Pseudocode examples */
+        .pseudocode-container {
+            position: relative;
+            margin: 2rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .pseudocode-header {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .pseudocode-header .title {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .pseudocode-header .title::before {
+            content: '📝';
+            font-size: 1.2rem;
+        }
+        
+        .code-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .code-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .code-btn.red { background: #ff5f57; }
+        .code-btn.yellow { background: #ffbd2e; }
+        .code-btn.green { background: #28ca42; }
+        
+        .code-btn:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px currentColor;
+        }
+        
+        .pseudocode {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin: 0;
+        }
+        
+        /* Syntax highlighting for pseudocode */
+        .keyword { color: #c792ea; font-weight: 500; }
+        .condition { color: #f78c6c; }
+        .action { color: #c3e88d; }
+        .variable { color: #82aaff; }
+        .operator { color: #89ddff; }
+        .comment { color: #546e7a; font-style: italic; }
+        
+        /* Interactive flowchart */
+        .flowchart-container {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 214, 160, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .flowchart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .flowchart-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .flow-step {
+            background: white;
+            border: 2px solid #10b981;
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            min-width: 120px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .flow-step:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            background: #10b981;
+            color: white;
+        }
+        
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: #10b981;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(0); }
+            40% { transform: translateX(-5px); }
+            60% { transform: translateX(5px); }
+        }
+        
+        /* Example showcase */
+        .example-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .example-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(245, 158, 11, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.2);
+        }
+        
+        .example-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .example-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-card {
+                padding: 2rem;
+            }
+            
+            .structure-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .flowchart-steps {
+                flex-direction: column;
+            }
+            
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge">
+                ⚡ Fundamente de Algoritmi
+            </div>
+            <div class="algo-icon">🔄</div>
+            <h1>Reprezentarea Algoritmilor</h1>
+            <p class="subtitle">Descoperă puterea limbajului pseudocod - podul perfect între gândirea umană și codul mașinii!</p>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="content-card definition scroll-reveal">
+            <h2><span class="icon">📚</span>Ce este limbajul pseudocod?</h2>
+            
+            <div class="definition-box">
+                <h4>Definiție</h4>
+                <p>Se numește <strong>limbaj pseudocod</strong> o metodă de reprezentare a algoritmilor care utilizează niște cuvinte cheie desprinse din limbajul natural.</p>
+            </div>
+            
+            <p>Pseudocodul este ca o limbă universală pentru programatori - îți permite să exprimi logica unui algoritm fără să te împiedici în sintaxa specifică unui limbaj de programare. Este perfectul pentru:</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                <div style="background: rgba(99, 102, 241, 0.1); padding: 1.5rem; border-radius: 15px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎯</div>
+                    <h4 style="color: #6366f1;">Planificare</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Structurează ideile înainte de a scrie cod</p>
+                </div>
+                <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 15px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">💬</div>
+                    <h4 style="color: #8b5cf6;">Comunicare</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Explică algoritmi fără bariere tehnice</p>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.1); padding: 1.5rem; border-radius: 15px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔄</div>
+                    <h4 style="color: #10b981;">Testare</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Verifică logica înainte de implementare</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card structure scroll-reveal">
+            <h2><span class="icon">🏗️</span>Structurile de control</h2>
+            
+            <p style="margin-bottom: 2rem;">Limbajul pseudocod se bazează pe trei tipuri fundamentale de structuri de control:</p>
+            
+            <div class="structure-grid">
+                <div class="structure-item">
+                    <div class="structure-header">
+                        <div class="structure-number">1</div>
+                        <div>
+                            <h3 class="structure-title">Structura Liniară</h3>
+                            <p class="structure-subtitle">Execuție secvențială</p>
+                        </div>
+                    </div>
+                    
+                    <p>Cuprinde instrucțiuni de scriere, citire și atribuire executate în ordine:</p>
+                    
+                    <div class="operation-list">
+                        <div class="operation-item">
+                            <h5>📤 Scriere</h5>
+                            <div class="pseudocode-container">
+                                <div class="pseudocode">
+<span class="keyword">scrie</span> <span class="variable">x</span>, <span class="variable">y</span>, <span class="variable">z</span>
+<span class="keyword">scrie</span> <span class="condition">3</span>
+<span class="keyword">scrie</span> <span class="action">"info"</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="operation-item">
+                            <h5>📥 Citire</h5>
+                            <div class="pseudocode-container">
+                                <div class="pseudocode">
+<span class="keyword">citește</span> <span class="variable">variabila1</span>, <span class="variable">variabila2</span>, ..., <span class="variable">variabilan</span>
+<span class="comment">// a citi o variabilă înseamnă a solicita o valoare</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="operation-item">
+                            <h5>📝 Atribuire</h5>
+                            <div class="pseudocode-container">
+                                <div class="pseudocode">
+<span class="variable">variabila</span> <span class="operator">←</span> <span class="action">expresie</span>
+<span class="comment">// "←" se citește "ia valoarea"</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="structure-item">
+                    <div class="structure-header">
+                        <div class="structure-number">2</div>
+                        <div>
+                            <h3 class="structure-title">Structura Alternativă</h3>
+                            <p class="structure-subtitle">Decizie bazată pe condiție</p>
+                        </div>
+                    </div>
+                    
+                    <p>Execută una dintre două secvențe în funcție de o condiție:</p>
+                    
+                    <div class="pseudocode-container">
+                        <div class="pseudocode-header">
+                            <span class="title">Structura IF-THEN-ELSE</span>
+                            <div class="code-buttons">
+                                <div class="code-btn red"></div>
+                                <div class="code-btn yellow"></div>
+                                <div class="code-btn green"></div>
+                            </div>
+                        </div>
+                        <div class="pseudocode">
+<span class="keyword">dacă</span> <span class="condition">condiția</span> <span class="keyword">atunci</span>
+    <span class="action">secvența 1</span>
+<span class="keyword">altfel</span>
+    <span class="action">secvența 2</span>
+<span class="keyword">sfârșit dacă</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flowchart-container">
+                        <div class="flowchart-title">🔄 Fluxul de execuție</div>
+                        <div class="flowchart-steps">
+                            <div class="flow-step">Condiție</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">Adevărat<br>↓<br>Secvența 1</div>
+                            <div class="flow-step">Fals<br>↓<br>Secvența 2</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="structure-item">
+                    <div class="structure-header">
+                        <div class="structure-number">3</div>
+                        <div>
+                            <h3 class="structure-title">Structura Repetitivă</h3>
+                            <p class="structure-subtitle">Execuție repetată</p>
+                        </div>
+                    </div>
+                    
+                    <p>Trei variante pentru execuția repetată:</p>
+                    
+                    <div style="display: grid; gap: 1rem;">
+                        <details style="background: rgba(99, 102, 241, 0.05); border-radius: 10px; padding: 1rem;">
+                            <summary style="font-weight: 600; color: #6366f1; cursor: pointer;">🔢 Cu număr cunoscut de pași (cu contor)</summary>
+                            <div class="pseudocode-container" style="margin-top: 1rem;">
+                                <div class="pseudocode">
+<span class="keyword">pentru</span> <span class="variable">c</span> <span class="operator">=</span> <span class="condition">vi</span> <span class="keyword">până la</span> <span class="condition">vf</span> <span class="keyword">cu pasul</span> <span class="condition">p</span> <span class="keyword">execută</span>
+    <span class="action">secvența</span>
+<span class="keyword">sfârșit pentru</span>
+                                </div>
+                            </div>
+                        </details>
+                        
+                        <details style="background: rgba(139, 92, 246, 0.05); border-radius: 10px; padding: 1rem;">
+                            <summary style="font-weight: 600; color: #8b5cf6; cursor: pointer;">🔍 Cu test inițial</summary>
+                            <div class="pseudocode-container" style="margin-top: 1rem;">
+                                <div class="pseudocode">
+<span class="keyword">cât timp</span> <span class="condition">condiția</span> <span class="keyword">execută</span>
+    <span class="action">secvența</span>
+<span class="keyword">sfârșit cât timp</span>
+                                </div>
+                            </div>
+                        </details>
+                        
+                        <details style="background: rgba(16, 185, 129, 0.05); border-radius: 10px; padding: 1rem;">
+                            <summary style="font-weight: 600; color: #10b981; cursor: pointer;">✅ Cu test final</summary>
+                            <div class="pseudocode-container" style="margin-top: 1rem;">
+                                <div class="pseudocode">
+<span class="keyword">repetă</span>
+    <span class="action">secvența</span>
+<span class="keyword">până când</span> <span class="condition">condiția</span>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card examples scroll-reveal">
+            <h2><span class="icon">💡</span>Exemple practice</h2>
+            
+            <div class="example-showcase">
+                <div class="example-card">
+                    <h3 class="example-title">📊 Exemplu: Modulul unui număr</h3>
+                    <p style="margin-bottom: 1rem;">Algoritm care citește un număr real x și determină modulul acestuia:</p>
+                    
+                    <div class="pseudocode-container">
+                        <div class="pseudocode-header">
+                            <span class="title">Algoritm Modul</span>
+                            <div class="code-buttons">
+                                <div class="code-btn red"></div>
+                                <div class="code-btn yellow"></div>
+                                <div class="code-btn green"></div>
+                            </div>
+                        </div>
+                        <div class="pseudocode">
+<span class="keyword">citește</span> <span class="variable">x</span>
+<span class="keyword">dacă</span> <span class="variable">x</span> <span class="operator">≥</span> <span class="condition">0</span> <span class="keyword">atunci</span>
+    <span class="keyword">scrie</span> <span class="variable">x</span>
+<span class="keyword">altfel</span>
+    <span class="keyword">scrie</span> <span class="operator">-</span><span class="variable">x</span>
+<span class="keyword">sfârșit dacă</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-card">
+                    <h3 class="example-title">🔢 Exemplu: Afișare cu contor</h3>
+                    <p style="margin-bottom: 1rem;">Afișează valorile 3, 8, 13, 18, 23, 28:</p>
+                    
+                    <div class="pseudocode-container">
+                        <div class="pseudocode-header">
+                            <span class="title">Algoritm Progresie</span>
+                            <div class="code-buttons">
+                                <div class="code-btn red"></div>
+                                <div class="code-btn yellow"></div>
+                                <div class="code-btn green"></div>
+                            </div>
+                        </div>
+                        <div class="pseudocode">
+<span class="keyword">pentru</span> <span class="variable">i</span> <span class="operator">=</span> <span class="condition">3</span> <span class="keyword">până la</span> <span class="condition">28</span> <span class="keyword">cu pasul</span> <span class="condition">5</span> <span class="keyword">execută</span>
+    <span class="keyword">scrie</span> <span class="variable">i</span>
+<span class="keyword">sfârșit pentru</span>
+<span class="comment">// Rezultat: 3 8 13 18 23 28</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%); border-radius: 20px; padding: 2rem; margin: 2rem 0; border: 2px solid rgba(245, 158, 11, 0.2);">
+                <h3 style="color: #f59e0b; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    ⚠️ Note importante
+                </h3>
+                <ul style="color: var(--text-secondary); line-height: 1.8;">
+                    <li><strong>Dacă p=1:</strong> pasul lipsește din sintaxă</li>
+                    <li><strong>Dacă p&lt;0:</strong> atunci vi≥vf, în caz contrar instrucțiunea nu se execută</li>
+                    <li><strong>Test final:</strong> se execută cel puțin o dată</li>
+                    <li><strong>Test inițial:</strong> poate să nu se execute deloc</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Interactive structure items
+        document.querySelectorAll('.structure-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Flow step interactions
+        document.querySelectorAll('.flow-step').forEach(step => {
+            step.addEventListener('click', function() {
+                this.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1.05)';
+                }, 200);
+            });
+        });
+        
+        // Example card hover effects
+        document.querySelectorAll('.example-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Code button animations
+        document.querySelectorAll('.code-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(1.3)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+        
+        // Interactive details
+        document.querySelectorAll('details').forEach(detail => {
+            detail.addEventListener('toggle', function() {
+                if (this.open) {
+                    this.style.background = 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(255, 255, 255, 0.9) 100%)';
+                } else {
+                    this.style.background = 'rgba(99, 102, 241, 0.05)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

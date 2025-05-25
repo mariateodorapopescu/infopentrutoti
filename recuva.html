@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tutorial complet pentru recuperarea datelor șterse permanent cu Recuva">
+    <meta name="keywords" content="recuva, recuperare date, data recovery, tutorial, windows">
+    <title>Windows Mastery - Recuperarea Datelor Șterse</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
+            opacity: 0.1;
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        .shape:nth-child(1) { 
+            width: 80px; height: 80px; 
+            left: 10%; top: 20%; 
+            animation-delay: 0s; 
+        }
+        .shape:nth-child(2) { 
+            width: 120px; height: 120px; 
+            left: 70%; top: 60%; 
+            animation-delay: -5s; 
+        }
+        .shape:nth-child(3) { 
+            width: 60px; height: 60px; 
+            left: 50%; top: 10%; 
+            animation-delay: -10s; 
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        /* Header */
+        .header {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .windows-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: 0 20px 40px rgba(239, 68, 68, 0.3);
+        }
+        
+        .windows-icon::after {
+            content: '🔄';
+            font-size: 2.5rem;
+        }
+        
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        
+        /* Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .section-icon.recovery { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .section-icon.download { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .section-icon.usage { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
+        .section-icon.tips { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        
+        .section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        .section h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        /* Step-by-step guide */
+        .steps {
+            display: grid;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .step {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Features grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* Download link */
+        .download-link {
+            background: linear-gradient(135deg, var(--accent) 0%, #059669 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .download-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* Warning/Note boxes */
+        .note {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .note::before {
+            content: '💡';
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--warning);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .warning::before {
+            content: '⚠️';
+            background: var(--warning);
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--danger);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .danger::before {
+            content: '🚨';
+            background: var(--danger);
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        /* Status indicators */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 10px;
+        }
+        
+        .status-excellent { border-left: 4px solid #10b981; }
+        .status-good { border-left: 4px solid #f59e0b; }
+        .status-poor { border-left: 4px solid #ef4444; }
+        
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        
+        .status-excellent .status-icon { background: #10b981; }
+        .status-good .status-icon { background: #f59e0b; }
+        .status-poor .status-icon { background: #ef4444; }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <header class="header">
+        <div class="header-content">
+            <div class="windows-icon"></div>
+            <h1>Recuperarea Datelor Șterse</h1>
+            <p class="subtitle">Ghidul complet pentru recuperarea fișierelor șterse permanent cu Recuva</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon download">📥</div>
+                <h2>Descărcarea și instalarea Recuva</h2>
+            </div>
+            
+            <p>Recuva este unul dintre cele mai eficiente programe gratuite pentru recuperarea datelor. Dezvoltat de Piriform (acum CCleaner), este ușor de folosit și foarte eficient.</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Accesarea site-ului oficial</div>
+                    <div class="step-description">Intră pe Google și caută "recuva download". Accesează primul rezultat de pe site-ul oficial CCleaner/Piriform</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Descărcarea programului</div>
+                    <div class="step-description">Dă click pe butonul "Free Download" pentru a descărca versiunea gratuită</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Selectarea link-ului de descărcare</div>
+                    <div class="step-description">Alege link-ul de la Piriform pentru a începe descărcarea efectivă</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Instalarea programului</div>
+                    <div class="step-description">Rulează fișierul descărcat, urmează instrucțiunile de instalare și debifează ofertele suplimentare nedorite</div>
+                </div>
+            </div>
+            
+            <div class="note">
+                <strong>Link oficial:</strong> 
+                <a href="https://www.ccleaner.com/recuva" class="download-link" target="_blank">
+                    📥 Descarcă Recuva de pe site-ul oficial
+                </a>
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon usage">🛠️</div>
+                <h2>Utilizarea Recuva</h2>
+            </div>
+            
+            <p>Odată instalat, Recuva va deschide un wizard intuitiv care te va ghida prin procesul de recuperare.</p>
+            
+            <h3>🎯 Configurarea inițială</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Selectarea tipului de fișier</div>
+                    <div class="step-description">La primul pas, recomandăm să bifezi "All Files" pentru a căuta toate tipurile de fișiere</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Alegerea locației</div>
+                    <div class="step-description">Specifică partiția sau locația de unde ai șters fișierul (C:, D:, stick USB, etc.)</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Începerea scanării</div>
+                    <div class="step-description">Dă click pe "Start" pentru a începe procesul de căutare a fișierelor șterse</div>
+                </div>
+            </div>
+            
+            <h3>🔍 Procesul de scanare</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h4 class="feature-title">Scanare rapidă</h4>
+                    <p class="feature-description">Primul pas - scanare de bază pentru fișiere recent șterse</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔬</span>
+                    <h4 class="feature-title">Deep Scan</h4>
+                    <p class="feature-description">Scanare profundă dacă prima nu găsește fișierele dorite</p>
+                </div>
+            </div>
+            
+            <h3>💾 Recuperarea fișierelor</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Analiza rezultatelor</div>
+                    <div class="step-description">Recuva va afișa o listă cu fișierele găsite, împreună cu statusul de recuperare</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Selectarea fișierelor</div>
+                    <div class="step-description">Bifează fișierele pe care vrei să le recuperezi</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Recuperarea efectivă</div>
+                    <div class="step-description">Click dreapta → "Recover Highlighted..." → alege unde să salvezi fișierele recuperate</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon tips">⚡</div>
+                <h2>Înțelegerea statusurilor de recuperare</h2>
+            </div>
+            
+            <p>Recuva folosește un sistem de culori pentru a indica șansele de recuperare ale fiecărui fișier:</p>
+            
+            <div class="status-grid">
+                <div class="status-item status-excellent">
+                    <div class="status-icon"></div>
+                    <div>
+                        <strong>Verde - Excelent</strong><br>
+                        <small>Fișierul poate fi recuperat complet</small>
+                    </div>
+                </div>
+                
+                <div class="status-item status-good">
+                    <div class="status-icon"></div>
+                    <div>
+                        <strong>Galben - Mediu</strong><br>
+                        <small>Recuperare parțială posibilă</small>
+                    </div>
+                </div>
+                
+                <div class="status-item status-poor">
+                    <div class="status-icon"></div>
+                    <div>
+                        <strong>Roșu - Slab</strong><br>
+                        <small>Șanse minime de recuperare</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning">
+                <strong>Important:</strong> Cu cât timp trece mai mult de când ai șters fișierul, cu atât va fi mai greu de recuperat. Spațiul ocupat de fișierul șters poate fi suprascris de alte date.
+            </div>
+            
+            <h3>💡 Sfaturi pentru recuperare optimă</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🚫</span>
+                    <h4 class="feature-title">Nu instala pe partiția afectată</h4>
+                    <p class="feature-description">Instalează Recuva pe o partiție diferită de cea de unde vrei să recuperezi</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">💾</span>
+                    <h4 class="feature-title">Salvează în altă locație</h4>
+                    <p class="feature-description">Nu salva fișierele recuperate în aceeași locație de unde le-ai șters</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⏰</span>
+                    <h4 class="feature-title">Acționează rapid</h4>
+                    <p class="feature-description">Cu cât intervii mai repede, cu atât sunt mai mari șansele de succes</p>
+                </div>
+            </div>
+        </section>
+
+              
+        <section class="section scroll-reveal">
+            <div class="section-header"></div>
+              <div class="section-icon recovery">🔄</div>
+                <h2>Situația problemă</h2>
+                 <p>Ai curățat coșul de gunoi (Recycle Bin) și ai pierdut un fișier important și nu mai poți să îl recuperezi? Nu intra în panică! Există o soluție pentru această situație frustrantă.</p>
+            
+            <div class="danger">
+                <strong>Acțiune urgentă:</strong> Cu cât trece mai mult timp de când ai șters fișierul, cu atât vor fi mai mici șansele de recuperare. Oprește imediat utilizarea calculatorului pentru alte activități și urmează pașii de mai jos.
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">💾</span>
+                    <h4 class="feature-title">Hard Drive Recovery</h4>
+                    <p class="feature-description">Recuperează fișiere de pe hard disk-uri interne și externe</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">💿</span>
+                    <h4 class="feature-title">Media Recovery</h4>
+                    <p class="feature-description">Funcționează cu CD-uri, DVD-uri și discuri Blu-ray</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📱</span>
+                    <h4 class="feature-title">Device Recovery</h4>
+                    <p class="feature-description">Suport pentru stick-uri USB, telefoane și camere foto</p>
+                </div>
+            </div>
+            
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>Concluzie</h2>
+                  <p>Recuva este un instrument puternic și gratuit pentru recuperarea datelor șterse. Deși nu garantează recuperarea completă în toate cazurile, oferă cele mai mari șanse de succes pentru majoritatea situațiilor.</p>
+            
+            <div class="note">
+                <strong>Prevenție:</strong> Pentru viitor, consideră făcurea unui backup regulat al datelor importante folosind servicii cloud sau dispozitive externe de stocare.
+            </div>
+            </div>
+        </section>
+        </div> 
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Add hover effects to feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-10px) scale(1)';
+            });
+        });
+        
+        // Add click animation to steps
+        document.querySelectorAll('.step').forEach(step => {
+            step.addEventListener('click', function() {
+                this.style.transform = 'translateX(15px) scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = 'translateX(10px) scale(1)';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
+        

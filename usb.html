@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Totul despre USB 3.1 și Type-C - tehnologiile care schimbă viitorul conectivității">
+    <meta name="keywords" content="USB 3.1, Type-C, tehnologii noi, conectivitate">
+    <title>USB 3.1 & Type-C - Revoluția Conectivității</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --tech-blue: #0ea5e9;
+            --tech-purple: #8b5cf6;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #0ea5e9);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            opacity: 0.1;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Floating tech elements */
+        .floating-tech {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .tech-float {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: floatUp 20s infinite linear;
+        }
+        
+        .tech-float:nth-child(1) { 
+            left: 10%; 
+            animation-delay: 0s; 
+            animation-duration: 25s;
+        }
+        .tech-float:nth-child(2) { 
+            left: 30%; 
+            animation-delay: -8s; 
+            animation-duration: 30s;
+        }
+        .tech-float:nth-child(3) { 
+            left: 50%; 
+            animation-delay: -15s; 
+            animation-duration: 20s;
+        }
+        .tech-float:nth-child(4) { 
+            left: 70%; 
+            animation-delay: -12s; 
+            animation-duration: 35s;
+        }
+        .tech-float:nth-child(5) { 
+            left: 90%; 
+            animation-delay: -5s; 
+            animation-duration: 22s;
+        }
+        
+        @keyframes floatUp {
+            0% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { 
+                transform: translateY(-100px) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+        
+        /* Hero section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 1000px;
+            width: 100%;
+            animation: heroEnter 1.5s ease-out;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .usb-showcase {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .usb-connector {
+            width: 180px;
+            height: 120px;
+            border-radius: 20px;
+            position: relative;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .usb-connector.type-a {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            box-shadow: 0 25px 50px rgba(14, 165, 233, 0.3);
+        }
+        
+        .usb-connector.type-b {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.3);
+        }
+        
+        .usb-connector.type-c {
+            background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+            box-shadow: 0 25px 50px rgba(236, 72, 153, 0.3);
+        }
+        
+        .usb-connector:hover {
+            transform: translateY(-20px) scale(1.05);
+        }
+        
+        .usb-label {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .blog-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .blog-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Content sections */
+        .content-section {
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.8s ease-out;
+        }
+        
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .intro-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+        
+        /* USB Evolution Timeline */
+        .evolution-timeline {
+            position: relative;
+            margin: 3rem 0;
+        }
+        
+        .evolution-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            display: flex;
+            margin: 3rem 0;
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 0;
+            margin-right: 3rem;
+            text-align: right;
+        }
+        
+        .timeline-content {
+            flex: 1;
+            margin-left: 3rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .timeline-version {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+        
+        .version-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .version-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .spec-item {
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .spec-item:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.2);
+        }
+        
+        .spec-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+        
+        .spec-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        /* USB Types Comparison */
+        .usb-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .usb-type-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .usb-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .usb-type-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+        
+        .usb-type-card:hover::before {
+            opacity: 1;
+        }
+        
+        .usb-type-card.type-a { border-color: #0ea5e9; }
+        .usb-type-card.type-b { border-color: #8b5cf6; }
+        .usb-type-card.type-c { border-color: #ec4899; }
+        
+        .usb-type-card:hover.type-a { border-color: #0ea5e9; }
+        .usb-type-card:hover.type-b { border-color: #8b5cf6; }
+        .usb-type-card:hover.type-c { border-color: #ec4899; }
+        
+        .type-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .type-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .type-title.type-a { color: #0ea5e9; }
+        .type-title.type-b { color: #8b5cf6; }
+        .type-title.type-c { color: #ec4899; }
+        
+        .type-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .type-features {
+            list-style: none;
+            text-align: left;
+        }
+        
+        .type-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+        
+        .type-features li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        /* Interactive speed comparison */
+        .speed-comparison {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 214, 160, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            text-align: center;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .speed-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+        
+        .speed-bars {
+            display: grid;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .speed-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .speed-label {
+            min-width: 80px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .speed-track {
+            flex: 1;
+            height: 30px;
+            background: #f1f5f9;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .speed-fill {
+            height: 100%;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: width 2s ease;
+        }
+        
+        .speed-fill.usb-1-1 { background: linear-gradient(90deg, #64748b 0%, #475569 100%); }
+        .speed-fill.usb-2-0 { background: linear-gradient(90deg, #0ea5e9 0%, #0284c7 100%); }
+        .speed-fill.usb-3-0 { background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%); }
+        .speed-fill.usb-3-1 { background: linear-gradient(90deg, #ec4899 0%, #be185d 100%); }
+        
+        /* Future section */
+        .future-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-radius: 25px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: center;
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .future-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .future-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .future-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        /* Animations */
+        @keyframes heroEnter {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .usb-showcase {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+            
+            .usb-connector {
+                width: 150px;
+                height: 100px;
+            }
+            
+            .evolution-timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                flex-direction: column !important;
+                margin-left: 60px;
+            }
+            
+            .timeline-item .timeline-content {
+                margin: 0 !important;
+                text-align: left !important;
+            }
+            
+            .timeline-version {
+                left: -30px !important;
+                transform: translateY(-50%) !important;
+            }
+            
+            .content-section {
+                padding: 2rem;
+            }
+            
+            .usb-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-tech">
+        <div class="tech-float">🔌</div>
+        <div class="tech-float">⚡</div>
+        <div class="tech-float">💾</div>
+        <div class="tech-float">📱</div>
+        <div class="tech-float">💻</div>
+    </div>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                ⚡ Tehnologii de Viitor
+            </div>
+            <h1>USB 3.1 & Type-C</h1>
+            <p class="subtitle">Revoluția conectivității moderne - de la viteze uluitoare la încărcare rapidă și design reversibil!</p>
+            
+            <div class="usb-showcase">
+                <div class="usb-connector type-a">
+                    <div>🔌</div>
+                    <div class="usb-label">Type-A<br>Clasic</div>
+                </div>
+                
+                <div class="usb-connector type-b">
+                    <div>🖨️</div>
+                    <div class="usb-label">Type-B<br>Imprimante</div>
+                </div>
+                
+                <div class="usb-connector type-c">
+                    <div>⚡</div>
+                    <div class="usb-label">Type-C<br>Viitorul</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="blog-header">
+            <div class="blog-meta">
+                <div class="meta-item">
+                    <span>📊</span>
+                    <span>Analiză tehnologică</span>
+                </div>
+                <div class="meta-item">
+                    <span>⏱️</span>
+                    <span>8 min citire</span>
+                </div>
+                <div class="meta-item">
+                    <span>🏷️</span>
+                    <span>Hardware</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section scroll-reveal">
+            <p class="intro-text">
+                În acest articol vreau să discutăm despre noile tehnologii de pe piață. Voi încerca să aduc în discuție noul port USB despre care se tot vorbește în perioada aceasta - <strong>USB Type-C</strong>.
+                <br><br>
+                Ce este cu acest port USB? În mod normal, el este o evoluție a tehnologiei. Nu întotdeauna ce este nou este și bun, dar de data asta aduce lucruri noi pe lângă el - și <strong>un loc de dispută între companii</strong>.
+            </p>
+        </div>
+        
+        <div class="content-section scroll-reveal">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: var(--primary);">
+                🚀 Evoluția USB - O Călătorie în Timp
+            </h2>
+            
+            <div class="evolution-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-version">1.1</div>
+                    <div class="timeline-content">
+                        <h3 class="version-title">USB 1.1 - Începuturile</h3>
+                        <p>Vitezele erau năucitoare pentru vremea aceea. Prima versiune comercială după prototipul USB 1.0 care nu a fost niciodată lansat.</p>
+                        <div class="version-specs">
+                            <div class="spec-item">
+                                <span class="spec-value">12 Mbps</span>
+                                <span class="spec-label">Viteză transfer</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">100 mA</span>
+                                <span class="spec-label">Curent maxim</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-version">2.0</div>
+                    <div class="timeline-content">
+                        <h3 class="version-title">USB 2.0 - Revoluția Anilor 2000</h3>
+                        <p>Încă îl mai folosim în foarte multe locuri. A ajuns pe piață prin anii 2000 și a fost primit ca o mare realizare pentru vremea aceea.</p>
+                        <div class="version-specs">
+                            <div class="spec-item">
+                                <span class="spec-value">480 Mbps</span>
+                                <span class="spec-label">Viteză transfer</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">1.8A</span>
+                                <span class="spec-label">La 2.5V</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-version">3.0</div>
+                    <div class="timeline-content">
+                        <h3 class="version-title">USB 3.0 - Viteza Sporită (2008)</h3>
+                        <p>A apărut la sfârșitul lui 2008. Din păcate nu prea s-a înțeles cu Microsoft la vremea aceea - încă sunt multe bug-uri pe Windows 7 din cauza acestui tip de USB.</p>
+                        <div class="version-specs">
+                            <div class="spec-item">
+                                <span class="spec-value">5 Gbps</span>
+                                <span class="spec-label">Viteză transfer</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">1.8A</span>
+                                <span class="spec-label">La 5V</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-version">3.1</div>
+                    <div class="timeline-content">
+                        <h3 class="version-title">USB 3.1 - Present și Viitor (2013)</h3>
+                        <p>În 2013 tehnologia cerea ceva mai mult. Asta înseamnă fericire pentru laptopurile high-end - de exemplu, laptopurile Apple pot fi încărcate cu USB!</p>
+                        <div class="version-specs">
+                            <div class="spec-item">
+                                <span class="spec-value">10 Gbps</span>
+                                <span class="spec-label">Viteză transfer</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">2A</span>
+                                <span class="spec-label">La 5V</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">60W</span>
+                                <span class="spec-label">Putere (12V)</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">100W</span>
+                                <span class="spec-label">Putere (20V)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section scroll-reveal">
+            <div class="speed-comparison">
+                <h3 class="speed-title">⚡ Comparație viteze transfer</h3>
+                <div class="speed-bars">
+                    <div class="speed-bar">
+                        <div class="speed-label">USB 1.1</div>
+                        <div class="speed-track">
+                            <div class="speed-fill usb-1-1" style="width: 2%;">12 Mbps</div>
+                        </div>
+                    </div>
+                    <div class="speed-bar">
+                        <div class="speed-label">USB 2.0</div>
+                        <div class="speed-track">
+                            <div class="speed-fill usb-2-0" style="width: 25%;">480 Mbps</div>
+                        </div>
+                    </div>
+                    <div class="speed-bar">
+                        <div class="speed-label">USB 3.0</div>
+                        <div class="speed-track">
+                            <div class="speed-fill usb-3-0" style="width: 60%;">5 Gbps</div>
+                        </div>
+                    </div>
+                    <div class="speed-bar">
+                        <div class="speed-label">USB 3.1</div>
+                        <div class="speed-track">
+                            <div class="speed-fill usb-3-1" style="width: 100%;">10 Gbps</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section scroll-reveal">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: var(--secondary);">
+                🔌 Tipurile de conectori USB
+            </h2>
+            
+            <p style="text-align: center; font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 3rem;">
+                Poate fi și o chestie de marketing sau poate fi o evoluție a tehnologiei. Să vă faceți o idee despre aceste 3 porturi:
+            </p>
+            
+            <div class="usb-comparison">
+                <div class="usb-type-card type-a">
+                    <span class="type-icon">🔌</span>
+                    <h3 class="type-title type-a">USB Type-A</h3>
+                    <p class="type-description">Portul clasic, cel rectangular pe care îl știe toată lumea. Încă dominant pe PC-uri și accesorii.</p>
+                    <ul class="type-features">
+                        <li>Design rectangular clasic</li>
+                        <li>Găsit pe majoritatea PC-urilor</li>
+                        <li>Compatibilitate universală</li>
+                        <li>Inserție unidirecțională</li>
+                    </ul>
+                </div>
+                
+                <div class="usb-type-card type-b">
+                    <span class="type-icon">🖨️</span>
+                    <h3 class="type-title type-b">USB Type-B</h3>
+                    <p class="type-description">Cel care este folosit la imprimante, scanner-e și alte echipamente periferice mai mari.</p>
+                    <ul class="type-features">
+                        <li>Design pătrat robust</li>
+                        <li>Pentru echipamente periferice</li>
+                        <li>Conexiune stabilă</li>
+                        <li>Uz industrial/profesional</li>
+                    </ul>
+                </div>
+                
+                <div class="usb-type-card type-c">
+                    <span class="type-icon">⚡</span>
+                    <h3 class="type-title type-c">USB Type-C</h3>
+                    <p class="type-description">Cel pe care se pune accentul în momentul de față. Probabil că va fi singurul port folosit în anii următori, cel puțin pe dispozitivele mobile.</p>
+                    <ul class="type-features">
+                        <li>Design reversibil (nu mai te chinui!)</li>
+                        <li>Încărcare rapidă până la 100W</li>
+                        <li>Transfer de date ultra-rapid</li>
+                        <li>Standardul viitorului</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="future-section scroll-reveal">
+            <span class="future-icon">🔮</span>
+            <h3 class="future-title">Viitorul conectivității</h3>
+            <p style="color: var(--text-secondary); line-height: 1.7; max-width: 700px; margin: 0 auto;">
+                <strong>USB Type-C</strong> este schimbarea majoră din 2013 încoace. S-a dezvoltat USB 3.1 și s-a dorit standardizarea și, totodată, uniformizarea acestei mufe. 
+                <em>Avantajul noului port este că nu te mai chinuiești să introduci mufa pe partea corespunzătoare.</em>
+                <br><br>
+                Era evident că Apple și MacBook-urile lor au deja astfel de dispozitiv. Am putea spune că au stat la baza dezvoltării acestei tehnologii. 
+                Cu un astfel de port se poate încărca mult mai rapid bateria - <strong>viitorul este aici!</strong>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // USB connector animations
+        document.querySelectorAll('.usb-connector').forEach(connector => {
+            connector.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-20px) scale(1.05) rotateY(10deg)';
+            });
+            
+            connector.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1) rotateY(0deg)';
+            });
+        });
+        
+        // Timeline content hover effects
+        document.querySelectorAll('.timeline-content').forEach(content => {
+            content.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            content.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // USB type card interactions
+        document.querySelectorAll('.usb-type-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Spec item hover effects
+        document.querySelectorAll('.spec-item').forEach(spec => {
+            spec.addEventListener('click', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.borderColor = 'var(--primary)';
+                this.style.background = 'rgba(99, 102, 241, 0.2)';
+                
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                    this.style.borderColor = 'transparent';
+                    this.style.background = 'rgba(99, 102, 241, 0.1)';
+                }, 200);
+            });
+        });
+        
+        // Animate speed bars on scroll
+        const animateSpeedBars = () => {
+            const speedSection = document.querySelector('.speed-comparison');
+            const rect = speedSection.getBoundingClientRect();
+            
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                // Trigger animation once
+                if (!speedSection.classList.contains('animated')) {
+                    speedSection.classList.add('animated');
+                    
+                    // Animate each bar with delay
+                    const bars = document.querySelectorAll('.speed-fill');
+                    bars.forEach((bar, index) => {
+                        setTimeout(() => {
+                            const targetWidth = bar.style.width;
+                            bar.style.width = '0%';
+                            setTimeout(() => {
+                                bar.style.width = targetWidth;
+                            }, 100);
+                        }, index * 200);
+                    });
+                }
+            }
+        };
+        
+        window.addEventListener('scroll', animateSpeedBars);
+        
+        // Add sparkle effect to future section
+        const futureSection = document.querySelector('.future-section');
+        if (futureSection) {
+            futureSection.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.02)';
+            });
+            
+            futureSection.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+        
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero');
+            const speed = scrolled * 0.3;
+            
+            if (parallax) {
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+        
+        // Add typing effect to hero title
+        document.addEventListener('DOMContentLoaded', function() {
+            const title = document.querySelector('.hero h1');
+            const text = title.textContent;
+            title.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < text.length) {
+                    title.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            };
+            
+            setTimeout(typeWriter, 1000);
+        });
+    </script>
+</body>
+</html>

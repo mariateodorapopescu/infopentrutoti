@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tutorial complet pentru instalarea Windows 10 cu galerie foto pas cu pas">
+    <meta name="keywords" content="windows 10, instalare, sistem operare, tutorial, BIOS">
+    <title>Windows Mastery - Instalarea Windows 10</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #0078d4;
+            --primary-light: #40a9ff;
+            --secondary: #5c2d91;
+            --accent: #107c10;
+            --warning: #ff8c00;
+            --windows10: #00bcf2;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0078d4 0%, #00bcf2 50%, #5c2d91 100%);
+            opacity: 0.1;
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite linear;
+        }
+        
+        .shape:nth-child(1) { 
+            width: 80px; height: 80px; 
+            left: 10%; top: 20%; 
+            animation-delay: 0s;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        .shape:nth-child(2) { 
+            width: 120px; height: 120px; 
+            left: 70%; top: 60%; 
+            animation-delay: -5s;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        }
+        .shape:nth-child(3) { 
+            width: 60px; height: 60px; 
+            left: 50%; top: 10%; 
+            animation-delay: -10s;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        /* Header */
+        .header {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 120, 212, 0.1) 0%, rgba(0, 188, 242, 0.1) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .windows-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0078d4 0%, #00bcf2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: 0 20px 40px rgba(0, 120, 212, 0.3);
+        }
+        
+        .windows-icon::after {
+            content: '🪟';
+            font-size: 2.5rem;
+        }
+        
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #0078d4 0%, #00bcf2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        
+        /* Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--windows10) 100%);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--windows10) 100%);
+        }
+        
+        .section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* Quick overview */
+        .quick-overview {
+            background: linear-gradient(135deg, rgba(0, 120, 212, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .overview-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .overview-steps {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .overview-step {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 1rem;
+            min-width: 150px;
+            transition: all 0.3s ease;
+        }
+        
+        .overview-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 120, 212, 0.2);
+        }
+        
+        .step-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .step-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        /* Visual gallery */
+        .visual-gallery {
+            margin: 3rem 0;
+        }
+        
+        .gallery-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #f8fafc;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slide {
+            display: none;
+            position: relative;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        .slide-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--primary);
+        }
+        
+        .slide-content {
+            padding: 2rem;
+            background: white;
+        }
+        
+        .slide-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .slide-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .slide-counter {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 120, 212, 0.9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        /* Navigation */
+        .gallery-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            background: white;
+        }
+        
+        .nav-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .nav-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 120, 212, 0.3);
+        }
+        
+        .nav-btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Dots indicator */
+        .dots-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: white;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cbd5e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        .dot:hover {
+            background: var(--primary-light);
+        }
+        
+        /* BIOS explanation */
+        .bios-explanation {
+            background: linear-gradient(135deg, rgba(255, 140, 0, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--warning);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .bios-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--warning);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Comparison table */
+        .comparison-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+        
+        .table-header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .comparison-cell {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .comparison-cell:first-child {
+            background: rgba(0, 120, 212, 0.05);
+            border-right: 1px solid #e2e8f0;
+            font-weight: 600;
+        }
+        
+        /* Warning/Note boxes */
+        .note {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .note::before {
+            content: '💡';
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--warning);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .warning::before {
+            content: '⚠️';
+            background: var(--warning);
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--danger);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .danger::before {
+            content: '🚨';
+            background: var(--danger);
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 2rem;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+            
+            .overview-steps {
+                flex-direction: column;
+            }
+            
+            .gallery-nav {
+                flex-direction: column;
+            }
+            
+            .comparison-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-cell:first-child {
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <header class="header">
+        <div class="header-content">
+            <div class="windows-icon"></div>
+            <h1>Instalarea Windows 10</h1>
+            <p class="subtitle">Ghidul complet cu galerie foto pentru instalarea Windows 10</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">🚀</div>
+                <h2>Procesul simplificat</h2>
+            </div>
+            
+            <p>Instalarea Windows 10 este aproape identică cu cea de Windows 7, dar cu câteva îmbunătățiri și simplificări. Dacă ai deja Windows 10, procesul devine și mai ușor!</p>
+            
+            <div class="quick-overview">
+                <div class="overview-title">Pașii esențiali în 4 etape</div>
+                <p>Instalarea unui sistem de operare constă în: <strong>install, next, next, next... and done!</strong></p>
+                
+                <div class="overview-steps">
+                    <div class="overview-step">
+                        <span class="step-icon">⚙️</span>
+                        <div class="step-text">Configurare<br>BIOS</div>
+                    </div>
+                    <div class="overview-step">
+                        <span class="step-icon">💿</span>
+                        <div class="step-text">Mediu<br>Bootabil</div>
+                    </div>
+                    <div class="overview-step">
+                        <span class="step-icon">🔧</span>
+                        <div class="step-text">Procesul de<br>Instalare</div>
+                    </div>
+                    <div class="overview-step">
+                        <span class="step-icon">✅</span>
+                        <div class="step-text">Configurare<br>Finală</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-table">
+                <div class="table-header">Comparație Windows 7 vs Windows 10</div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Aspectul</div>
+                    <div class="comparison-cell">Diferența</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Interfața de instalare</div>
+                    <div class="comparison-cell">Mai modernă și mai intuitivă în Windows 10</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Viteza de instalare</div>
+                    <div class="comparison-cell">Windows 10 se instalează mai rapid</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Detectarea hardware</div>
+                    <div class="comparison-cell">Windows 10 detectează automat mai multe componente</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Actualizări</div>
+                    <div class="comparison-cell">Windows 10 descarcă automat actualizările în timpul instalării</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">📖</div>
+                <h2>Referințe la tutorialul Windows 7</h2>
+            </div>
+            
+            <p>Pentru detalii complete despre configurarea BIOS și crearea mediului bootabil, consultă <strong>tutorialul anterior pentru Windows 7</strong>, deoarece pașii sunt identici.</p>
+            
+            <div class="bios-explanation">
+                <div class="bios-title">
+                    <span>⚙️</span>
+                    Configurarea BIOS - Detalii extinse
+                </div>
+                <p>În tutorialul anterior am oferit explicații detaliate sobre BIOS și cum să configurezi ordinea de boot. Aceste informații sunt valabile și pentru Windows 10, așa că nu le voi repeta aici pentru a evita redundanța.</p>
+            </div>
+            
+            <div class="note">
+                <strong>Îmbunătățire față de tutorialul anterior:</strong> Am observat că în tutorialul pentru Windows 7 nu am oferit suficiente explicații despre configurația BIOS-ului, așa că în această versiune voi oferi mai multe detalii vizuale prin galeria foto de mai jos.
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">📸</div>
+                <h2>Galeria foto pas cu pas</h2>
+            </div>
+            
+            <p>Urmează o colecție vizuală completă cu pașii pentru instalarea Windows 10, de la configurarea BIOS până la finalizarea procesului.</p>
+            
+            <div class="visual-gallery">
+                <div class="gallery-container">
+                    <div class="slide active">
+                        <div class="slide-counter">1 / 17</div>
+                        <div class="slide-image"><img src="so1.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Pornirea calculatorului</h3>
+                            <p class="slide-description">Primul pas este să pornești calculatorul și să intri rapid în BIOS apăsând una dintre tastele: F2, F8, F11, F12, Del, sau Esc. Timpul de reacție este crucial - apasă tasta imediat după pornire.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">2 / 17</div>
+                        <div class="slide-image"><img src="so2.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Meniul principal BIOS</h3>
+                            <p class="slide-description">Odată în BIOS, vei vedea meniul principal cu informații despre sistem. Folosește săgețile pentru a naviga între opțiuni. Caută secțiunea "Boot" sau "Boot Options".</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">3 / 17</div>
+                        <div class="slide-image"><img src="so3.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Secțiunea Boot</h3>
+                            <p class="slide-description">În secțiunea Boot vei găsi lista dispozitivelor de pornire. Aici trebuie să setezi USB-ul sau DVD-ROM-ul ca primul dispozitiv în "Boot Priority" sau "Boot Order".</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">4 / 17</div>
+                        <div class="slide-image"><img src="so4.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Modificarea ordinii de boot</h3>
+                            <p class="slide-description">Selectează USB-ul sau DVD-ROM-ul și mută-l pe prima poziție folosind tastele + și - sau F5/F6, în funcție de instrucțiunile afișate în BIOS.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">5 / 17</div>
+                        <div class="slide-image"><img src="so5.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Salvarea setărilor</h3>
+                            <p class="slide-description">După modificarea ordinii de boot, salvează setările apăsând F10 sau găsind opțiunea "Save & Exit". Confirmă salvarea când ești întrebat.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">6 / 17</div>
+                        <div class="slide-image"><img src="so6.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Repornirea sistemului</h3>
+                            <p class="slide-description">Calculatorul se va reporni automat. Asigură-te că USB-ul sau DVD-ul bootabil este conectat. Dacă totul este configurat corect, va porni de pe mediul bootabil.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">7 / 17</div>
+                        <div class="slide-image"><img src="so7.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Ecranul de pornire Windows</h3>
+                            <p class="slide-description">Vei vedea logo-ul Windows și bara de încărcare. Acest ecran indică faptul că mediul bootabil funcționează corect și Windows se pregătește pentru instalare.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">8 / 17</div>
+                        <div class="slide-image"><img src="so8.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Selectarea limbii și regiunii</h3>
+                            <p class="slide-description">Prima interfață te întreabă despre limba de instalare, formatul orei și datei, și metoda de tastatură. Selectează opțiunile potrivite pentru România și dă "Next".</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">9 / 17</div>
+                        <div class="slide-image"><img src="so9.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Butonul Install Now</h3>
+                            <p class="slide-description">Vei vedea un ecran simplu cu butonul mare "Install now". Click pe acest buton pentru a începe procesul efectiv de instalare a Windows 10.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">10 / 17</div>
+                        <div class="slide-image"><img src="so10.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Cheia de produs</h3>
+                            <p class="slide-description">Dacă ai o cheie de produs Windows 10, o poți introduce acum. Dacă nu ai, poți sări acest pas și activa Windows mai târziu după instalare.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">11 / 17</div>
+                        <div class="slide-image"><img src="so11.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Acceptarea termenilor și condițiilor</h3>
+                            <p class="slide-description">Citește și acceptă termenii de licență Microsoft bifând căsuța "I accept the license terms". Fără această acceptare nu poți continua instalarea.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">12 / 17</div>
+                        <div class="slide-image"><img src="so12.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Tipul de instalare</h3>
+                            <p class="slide-description">Alege "Custom: Install Windows only (advanced)" pentru o instalare curată. Opțiunea "Upgrade" păstrează fișierele și programele existente, dar nu este recomandată.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">13 / 17</div>
+                        <div class="slide-image"><img src="so13.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Selectarea hard disk-ului</h3>
+                            <p class="slide-description">Vei vedea lista cu toate hard disk-urile și partițiile disponibile. Selectează partiția unde vrei să instalezi Windows 10. Pentru o instalare curată, formatează partiția.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">14 / 17</div>
+                        <div class="slide-image"><img src="so14.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Procesul de instalare</h3>
+                            <p class="slide-description">Windows începe să copieze fișierele și să se instaleze. Vei vedea o bară de progres și calculatorul se va reporni de mai multe ori automat. Nu întrerupe acest proces!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">15 / 17</div>
+                        <div class="slide-image"><img src="so15.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Configurarea contului</h3>
+                            <p class="slide-description">După instalare, Windows te va întreba să creezi un cont de utilizator. Poți alege între un cont Microsoft (recomandat) sau un cont local.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">16 / 17</div>
+                        <div class="slide-image"><img src="so16.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Setările de confidențialitate</h3>
+                            <p class="slide-description">Windows 10 îți oferă opțiuni pentru setările de confidențialitate. Poți accepta setările implicite sau le poți personaliza în funcție de preferințele tale.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <div class="slide-counter">17 / 17</div>
+                        <div class="slide-image"><img src="so17.jpg" style="width:100%"></div>
+                        <div class="slide-content">
+                            <h3 class="slide-title">Instalarea completă</h3>
+                            <p class="slide-description">Felicitări! Windows 10 a fost instalat cu succes. Primul boot va dura puțin mai mult, după care vei ajunge la desktop-ul nou și proaspăt instalat.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-nav">
+                        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">❮ Anterior</button>
+                        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Următor ❯</button>
+                    </div>
+                    
+                    <div class="dots-container" id="dotsContainer">
+                        <!-- Dots will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">✅</div>
+                <h2>După instalare</h2>
+            </div>
+            
+            <p>După ce Windows 10 s-a instalat cu succes, mai sunt câțiva pași importanți pentru a avea un sistem complet funcțional:</p>
+            
+            <div class="quick-overview">
+                <div class="overview-title">Pașii finali esențiali</div>
+                <div class="overview-steps">
+                    <div class="overview-step">
+                        <span class="step-icon">🔄</span>
+                        <div class="step-text">Windows<br>Update</div>
+                    </div>
+                    <div class="overview-step">
+                        <span class="step-icon">🔧</span>
+                        <div class="step-text">Instalare<br>Drivere</div>
+                    </div>
+                    <div class="overview-step">
+                        <span class="step-icon">🛡️</span>
+                        <div class="step-text">Activare<br>Antivirus</div>
+                    </div>
+                    <div class="overview-step">
+                        <span class="step-icon">📦</span>
+                        <div class="step-text">Programe<br>Esențiale</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note">
+                <strong>Avantajul Windows 10:</strong> Față de Windows 7, Windows 10 vine cu Windows Defender integrat și detectează automat majoritatea driverelor, făcând procesul post-instalare mult mai simplu.
+            </div>
+            
+            <div class="warning">
+                <strong>Recomandare finală:</strong> Evident, ca sistemul să funcționeze corespunzător după instalare, instalează driverele pentru componentele specifice calculatorului tău (placa grafică, placa de sunet, etc.).
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        // Generate dots
+        function generateDots() {
+            const dotsContainer = document.getElementById('dotsContainer');
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'dot';
+                if (i === 0) dot.classList.add('active');
+                dot.onclick = () => currentSlideSet(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+        
+        // Show specific slide
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            document.querySelectorAll('.dot')[currentSlide].classList.remove('active');
+            
+            if (n >= totalSlides) currentSlide = 0;
+            if (n < 0) currentSlide = totalSlides - 1;
+            
+            slides[currentSlide].classList.add('active');
+            document.querySelectorAll('.dot')[currentSlide].classList.add('active');
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+        
+        // Change slide
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+        
+        // Go to specific slide
+        function currentSlideSet(n) {
+            currentSlide = n;
+            showSlide(currentSlide);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+        
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            generateDots();
+            showSlide(0);
+            scrollReveal();
+        });
+        
+        window.addEventListener('scroll', scrollReveal);
+        
+        // Add hover effects to overview steps
+        document.querySelectorAll('.overview-step').forEach(step => {
+            step.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.05)';
+            });
+            
+            step.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-5px) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

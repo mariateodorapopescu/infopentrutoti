@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lecție interactivă - Funcții matematice în C++">
+    <meta name="keywords" content="C++, functii matematice, math.h, cmath, programare">
+    <title>C++ Math Functions - Calculator Interactiv</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --code-bg: #1e1e2e;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-light: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+        }
+        
+        .floating-math {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .math-float {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.1);
+            animation: floatMath 25s infinite linear;
+        }
+        
+        .math-float:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .math-float:nth-child(2) { left: 25%; animation-delay: -5s; }
+        .math-float:nth-child(3) { left: 40%; animation-delay: -10s; }
+        .math-float:nth-child(4) { left: 55%; animation-delay: -15s; }
+        .math-float:nth-child(5) { left: 70%; animation-delay: -20s; }
+        .math-float:nth-child(6) { left: 85%; animation-delay: -25s; }
+        
+        @keyframes floatMath {
+            0% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { 
+                transform: translateY(-100px) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+        
+        /* Hero section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .math-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-gradient);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: var(--shadow-light);
+            font-size: 3rem;
+        }
+        
+        /* Library showcase */
+        .library-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .library-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .library-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-gradient);
+        }
+        
+        .library-card:hover {
+            transform: translateY(-10px);
+            border-color: #4facfe;
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .library-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .library-code {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        
+        /* Content sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .content-card.functions::before { background: var(--primary-gradient); }
+        .content-card.calculator::before { background: var(--success-gradient); }
+        .content-card.examples::before { background: var(--secondary-gradient); }
+        
+        .content-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .content-card h2 .icon {
+            font-size: 2.5rem;
+        }
+        
+        /* Functions grid */
+        .functions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .function-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .function-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(79, 172, 254, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .function-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+        
+        .function-card:hover::before {
+            opacity: 1;
+        }
+        
+        .function-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .function-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .function-syntax {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .function-example {
+            background: rgba(17, 153, 142, 0.1);
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #11998e;
+            font-weight: 500;
+        }
+        
+        /* Interactive calculator */
+        .math-calculator {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            border: 2px solid rgba(17, 153, 142, 0.2);
+        }
+        
+        .calculator-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .calc-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            border-left: 4px solid #11998e;
+        }
+        
+        .calc-section h4 {
+            color: #11998e;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .calc-input {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .calc-input label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        
+        .calc-input input, .calc-input select {
+            padding: 0.75rem;
+            border: 2px solid rgba(17, 153, 142, 0.3);
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .calc-input input:focus, .calc-input select:focus {
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+        }
+        
+        .calc-btn {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+        
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(17, 153, 142, 0.4);
+        }
+        
+        .calc-result {
+            background: #1e1e2e;
+            color: #e1e5e9;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 1rem;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        
+        .result-highlight {
+            color: #4facfe;
+            font-weight: 600;
+        }
+        
+        /* Function categories */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .category-tab {
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .category-tab:hover, .category-tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .functions-container {
+            min-height: 400px;
+        }
+        
+        /* Visual examples */
+        .visual-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .example-card {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(240, 147, 251, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .example-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .example-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .example-code {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            line-height: 1.5;
+        }
+        
+        .example-output {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #f093fb;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-primary);
+        }
+        
+        /* Syntax highlighting */
+        .keyword { color: #c792ea; font-weight: 500; }
+        .function { color: #82aaff; }
+        .number { color: #f78c6c; }
+        .string { color: #c3e88d; }
+        .comment { color: #546e7a; font-style: italic; }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-card {
+                padding: 2rem;
+            }
+            
+            .functions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-math">
+        <div class="math-float">sin(x)</div>
+        <div class="math-float">cos(x)</div>
+        <div class="math-float">√x</div>
+        <div class="math-float">log(x)</div>
+        <div class="math-float">x²</div>
+        <div class="math-float">|x|</div>
+    </div>
+    
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge">
+                📐 C++ Math Library
+            </div>
+            <div class="math-icon">📊</div>
+            <h1>Funcții Matematice</h1>
+            <p class="subtitle">Explorează puterea bibliotecii matematice din C++ - de la funcții trigonometrice la logaritmi, toate instrumentele pentru calcule complexe!</p>
+            
+            <div class="library-showcase">
+                <div class="library-card">
+                    <h3 class="library-title">📚 Include tradițional</h3>
+                    <div class="library-code">#include &lt;math.h&gt;</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Biblioteca clasică C pentru funcții matematice</p>
+                </div>
+                
+                <div class="library-card">
+                    <h3 class="library-title">⚡ Include modern C++</h3>
+                    <div class="library-code">#include &lt;cmath&gt;</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Varianta C++ modernă, recomandată pentru proiecte noi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="content-card functions scroll-reveal">
+            <h2><span class="icon">🧮</span>Funcții disponibile</h2>
+            
+            <div class="category-tabs">
+                <div class="category-tab active" onclick="showCategory('all')">📊 Toate</div>
+                <div class="category-tab" onclick="showCategory('basic')">🔢 De bază</div>
+                <div class="category-tab" onclick="showCategory('trig')">📐 Trigonometrice</div>
+                <div class="category-tab" onclick="showCategory('exp')">⚡ Exponențiale</div>
+                <div class="category-tab" onclick="showCategory('special')">✨ Speciale</div>
+            </div>
+            
+            <div class="functions-container">
+                <div class="functions-grid" id="functions-grid">
+                    <!-- Functions will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card calculator scroll-reveal">
+            <h2><span class="icon">🧪</span>Calculator interactiv</h2>
+            
+            <div class="math-calculator">
+                <h3 class="calculator-title">🚀 Testează funcțiile matematice live!</h3>
+                
+                <div class="calculator-grid">
+                    <div class="calc-section">
+                        <h4>🔢 Funcții de bază</h4>
+                        <div class="calc-input">
+                            <label>Selectează funcția:</label>
+                            <select id="basic-function">
+                                <option value="abs">abs(x) - Valoarea absolută</option>
+                                <option value="sqrt">sqrt(x) - Radical</option>
+                                <option value="pow">pow(x,y) - Puterea x^y</option>
+                                <option value="ceil">ceil(x) - Rotunjire în sus</option>
+                                <option value="floor">floor(x) - Rotunjire în jos</option>
+                            </select>
+                        </div>
+                        <div class="calc-input">
+                            <label>Valoarea x:</label>
+                            <input type="number" id="basic-x" value="5" step="0.1">
+                        </div>
+                        <div class="calc-input" id="basic-y-container" style="display: none;">
+                            <label>Valoarea y (pentru pow):</label>
+                            <input type="number" id="basic-y" value="2" step="0.1">
+                        </div>
+                        <button class="calc-btn" onclick="calculateBasic()">🧮 Calculează</button>
+                        <div class="calc-result" id="basic-result">Rezultatul va apărea aici...</div>
+                    </div>
+                    
+                    <div class="calc-section">
+                        <h4>📐 Funcții trigonometrice</h4>
+                        <div class="calc-input">
+                            <label>Selectează funcția:</label>
+                            <select id="trig-function">
+                                <option value="sin">sin(x) - Sinus</option>
+                                <option value="cos">cos(x) - Cosinus</option>
+                                <option value="tan">tan(x) - Tangentă</option>
+                                <option value="asin">asin(x) - Arcsinus</option>
+                                <option value="acos">acos(x) - Arccosinus</option>
+                                <option value="atan">atan(x) - Arctangentă</option>
+                            </select>
+                        </div>
+                        <div class="calc-input">
+                            <label>Unitatea de măsură:</label>
+                            <select id="angle-unit">
+                                <option value="radians">Radiani</option>
+                                <option value="degrees">Grade</option>
+                            </select>
+                        </div>
+                        <div class="calc-input">
+                            <label>Valoarea x:</label>
+                            <input type="number" id="trig-x" value="45" step="0.1">
+                        </div>
+                        <button class="calc-btn" onclick="calculateTrig()">📐 Calculează</button>
+                        <div class="calc-result" id="trig-result">Rezultatul va apărea aici...</div>
+                    </div>
+                    
+                    <div class="calc-section">
+                        <h4>⚡ Funcții exponențiale</h4>
+                        <div class="calc-input">
+                            <label>Selectează funcția:</label>
+                            <select id="exp-function">
+                                <option value="exp">exp(x) - e^x</option>
+                                <option value="log">log(x) - Logaritm natural</option>
+                                <option value="log10">log10(x) - Logaritm zecimal</option>
+                            </select>
+                        </div>
+                        <div class="calc-input">
+                            <label>Valoarea x:</label>
+                            <input type="number" id="exp-x" value="2" step="0.1">
+                        </div>
+                        <button class="calc-btn" onclick="calculateExp()">⚡ Calculează</button>
+                        <div class="calc-result" id="exp-result">Rezultatul va apărea aici...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card examples scroll-reveal">
+            <h2><span class="icon">💡</span>Exemple practice</h2>
+            
+            <div class="visual-examples">
+                <div class="example-card">
+                    <h3 class="example-title">🔺 Calculul ipotenuzei</h3>
+                    <div class="example-code">
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;cmath&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">double</span> a = <span class="number">3</span>, b = <span class="number">4</span>;
+    <span class="keyword">double</span> c = <span class="function">sqrt</span>(<span class="function">pow</span>(a, <span class="number">2</span>) + <span class="function">pow</span>(b, <span class="number">2</span>));
+    
+    cout << <span class="string">"Ipotenuza: "</span> << c;
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+                    </div>
+                    <div class="example-output">
+                        <strong>Output:</strong> Ipotenuza: 5
+                    </div>
+                </div>
+                
+                <div class="example-card">
+                    <h3 class="example-title">🌊 Calculul unei unde sinusoidale</h3>
+                    <div class="example-code">
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;cmath&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">double</span> angle = <span class="number">30</span>; <span class="comment">// grade</span>
+    <span class="keyword">double</span> radians = angle * M_PI / <span class="number">180</span>;
+    
+    cout << <span class="string">"sin("</span> << angle << <span class="string">"°) = "</span> 
+         << <span class="function">sin</span>(radians);
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+                    </div>
+                    <div class="example-output">
+                        <strong>Output:</strong> sin(30°) = 0.5
+                    </div>
+                </div>
+                
+                <div class="example-card">
+                    <h3 class="example-title">📈 Creștere exponențială</h3>
+                    <div class="example-code">
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;cmath&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">double</span> principal = <span class="number">1000</span>; <span class="comment">// suma inițială</span>
+    <span class="keyword">double</span> rate = <span class="number">0.05</span>;      <span class="comment">// rata de 5%</span>
+    <span class="keyword">int</span> years = <span class="number">10</span>;
+    
+    <span class="keyword">double</span> amount = principal * <span class="function">exp</span>(rate * years);
+    cout << <span class="string">"După "</span> << years << <span class="string">" ani: "</span> << amount;
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+                    </div>
+                    <div class="example-output">
+                        <strong>Output:</strong> După 10 ani: 1648.72
+                    </div>
+                </div>
+                
+                <div class="example-card">
+                    <h3 class="example-title">🎯 Rotunjiri inteligente</h3>
+                    <div class="example-code">
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;cmath&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">double</span> value = <span class="number">3.7</span>;
+    
+    cout << <span class="string">"Valoarea: "</span> << value << endl;
+    cout << <span class="string">"ceil(): "</span> << <span class="function">ceil</span>(value) << endl;
+    cout << <span class="string">"floor(): "</span> << <span class="function">floor</span>(value) << endl;
+    cout << <span class="string">"round(): "</span> << <span class="function">round</span>(value);
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+                    </div>
+                    <div class="example-output">
+                        <strong>Output:</strong><br>
+                        Valoarea: 3.7<br>
+                        ceil(): 4<br>
+                        floor(): 3<br>
+                        round(): 4
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%); border-radius: 20px; padding: 2rem; margin: 3rem 0; border: 2px solid rgba(245, 158, 11, 0.2);">
+                <h3 style="color: #f59e0b; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    💡 Tips pentru folosirea funcțiilor matematice
+                </h3>
+                <ul style="color: var(--text-secondary); line-height: 1.8; list-style: none; padding-left: 0;">
+                    <li style="margin: 0.5rem 0;"><strong>🎯 Precizie:</strong> Folosește <code>double</code> în loc de <code>float</code> pentru calcule precise</li>
+                    <li style="margin: 0.5rem 0;"><strong>📐 Trigonometrie:</strong> Funcțiile trigonometrice lucrează în radiani, nu în grade</li>
+                    <li style="margin: 0.5rem 0;"><strong>⚠️ Erori:</strong> Verifică domeniile funcțiilor (ex: sqrt doar pentru numere pozitive)</li>
+                    <li style="margin: 0.5rem 0;"><strong>🔢 Constante:</strong> Folosește M_PI pentru π, M_E pentru numărul lui Euler</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Math functions database
+        const mathFunctions = {
+            basic: [
+                {
+                    name: 'abs(x)',
+                    description: 'Returnează valoarea absolută a lui x',
+                    syntax: 'double abs(double x)',
+                    example: 'abs(-5) = 5'
+                },
+                {
+                    name: 'sqrt(x)',
+                    description: 'Returnează radicalul din x',
+                    syntax: 'double sqrt(double x)',
+                    example: 'sqrt(16) = 4'
+                },
+                {
+                    name: 'pow(x,y)',
+                    description: 'Returnează x ridicat la puterea y',
+                    syntax: 'double pow(double x, double y)',
+                    example: 'pow(2,3) = 8'
+                },
+                {
+                    name: 'ceil(x)',
+                    description: 'Rotunjește în sus către cel mai apropiat întreg',
+                    syntax: 'double ceil(double x)',
+                    example: 'ceil(3.2) = 4'
+                },
+                {
+                    name: 'floor(x)',
+                    description: 'Rotunjește în jos către cel mai apropiat întreg',
+                    syntax: 'double floor(double x)',
+                    example: 'floor(3.8) = 3'
+                },
+                {
+                    name: 'round(x)',
+                    description: 'Rotunjește la cel mai apropiat întreg',
+                    syntax: 'double round(double x)',
+                    example: 'round(3.6) = 4'
+                }
+            ],
+            trig: [
+                {
+                    name: 'sin(x)',
+                    description: 'Returnează sinusul lui x (în radiani)',
+                    syntax: 'double sin(double x)',
+                    example: 'sin(π/2) = 1'
+                },
+                {
+                    name: 'cos(x)',
+                    description: 'Returnează cosinusul lui x (în radiani)',
+                    syntax: 'double cos(double x)',
+                    example: 'cos(0) = 1'
+                },
+                {
+                    name: 'tan(x)',
+                    description: 'Returnează tangenta lui x (în radiani)',
+                    syntax: 'double tan(double x)',
+                    example: 'tan(π/4) = 1'
+                },
+                {
+                    name: 'asin(x)',
+                    description: 'Returnează arcsinusul lui x',
+                    syntax: 'double asin(double x)',
+                    example: 'asin(1) = π/2'
+                },
+                {
+                    name: 'acos(x)',
+                    description: 'Returnează arccosinusul lui x',
+                    syntax: 'double acos(double x)',
+                    example: 'acos(0) = π/2'
+                },
+                {
+                    name: 'atan(x)',
+                    description: 'Returnează arctangenta lui x',
+                    syntax: 'double atan(double x)',
+                    example: 'atan(1) = π/4'
+                }
+            ],
+            exp: [
+                {
+                    name: 'exp(x)',
+                    description: 'Returnează e ridicat la puterea x',
+                    syntax: 'double exp(double x)',
+                    example: 'exp(1) = e ≈ 2.718'
+                },
+                {
+                    name: 'log(x)',
+                    description: 'Returnează logaritmul natural (baza e)',
+                    syntax: 'double log(double x)',
+                    example: 'log(e) = 1'
+                },
+                {
+                    name: 'log10(x)',
+                    description: 'Returnează logaritmul zecimal (baza 10)',
+                    syntax: 'double log10(double x)',
+                    example: 'log10(100) = 2'
+                }
+            ],
+            special: [
+                {
+                    name: 'fmod(x,y)',
+                    description: 'Returnează restul împărțirii x la y',
+                    syntax: 'double fmod(double x, double y)',
+                    example: 'fmod(7.5, 2.5) = 2.5'
+                },
+                {
+                    name: 'ldexp(x,n)',
+                    description: 'Returnează x * 2^n',
+                    syntax: 'double ldexp(double x, int n)',
+                    example: 'ldexp(3, 2) = 12'
+                },
+                {
+                    name: 'frexp(x,&n)',
+                    description: 'Separă mantisa și exponentul',
+                    syntax: 'double frexp(double x, int *n)',
+                    example: 'frexp(8, &n) = 0.5, n=4'
+                }
+            ]
+        };
+        
+        // Show functions by category
+        function showCategory(category) {
+            // Update active tab
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Get functions to display
+            let functionsToShow = [];
+            if (category === 'all') {
+                functionsToShow = [...mathFunctions.basic, ...mathFunctions.trig, ...mathFunctions.exp, ...mathFunctions.special];
+            } else {
+                functionsToShow = mathFunctions[category] || [];
+            }
+            
+            // Render functions
+            const grid = document.getElementById('functions-grid');
+            grid.innerHTML = functionsToShow.map(func => `
+                <div class="function-card">
+                    <div class="function-name">${func.name}</div>
+                    <div class="function-description">${func.description}</div>
+                    <div class="function-syntax">${func.syntax}</div>
+                    <div class="function-example">${func.example}</div>
+                </div>
+            `).join('');
+        }
+        
+        // Calculator functions
+        function calculateBasic() {
+            const functionName = document.getElementById('basic-function').value;
+            const x = parseFloat(document.getElementById('basic-x').value);
+            const y = parseFloat(document.getElementById('basic-y').value);
+            const resultDiv = document.getElementById('basic-result');
+            
+            let result, explanation;
+            
+            try {
+                switch (functionName) {
+                    case 'abs':
+                        result = Math.abs(x);
+                        explanation = `abs(${x}) = ${result}`;
+                        break;
+                    case 'sqrt':
+                        if (x < 0) {
+                            throw new Error('Radicalul nu poate fi calculat pentru numere negative!');
+                        }
+                        result = Math.sqrt(x);
+                        explanation = `sqrt(${x}) = ${result.toFixed(6)}`;
+                        break;
+                    case 'pow':
+                        result = Math.pow(x, y);
+                        explanation = `pow(${x}, ${y}) = ${x}^${y} = ${result}`;
+                        break;
+                    case 'ceil':
+                        result = Math.ceil(x);
+                        explanation = `ceil(${x}) = ${result}`;
+                        break;
+                    case 'floor':
+                        result = Math.floor(x);
+                        explanation = `floor(${x}) = ${result}`;
+                        break;
+                }
+                
+                resultDiv.innerHTML = `<span class="result-highlight">${explanation}</span>`;
+            } catch (error) {
+                resultDiv.innerHTML = `❌ ${error.message}`;
+            }
+        }
+        
+        function calculateTrig() {
+            const functionName = document.getElementById('trig-function').value;
+            const x = parseFloat(document.getElementById('trig-x').value);
+            const unit = document.getElementById('angle-unit').value;
+            const resultDiv = document.getElementById('trig-result');
+            
+            // Convert to radians if needed
+            let xRad = x;
+            if (unit === 'degrees') {
+                xRad = x * Math.PI / 180;
+            }
+            
+            let result, explanation;
+            
+            try {
+                switch (functionName) {
+                    case 'sin':
+                        result = Math.sin(xRad);
+                        explanation = `sin(${x}${unit === 'degrees' ? '°' : ' rad'}) = ${result.toFixed(6)}`;
+                        break;
+                    case 'cos':
+                        result = Math.cos(xRad);
+                        explanation = `cos(${x}${unit === 'degrees' ? '°' : ' rad'}) = ${result.toFixed(6)}`;
+                        break;
+                    case 'tan':
+                        result = Math.tan(xRad);
+                        explanation = `tan(${x}${unit === 'degrees' ? '°' : ' rad'}) = ${result.toFixed(6)}`;
+                        break;
+                    case 'asin':
+                        if (x < -1 || x > 1) {
+                            throw new Error('asin este definit doar pentru valori între -1 și 1!');
+                        }
+                        result = Math.asin(x);
+                        if (unit === 'degrees') result = result * 180 / Math.PI;
+                        explanation = `asin(${x}) = ${result.toFixed(6)}${unit === 'degrees' ? '°' : ' rad'}`;
+                        break;
+                    case 'acos':
+                        if (x < -1 || x > 1) {
+                            throw new Error('acos este definit doar pentru valori între -1 și 1!');
+                        }
+                        result = Math.acos(x);
+                        if (unit === 'degrees') result = result * 180 / Math.PI;
+                        explanation = `acos(${x}) = ${result.toFixed(6)}${unit === 'degrees' ? '°' : ' rad'}`;
+                        break;
+                    case 'atan':
+                        result = Math.atan(x);
+                        if (unit === 'degrees') result = result * 180 / Math.PI;
+                        explanation = `atan(${x}) = ${result.toFixed(6)}${unit === 'degrees' ? '°' : ' rad'}`;
+                        break;
+                }
+                
+                resultDiv.innerHTML = `<span class="result-highlight">${explanation}</span>`;
+            } catch (error) {
+                resultDiv.innerHTML = `❌ ${error.message}`;
+            }
+        }
+        
+        function calculateExp() {
+            const functionName = document.getElementById('exp-function').value;
+            const x = parseFloat(document.getElementById('exp-x').value);
+            const resultDiv = document.getElementById('exp-result');
+            
+            let result, explanation;
+            
+            try {
+                switch (functionName) {
+                    case 'exp':
+                        result = Math.exp(x);
+                        explanation = `exp(${x}) = e^${x} = ${result.toFixed(6)}`;
+                        break;
+                    case 'log':
+                        if (x <= 0) {
+                            throw new Error('Logaritmul este definit doar pentru numere pozitive!');
+                        }
+                        result = Math.log(x);
+                        explanation = `log(${x}) = ln(${x}) = ${result.toFixed(6)}`;
+                        break;
+                    case 'log10':
+                        if (x <= 0) {
+                            throw new Error('Logaritmul este definit doar pentru numere pozitive!');
+                        }
+                        result = Math.log10(x);
+                        explanation = `log10(${x}) = ${result.toFixed(6)}`;
+                        break;
+                }
+                
+                resultDiv.innerHTML = `<span class="result-highlight">${explanation}</span>`;
+            } catch (error) {
+                resultDiv.innerHTML = `❌ ${error.message}`;
+            }
+        }
+        
+        // Show/hide pow parameter
+        document.getElementById('basic-function').addEventListener('change', function() {
+            const container = document.getElementById('basic-y-container');
+            if (this.value === 'pow') {
+                container.style.display = 'flex';
+            } else {
+                container.style.display = 'none';
+            }
+        });
+        
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Add hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            showCategory('all'); // Show all functions by default
+            
+            // Auto-calculate examples
+            calculateBasic();
+            calculateTrig();
+            calculateExp();
+        });
+        
+        // Function card hover effects
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.function-card')) {
+                const card = e.target.closest('.function-card');
+                card.style.transform = 'translateY(-5px) scale(1.02)';
+                card.style.borderColor = '#667eea';
+                
+                setTimeout(() => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                    card.style.borderColor = 'transparent';
+                }, 300);
+            }
+        });
+        
+        // Auto-update calculations on input change
+        document.getElementById('basic-x').addEventListener('input', calculateBasic);
+        document.getElementById('basic-y').addEventListener('input', calculateBasic);
+        document.getElementById('basic-function').addEventListener('change', calculateBasic);
+        
+        document.getElementById('trig-x').addEventListener('input', calculateTrig);
+        document.getElementById('trig-function').addEventListener('change', calculateTrig);
+        document.getElementById('angle-unit').addEventListener('change', calculateTrig);
+        
+        document.getElementById('exp-x').addEventListener('input', calculateExp);
+        document.getElementById('exp-function').addEventListener('change', calculateExp);
+    </script>
+</body>
+</html>

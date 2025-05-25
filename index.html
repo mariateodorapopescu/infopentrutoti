@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Info pentru toți - Tutoriale TIC și Informatică">
+    <meta name="keywords" content="info, tic, programare, informatica, tutoriale, windows, c++">
+    <title>Info pentru toți</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
+            --blue: #3b82f6;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
+            opacity: 0.1;
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite linear;
+        }
+        
+        .shape:nth-child(1) { 
+            width: 100px; height: 100px; 
+            left: 10%; top: 20%; 
+            animation-delay: 0s;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        .shape:nth-child(2) { 
+            width: 150px; height: 150px; 
+            left: 70%; top: 60%; 
+            animation-delay: -7s;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        }
+        .shape:nth-child(3) { 
+            width: 80px; height: 80px; 
+            left: 50%; top: 10%; 
+            animation-delay: -14s;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+        .shape:nth-child(4) { 
+            width: 120px; height: 120px; 
+            left: 30%; top: 70%; 
+            animation-delay: -10s;
+            border-radius: 50%;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0.7; }
+        }
+        
+        /* Header Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+            height: 80px;
+        }
+        
+        .header.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            height: 100%;
+            position: relative;
+        }
+        
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        .logo-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 12px;
+        }
+        
+        .nav-link:hover::before {
+            opacity: 0.2;
+        }
+        
+        .nav-link:hover {
+            transform: translateY(-2px);
+        }
+        
+        .nav-link span {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Dropdown */
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .dropdown-toggle .arrow {
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+        
+        .dropdown.active .arrow {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-item {
+            display: block;
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            transform: translateX(5px);
+        }
+        
+        .dropdown-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Search */
+        .search-container {
+            position: relative;
+        }
+        
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 25px;
+            padding: 0.8rem 3rem 0.8rem 1.5rem;
+            color: white;
+            font-size: 0.9rem;
+            width: 300px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        /* Mobile menu toggle */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .mobile-toggle span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        .mobile-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+        
+        /* Main content - FIXED */
+        .main-content {
+            padding-top: 80px;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .iframe-container {
+            width: 100%;
+            height: calc(100vh - 80px - 120px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            display: block;
+        }
+        
+        /* Loading animation */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(99, 102, 241, 0.2);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 1rem 0;
+            z-index: 998;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .footer-section h4 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .footer-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 0.3rem;
+            font-size: 0.8rem;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+        }
+        
+        /* Social links in footer */
+        .social-links {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .social-link {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .search-input {
+                width: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(15, 23, 42, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .mobile-toggle {
+                display: flex;
+            }
+            
+            .search-container {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                margin-top: 1rem;
+                box-shadow: none;
+                background: rgba(255, 255, 255, 0.1);
+            }
+            
+            .dropdown-item {
+                color: white;
+            }
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+        }
+        
+        .scroll-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <!-- Header Navigation -->
+    <header class="header" id="header">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="#" class="logo" onclick="loadPage('hom.html')">
+                <div class="logo-icon">💻</div>
+                <span class="logo-text">Info pentru toți</span>
+            </a>
+            
+            <!-- Navigation Menu -->
+            <nav class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="#" class="nav-link" onclick="loadPage('hom.html')">
+                        <span>🏠 Acasă</span>
+                    </a>
+                </div>
+                
+                <div class="nav-item dropdown" id="diverseDropdown">
+                    <div class="nav-link dropdown-toggle">
+                        <span>🎯 Diverse</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item" onclick="loadPage('andrvsios.html')">📱 Android vs iOS</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('cydia.html')">📲 Despre Cydia și Jailbreak</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('progrmandfeatures.html')">🔧 Programs & Features</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown" id="ticDropdown">
+                    <div class="nav-link dropdown-toggle">
+                        <span>💻 TIC</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item" onclick="loadPage('winseven.html')">🖥️ Instalare Windows 7</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('win.html')">🖥️ Instalare Windows 10</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('recuva.html')">🔄 Recuperare Date</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('ext.html')">📄 Schimbare Extensii</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('logon.html')">🖼️ Imagine Log On</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('usb.html')">🔌 USB 3.1</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown" id="informaticaDropdown">
+                    <div class="nav-link dropdown-toggle">
+                        <span>📚 Lecții Informatică</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item" onclick="loadPage('echivalenta.html')">🔄 Echivalența Structurilor</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('fis.html')">📁 Fișiere în C++</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('fctii.html')">➕ Funcții Matematice C++</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('instrrep.html')">🔁 Instrucțiuni Repetitive</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('algo.html')">🧮 Noțiuni Algoritm</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('reprez.html')">📊 Reprezentarea Algoritmilor</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown" id="problemeDropdown">
+                    <div class="nav-link dropdown-toggle">
+                        <span>🎯 Probleme Speciale</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item" onclick="loadPage('algcfr.html')">🔢 Algoritm Cifre Număr</a>
+                        <a href="#" class="dropdown-item" onclick="loadPage('detprimn.html')">📊 Determinarea Primelor n Valori</a>
+                    </div>
+                </div>
+                
+                <!-- Search -->
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Căutare pe Google..." id="searchInput" onkeydown="handleSearch(event)">
+                    <button class="search-button" onclick="performSearch()">🔍</button>
+                </div>
+            </nav>
+            
+            <!-- Mobile Toggle -->
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="iframe-container">
+            <!-- Loading overlay -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <div>
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Se încarcă...</div>
+                </div>
+            </div>
+            <iframe id="contentFrame" class="content-frame" src="hom.html" frameborder="0"></iframe>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>🔥 Articole Populare</h4>
+                <a href="#" class="footer-link" onclick="loadPage('cydia.html')">Despre Cydia și Jailbreak</a>
+                <a href="#" class="footer-link" onclick="loadPage('recuva.html')">Recuperarea Datelor Șterse</a>
+                <a href="#" class="footer-link" onclick="loadPage('winseven.html')">Instalare Windows 7</a>
+            </div>
+            
+            <div class="footer-section">
+                <h4>📚 Categorii</h4>
+                <a href="#" class="footer-link" onclick="loadPage('fctii.html')">Programare C++</a>
+                <a href="#" class="footer-link" onclick="loadPage('win.html')">Sisteme de Operare</a>
+                <a href="#" class="footer-link" onclick="loadPage('progrmandfeatures.html')">Tutoriale Windows</a>
+            </div>
+            
+            <div class="footer-section">
+                <h4>🤝 Contact & Suport</h4>
+                <a href="#" class="footer-link" onclick="loadPage('contact.html')">Date de Contact</a>
+                <a href="#" class="footer-link" onclick="loadPage('despre.html')">Despre Noi</a>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/mariateodorapopescu/" class="social-link" target="_blank">💼</a>
+                    <a href="https://github.com/mariateodorapopescu" target="_blank">💻</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 PMT. Toate drepturile rezervate. Made with ❤️ for learning.</p>
+        </div>
+    </footer>
+    
+    <!-- Scroll to top button -->
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileToggle.addEventListener('click', () => {
+            mobileToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Dropdown functionality
+        const dropdowns = document.querySelectorAll('.dropdown');
+        
+        dropdowns.forEach(dropdown => {
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Close other dropdowns
+                dropdowns.forEach(other => {
+                    if (other !== dropdown) {
+                        other.classList.remove('active');
+                    }
+                });
+                
+                dropdown.classList.toggle('active');
+            });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+        
+        // Header scroll effect
+        const header = document.getElementById('header');
+        
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Show/hide scroll to top button
+            const scrollTop = document.getElementById('scrollTop');
+            if (currentScrollY > 500) {
+                scrollTop.classList.add('show');
+            } else {
+                scrollTop.classList.remove('show');
+            }
+        });
+        
+        // Page loading functionality
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const contentFrame = document.getElementById('contentFrame');
+        
+        function loadPage(pageName) {
+            // Show loading
+            loadingOverlay.classList.add('show');
+            
+            // Close mobile menu if open
+            navMenu.classList.remove('active');
+            mobileToggle.classList.remove('active');
+            
+            // Close dropdowns
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+            
+            // Load page immediately
+            contentFrame.src = pageName;
+            
+            // Hide loading after iframe loads
+            contentFrame.onload = () => {
+                setTimeout(() => {
+                    loadingOverlay.classList.remove('show');
+                }, 300);
+            };
+        }
+        
+        // Search functionality
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+        
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput.value.trim();
+            
+            if (query) {
+                const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                window.open(searchUrl, '_blank');
+                searchInput.value = '';
+            }
+        }
+        
+        // Scroll to top functionality
+        function scrollToTop() {
+            // Try to scroll the iframe content first
+            try {
+                const iframeDoc = contentFrame.contentDocument || contentFrame.contentWindow.document;
+                iframeDoc.documentElement.scrollTop = 0;
+                iframeDoc.body.scrollTop = 0;
+            } catch (e) {
+                // If iframe access fails, scroll the main window
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + K for search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+            
+            // Escape to close dropdowns
+            if (e.key === 'Escape') {
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+                navMenu.classList.remove('active');
+                mobileToggle.classList.remove('active');
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth animations to floating shapes
+            const shapes = document.querySelectorAll('.shape');
+            shapes.forEach((shape, index) => {
+                shape.style.animationDelay = `-${index * 5}s`;
+            });
+        });
+        
+        // Enhanced mobile experience
+        let touchStartY = 0;
+        let touchEndY = 0;
+        
+        document.addEventListener('touchstart', e => {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+        
+        document.addEventListener('touchend', e => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartY - touchEndY;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe up - hide mobile menu if open
+                    navMenu.classList.remove('active');
+                    mobileToggle.classList.remove('active');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

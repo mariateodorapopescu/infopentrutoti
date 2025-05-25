@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lecție interactivă - Algoritmi cu cifrele unui număr">
+    <meta name="keywords" content="algoritmi, cifre, număr, suma, oglinditul">
+    <title>Algoritmi Cifre - Lecție Interactivă</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --code-bg: #1e1e2e;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-light: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+        
+        /* Animated background with numbers */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+        }
+        
+        .floating-numbers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .number-float {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.1);
+            animation: floatNumber 15s infinite linear;
+        }
+        
+        .number-float:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .number-float:nth-child(2) { left: 30%; animation-delay: -3s; }
+        .number-float:nth-child(3) { left: 50%; animation-delay: -6s; }
+        .number-float:nth-child(4) { left: 70%; animation-delay: -9s; }
+        .number-float:nth-child(5) { left: 90%; animation-delay: -12s; }
+        
+        @keyframes floatNumber {
+            0% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { 
+                transform: translateY(-100px) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+        
+        /* Hero section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .hero-text {
+            animation: slideInLeft 1s ease-out;
+        }
+        
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero-text .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+        
+        .number-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-gradient);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: var(--shadow-light);
+            font-size: 3rem;
+        }
+        
+        .hero-visual {
+            animation: slideInRight 1s ease-out;
+            position: relative;
+        }
+        
+        .number-showcase {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: var(--shadow-heavy);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .number-showcase::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .demo-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1rem 0;
+        }
+        
+        .demo-operations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .demo-op {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-op:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+        }
+        
+        /* Content sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .content-card.basics::before { background: var(--primary-gradient); }
+        .content-card.algorithms::before { background: var(--secondary-gradient); }
+        .content-card.interactive::before { background: var(--success-gradient); }
+        
+        .content-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .content-card h2 .icon {
+            font-size: 2.5rem;
+        }
+        
+        /* Basic operations showcase */
+        .operations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .operation-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .operation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(79, 172, 254, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .operation-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .operation-card:hover::before {
+            opacity: 1;
+        }
+        
+        .operation-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .operation-formula {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            text-align: center;
+            border: 2px solid #667eea;
+        }
+        
+        /* Algorithm sections */
+        .algorithm-section {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(240, 147, 251, 0.2);
+            position: relative;
+        }
+        
+        .algorithm-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .algorithm-number {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .algorithm-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .algorithm-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+        
+        /* Code blocks */
+        .code-container {
+            position: relative;
+            margin: 2rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .code-header {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .code-header .title {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .code-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .code-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .code-btn.red { background: #ff5f57; }
+        .code-btn.yellow { background: #ffbd2e; }
+        .code-btn.green { background: #28ca42; }
+        
+        pre {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 0;
+        }
+        
+        /* Syntax highlighting */
+        .keyword { color: #c792ea; font-weight: 500; }
+        .variable { color: #82aaff; }
+        .number { color: #f78c6c; }
+        .operator { color: #89ddff; }
+        .comment { color: #546e7a; font-style: italic; }
+        
+        /* Interactive demo */
+        .interactive-demo {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(17, 153, 142, 0.2);
+        }
+        
+        .demo-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .demo-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-input {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .demo-input label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .demo-input input {
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(17, 153, 142, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .demo-input input:focus {
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .demo-btn {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(17, 153, 142, 0.4);
+        }
+        
+        .demo-results {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .result-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 1rem;
+            border-left: 4px solid #11998e;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .result-value {
+            font-size: 1.1rem;
+            color: #11998e;
+            font-weight: 700;
+        }
+        
+        /* Step by step visualization */
+        .step-visualization {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .step-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(10px);
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .step-content {
+            font-family: 'JetBrains Mono', monospace;
+            flex: 1;
+        }
+        
+        /* Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+            
+            .content-card {
+                padding: 2rem;
+            }
+            
+            .operations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-numbers">
+        <div class="number-float">1234</div>
+        <div class="number-float">5678</div>
+        <div class="number-float">9012</div>
+        <div class="number-float">3456</div>
+        <div class="number-float">7890</div>
+    </div>
+    
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="number-icon">🔢</div>
+                <h1>Algoritmi cu Cifrele unui Număr</h1>
+                <p class="subtitle">Descoperă secretele manipulării cifrelor - de la suma cifrelor la oglinditul unui număr și detectarea palindromilor!</p>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="number-showcase">
+                    <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Exemplu: 732848</h3>
+                    <div class="demo-number">732848</div>
+                    <div class="demo-operations">
+                        <div class="demo-op">
+                            <strong>Suma:</strong><br>
+                            7+3+2+8+4+8=32
+                        </div>
+                        <div class="demo-op">
+                            <strong>Cifre:</strong><br>
+                            6 cifre
+                        </div>
+                        <div class="demo-op">
+                            <strong>Oglinditul:</strong><br>
+                            848237
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="content-card basics scroll-reveal">
+            <h2><span class="icon">⚡</span>Operații fundamentale</h2>
+            
+            <p style="margin-bottom: 2rem;">Acești algoritmi se bazează pe două expresii magice care ne permit să explorăm orice număr cifră cu cifră:</p>
+            
+            <div class="operations-grid">
+                <div class="operation-card">
+                    <h3 class="operation-title">🎯 Ultima cifră</h3>
+                    <div class="operation-formula">n % 10</div>
+                    <p>Operatorul modulo (%) ne dă restul împărțirii la 10, care este întotdeauna ultima cifră a numărului.</p>
+                    <div style="background: rgba(102, 126, 234, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <strong>Exemplu:</strong> 732848 % 10 = 8
+                    </div>
+                </div>
+                
+                <div class="operation-card">
+                    <h3 class="operation-title">✂️ Eliminare ultimă cifră</h3>
+                    <div class="operation-formula">n / 10</div>
+                    <p>Împărțirea întreagă la 10 elimină ultima cifră, lăsându-ne cu restul numărului.</p>
+                    <div style="background: rgba(102, 126, 234, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <strong>Exemplu:</strong> 732848 / 10 = 73284
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card algorithms scroll-reveal">
+            <h2><span class="icon">🧮</span>Algoritmi clasici</h2>
+            
+            <div class="algorithm-section">
+                <div class="algorithm-header">
+                    <div class="algorithm-number">1</div>
+                    <div>
+                        <h3 class="algorithm-title">Suma cifrelor unui număr</h3>
+                        <p class="algorithm-description">Pentru n=732848, suma cifrelor sale este 7+3+2+8+4+8=32</p>
+                    </div>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="title">🔢 Algoritm Suma Cifre</span>
+                        <div class="code-buttons">
+                            <div class="code-btn red"></div>
+                            <div class="code-btn yellow"></div>
+                            <div class="code-btn green"></div>
+                        </div>
+                    </div>
+                    <pre><code><span class="keyword">citește</span> <span class="variable">n</span>
+<span class="variable">s</span> <span class="operator">=</span> <span class="number">0</span>
+<span class="keyword">cât timp</span> <span class="variable">n</span> <span class="operator">≠</span> <span class="number">0</span> <span class="keyword">execută</span>
+    <span class="variable">c</span> <span class="operator">=</span> <span class="variable">n</span> <span class="operator">%</span> <span class="number">10</span>    <span class="comment">// aflăm ultima cifră</span>
+    <span class="variable">s</span> <span class="operator">=</span> <span class="variable">s</span> <span class="operator">+</span> <span class="variable">c</span>      <span class="comment">// o adunăm la sumă</span>
+    <span class="variable">n</span> <span class="operator">=</span> <span class="variable">n</span> <span class="operator">/</span> <span class="number">10</span>     <span class="comment">// eliminăm cifra procesată</span>
+<span class="keyword">scrie</span> <span class="variable">s</span></code></pre>
+                </div>
+                
+                <div class="step-visualization">
+                    <h4 style="margin-bottom: 1rem; color: var(--text-primary);">🎬 Execuția pas cu pas pentru n=732848:</h4>
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">n=732848, c=8, s=0+8=8, n=73284</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">n=73284, c=4, s=8+4=12, n=7328</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">n=7328, c=8, s=12+8=20, n=732</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">n=732, c=2, s=20+2=22, n=73</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-content">n=73, c=3, s=22+3=25, n=7</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">6</div>
+                        <div class="step-content">n=7, c=7, s=25+7=32, n=0 → STOP</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="algorithm-section">
+                <div class="algorithm-header">
+                    <div class="algorithm-number">2</div>
+                    <div>
+                        <h3 class="algorithm-title">Numărul de cifre ale unui număr</h3>
+                        <p class="algorithm-description">Pentru n=732848, numărul de cifre este 6</p>
+                    </div>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="title">🔢 Algoritm Număr Cifre</span>
+                        <div class="code-buttons">
+                            <div class="code-btn red"></div>
+                            <div class="code-btn yellow"></div>
+                            <div class="code-btn green"></div>
+                        </div>
+                    </div>
+                    <pre><code><span class="keyword">citește</span> <span class="variable">n</span>
+<span class="variable">nr</span> <span class="operator">=</span> <span class="number">0</span>
+<span class="keyword">cât timp</span> <span class="variable">n</span> <span class="operator">≠</span> <span class="number">0</span> <span class="keyword">execută</span>
+    <span class="variable">nr</span> <span class="operator">=</span> <span class="variable">nr</span> <span class="operator">+</span> <span class="number">1</span>   <span class="comment">// incrementăm contorul</span>
+    <span class="variable">n</span> <span class="operator">=</span> <span class="variable">n</span> <span class="operator">/</span> <span class="number">10</span>     <span class="comment">// eliminăm ultima cifră</span>
+<span class="keyword">scrie</span> <span class="variable">nr</span></code></pre>
+                </div>
+            </div>
+            
+            <div class="algorithm-section">
+                <div class="algorithm-header">
+                    <div class="algorithm-number">3</div>
+                    <div>
+                        <h3 class="algorithm-title">Oglinditul unui număr</h3>
+                        <p class="algorithm-description">Pentru n=732848, oglinditul său este 848237</p>
+                    </div>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="title">🪞 Algoritm Oglinditul</span>
+                        <div class="code-buttons">
+                            <div class="code-btn red"></div>
+                            <div class="code-btn yellow"></div>
+                            <div class="code-btn green"></div>
+                        </div>
+                    </div>
+                    <pre><code><span class="keyword">citește</span> <span class="variable">n</span>
+<span class="variable">inv</span> <span class="operator">=</span> <span class="number">0</span>
+<span class="keyword">cât timp</span> <span class="variable">n</span> <span class="operator">≠</span> <span class="number">0</span> <span class="keyword">execută</span>
+    <span class="variable">c</span> <span class="operator">=</span> <span class="variable">n</span> <span class="operator">%</span> <span class="number">10</span>           <span class="comment">// ultima cifră</span>
+    <span class="variable">inv</span> <span class="operator">=</span> <span class="variable">inv</span> <span class="operator">*</span> <span class="number">10</span> <span class="operator">+</span> <span class="variable">c</span>    <span class="comment">// adăugăm cifra la sfârșit</span>
+    <span class="variable">n</span> <span class="operator">=</span> <span class="variable">n</span> <span class="operator">/</span> <span class="number">10</span>           <span class="comment">// eliminăm cifra procesată</span>
+<span class="keyword">scrie</span> <span class="variable">inv</span></code></pre>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%); border-radius: 15px; padding: 2rem; margin: 2rem 0; border: 2px solid rgba(245, 158, 11, 0.2);">
+                    <h4 style="color: #f59e0b; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        🔍 Cum funcționează inv = inv * 10 + c?
+                    </h4>
+                    <div style="font-family: 'JetBrains Mono', monospace; color: var(--text-secondary); line-height: 1.8;">
+                        <div>inv = 0,   c = 8  →  inv = 0 * 10 + 8 = 8</div>
+                        <div>inv = 8,   c = 4  →  inv = 8 * 10 + 4 = 84</div>
+                        <div>inv = 84,  c = 8  →  inv = 84 * 10 + 8 = 848</div>
+                        <div>inv = 848, c = 2  →  inv = 848 * 10 + 2 = 8482</div>
+                        <div style="color: #10b981; font-weight: 600;">✨ Fiecare cifră nouă se adaugă la sfârșitul numărului!</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); border-radius: 20px; padding: 2rem; margin: 2rem 0; border: 2px solid rgba(139, 92, 246, 0.2);">
+                <h3 style="color: #8b5cf6; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    🎯 Observație importantă: Palindromul
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Un număr este <strong>palindrom</strong> dacă este egal cu oglinditul său. 
+                    Exemple: 11, 121, 3, 36763, 12321
+                </p>
+                <div style="background: rgba(255, 255, 255, 0.8); border-radius: 10px; padding: 1rem; margin-top: 1rem; font-family: 'JetBrains Mono', monospace;">
+                    <strong>Test palindrom:</strong> dacă (n == oglinditul_lui_n) atunci "Palindrom!" altfel "Nu este palindrom"
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card interactive scroll-reveal">
+            <h2><span class="icon">🚀</span>Laborator interactiv</h2>
+            
+            <div class="interactive-demo">
+                <h3 class="demo-title">🧪 Testează algoritmii cu propriile numere!</h3>
+                
+                <div class="demo-controls">
+                    <div class="demo-input">
+                        <label for="number-input">Introdu un număr întreg:</label>
+                        <input type="number" id="number-input" placeholder="ex: 732848" min="0">
+                    </div>
+                </div>
+                
+                <div class="demo-buttons">
+                    <button class="demo-btn" onclick="calculateSum()">🧮 Suma cifrelor</button>
+                    <button class="demo-btn" onclick="countDigits()">🔢 Numărul cifrelor</button>
+                    <button class="demo-btn" onclick="reverseNumber()">🪞 Oglinditul</button>
+                    <button class="demo-btn" onclick="checkPalindrome()">🎯 Test palindrom</button>
+                    <button class="demo-btn" onclick="showAllSteps()">⚡ Toate calculele</button>
+                </div>
+                
+                <div class="demo-results" id="results">
+                    <div class="result-item">
+                        <span class="result-label">📊 Rezultatele vor apărea aici</span>
+                        <span class="result-value">Introdu un număr și alege o operație!</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 3rem;">
+                <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); padding: 2rem; border-radius: 20px; text-align: center; border: 2px solid rgba(99, 102, 241, 0.2);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎓</div>
+                    <h4 style="color: #6366f1; margin-bottom: 0.5rem;">Învățare practică</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Testează algoritmii cu diferite numere pentru a înțelege logica</p>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); padding: 2rem; border-radius: 20px; text-align: center; border: 2px solid rgba(16, 185, 129, 0.2);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem;">Execuție instantanee</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Vezi rezultatele imediat și înțelege pașii</p>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); padding: 2rem; border-radius: 20px; text-align: center; border: 2px solid rgba(245, 158, 11, 0.2);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+                    <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">Analiză detaliată</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Explorează fiecare algoritm în profunzime</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Interactive demo functions
+        function getInputNumber() {
+            const input = document.getElementById('number-input');
+            const num = parseInt(input.value);
+            
+            if (isNaN(num) || num < 0) {
+                showResult('❌ Eroare', 'Te rog introdu un număr întreg pozitiv valid!');
+                return null;
+            }
+            
+            return num;
+        }
+        
+        function showResult(label, value, isMultiple = false) {
+            const resultsDiv = document.getElementById('results');
+            
+            if (isMultiple) {
+                resultsDiv.innerHTML = value;
+            } else {
+                resultsDiv.innerHTML = `
+                    <div class="result-item">
+                        <span class="result-label">${label}</span>
+                        <span class="result-value">${value}</span>
+                    </div>
+                `;
+            }
+        }
+        
+        function calculateSum() {
+            const num = getInputNumber();
+            if (num === null) return;
+            
+            let n = num;
+            let sum = 0;
+            let steps = [];
+            
+            while (n > 0) {
+                const digit = n % 10;
+                sum += digit;
+                steps.push(`${n} → cifra ${digit}, suma = ${sum}`);
+                n = Math.floor(n / 10);
+            }
+            
+            showResult('🧮 Suma cifrelor', sum);
+            
+            // Show steps after a delay
+            setTimeout(() => {
+                const stepsHtml = steps.map((step, index) => 
+                    `<div class="result-item">
+                        <span class="result-label">Pasul ${index + 1}</span>
+                        <span class="result-value">${step}</span>
+                    </div>`
+                ).join('');
+                
+                showResult('', stepsHtml, true);
+            }, 1000);
+        }
+        
+        function countDigits() {
+            const num = getInputNumber();
+            if (num === null) return;
+            
+            if (num === 0) {
+                showResult('🔢 Numărul cifrelor', 1);
+                return;
+            }
+            
+            let n = num;
+            let count = 0;
+            
+            while (n > 0) {
+                count++;
+                n = Math.floor(n / 10);
+            }
+            
+            showResult('🔢 Numărul cifrelor', count);
+        }
+        
+        function reverseNumber() {
+            const num = getInputNumber();
+            if (num === null) return;
+            
+            let n = num;
+            let reversed = 0;
+            let steps = [];
+            
+            while (n > 0) {
+                const digit = n % 10;
+                reversed = reversed * 10 + digit;
+                steps.push(`n=${n}, cifra=${digit}, oglinditul=${reversed}`);
+                n = Math.floor(n / 10);
+            }
+            
+            showResult('🪞 Oglinditul numărului', reversed);
+            
+            // Show steps after a delay
+            setTimeout(() => {
+                const stepsHtml = steps.map((step, index) => 
+                    `<div class="result-item">
+                        <span class="result-label">Pasul ${index + 1}</span>
+                        <span class="result-value">${step}</span>
+                    </div>`
+                ).join('');
+                
+                showResult('', stepsHtml, true);
+            }, 1000);
+        }
+        
+        function checkPalindrome() {
+            const num = getInputNumber();
+            if (num === null) return;
+            
+            // Calculate reversed number
+            let n = num;
+            let reversed = 0;
+            
+            while (n > 0) {
+                const digit = n % 10;
+                reversed = reversed * 10 + digit;
+                n = Math.floor(n / 10);
+            }
+            
+            const isPalindrome = num === reversed;
+            const result = isPalindrome ? `DA! ${num} este palindrom` : `NU. ${num} ≠ ${reversed}`;
+            const icon = isPalindrome ? '✅' : '❌';
+            
+            showResult(`${icon} Test palindrom`, result);
+        }
+        
+        function showAllSteps() {
+            const num = getInputNumber();
+            if (num === null) return;
+            
+            // Calculate all values
+            let n = num;
+            let sum = 0;
+            let count = 0;
+            let reversed = 0;
+            
+            // Count digits and sum
+            let temp = n;
+            while (temp > 0) {
+                sum += temp % 10;
+                count++;
+                temp = Math.floor(temp / 10);
+            }
+            
+            // Calculate reversed
+            temp = n;
+            while (temp > 0) {
+                reversed = reversed * 10 + (temp % 10);
+                temp = Math.floor(temp / 10);
+            }
+            
+            const isPalindrome = num === reversed;
+            
+            const allResults = `
+                <div class="result-item">
+                    <span class="result-label">📊 Numărul original</span>
+                    <span class="result-value">${num}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">🧮 Suma cifrelor</span>
+                    <span class="result-value">${sum}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">🔢 Numărul cifrelor</span>
+                    <span class="result-value">${count}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">🪞 Oglinditul</span>
+                    <span class="result-value">${reversed}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${isPalindrome ? '✅' : '❌'} Palindrom?</span>
+                    <span class="result-value">${isPalindrome ? 'DA' : 'NU'}</span>
+                </div>
+            `;
+            
+            showResult('', allResults, true);
+        }
+        
+        // Add hover effects
+        document.querySelectorAll('.operation-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        document.querySelectorAll('.demo-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Step item click effects
+        document.querySelectorAll('.step-item').forEach(step => {
+            step.addEventListener('click', function() {
+                this.style.background = 'rgba(102, 126, 234, 0.2)';
+                this.style.transform = 'translateX(15px) scale(1.02)';
+                
+                setTimeout(() => {
+                    this.style.background = 'rgba(102, 126, 234, 0.05)';
+                    this.style.transform = 'translateX(0) scale(1)';
+                }, 300);
+            });
+        });
+        
+        // Auto-focus input
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('number-input').focus();
+        });
+        
+        // Enter key support
+        document.getElementById('number-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                showAllSteps();
+            }
+        });
+    </script>
+</body>
+</html>

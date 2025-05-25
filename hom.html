@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tutoriale TIC și Info - Ghiduri complete pentru programare, sisteme de operare și tehnologie">
+    <meta name="keywords" content="info, tic, programare, informatica, tutoriale, windows, c++">
+    <title>Info pentru toți - Acasă</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
+            --blue: #3b82f6;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
+            opacity: 0.1;
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite linear;
+        }
+        
+        .shape:nth-child(1) { 
+            width: 100px; height: 100px; 
+            left: 10%; top: 20%; 
+            animation-delay: 0s;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        .shape:nth-child(2) { 
+            width: 150px; height: 150px; 
+            left: 70%; top: 60%; 
+            animation-delay: -7s;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        }
+        .shape:nth-child(3) { 
+            width: 80px; height: 80px; 
+            left: 50%; top: 10%; 
+            animation-delay: -14s;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+        .shape:nth-child(4) { 
+            width: 120px; height: 120px; 
+            left: 30%; top: 70%; 
+            animation-delay: -10s;
+            border-radius: 50%;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0.7; }
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        }
+        
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3)); }
+            100% { filter: drop-shadow(0 0 40px rgba(236, 72, 153, 0.4)); }
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--text-muted);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            animation: slideInUp 1s ease-out 0.5s both;
+        }
+        
+        /* Featured Slider */
+        .featured-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .slider-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto 4rem;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            background: var(--surface);
+        }
+        
+        .slide {
+            display: none;
+            position: relative;
+            min-height: 500px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .slide.active {
+            display: block;
+            opacity: 1;
+            animation: slideIn 0.8s ease-in-out;
+        }
+        
+        .slide-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(99, 102, 241, 0.8) 0%, rgba(236, 72, 153, 0.8) 100%);
+            animation: shimmer 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes shimmer {
+            0% { opacity: 0.8; }
+            100% { opacity: 0.4; }
+        }
+        
+        .slide-content {
+            padding: 2.5rem;
+            background: white;
+        }
+        
+        .slide-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .slide-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .slide-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+        
+        .slide-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Navigation */
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slider-nav:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .prev { left: 20px; }
+        .next { right: 20px; }
+        
+        /* Slider dots */
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dot.active,
+        .dot:hover {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        /* Topics Grid */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .topic-card {
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 2.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .topic-card:hover {
+            transform: translateY(-15px) rotateY(5deg);
+            border-color: var(--primary);
+            box-shadow: 0 25px 50px rgba(99, 102, 241, 0.25);
+        }
+        
+        .topic-card:hover::before {
+            opacity: 1;
+        }
+        
+        .topic-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+            position: relative;
+            z-index: 2;
+            animation: iconBounce 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes iconBounce {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+        
+        .topic-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .topic-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .topic-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .topic-link:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 1rem 2rem;
+            }
+            
+            .featured-section {
+                padding: 2rem 1rem;
+            }
+            
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .slider-nav {
+                display: none;
+            }
+            
+            .topic-card:hover {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Bun venit la Info pentru toți!</h1>
+            <p class="hero-subtitle">Descoperă lumea tehnologiei prin tutoriale interactive și ghiduri complete</p>
+        </div>
+    </section>
+    
+    <section class="featured-section">
+        <h2 class="section-title scroll-reveal">Articole Recomandate</h2>
+        
+        <div class="slider-container scroll-reveal">
+            <div class="slide active">
+                <div class="slide-image"><img src="soo2.png" style="width:100%"></div>
+                <div class="slide-content">
+                    <h3 class="slide-title">Cum se instalează un sistem de operare</h3>
+                    <p class="slide-description">În articolele ce urmează vă voi explica cum se instalează un sistem de operare pe un computer. Ghid complet cu imagini și explicații pas cu pas.</p>
+                    <a href="SO.html" class="slide-link">
+                        <span>Citește articolul</span>
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="slide">
+                <div class="slide-image"><img src="USB.jpg" style="width:100%"></div>
+                <div class="slide-content">
+                    <h3 class="slide-title">USB 3.1 - Noile tehnologii</h3>
+                    <p class="slide-description">În acest articol vreau să discutăm despre noile tehnologii de pe piață. Voi încerca să aduc în discuție noul port USB despre care se tot vorbește în perioada aceasta. Este vorba, evident, despre USB Type C.</p>
+                    <a href="usb 3.1.html" class="slide-link">
+                        <span>Descoperă USB-C</span>
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+            
+            <button class="slider-nav prev" onclick="changeSlide(-1)">❮</button>
+            <button class="slider-nav next" onclick="changeSlide(1)">❯</button>
+            
+            <!-- Slider indicators -->
+            <div class="slider-dots">
+                <span class="dot active" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+            </div>
+        </div>
+        
+        <h2 class="section-title scroll-reveal">Explorează după categorii</h2>
+        
+        <div class="topics-grid scroll-reveal">
+            <div class="topic-card">
+                <div class="topic-icon">💻</div>
+                <h3 class="topic-title">Funcții matematice în C++</h3>
+                <p class="topic-description">Ce funcții matematice puteți folosi în programare</p>
+                <a href="fctii.html" class="topic-link">
+                    <span>Accesați</span>
+                    <span>→</span>
+                </a>
+            </div>
+            
+            <div class="topic-card">
+                <div class="topic-icon">🔄</div>
+                <h3 class="topic-title">Instrucțiuni repetitive în C++</h3>
+                <p class="topic-description">Instrucțiuni de bază pentru programarea în C++</p>
+                <a href="instrrep.html" class="topic-link">
+                    <span>Accesați</span>
+                    <span>→</span>
+                </a>
+            </div>
+            
+            <div class="topic-card">
+                <div class="topic-icon">🔢</div>
+                <h3 class="topic-title">Algoritm cu cifrele unui număr</h3>
+                <p class="topic-description">Din colecția algoritmi fundamentali</p>
+                <a href="algcfr.html" class="topic-link">
+                    <span>Accesați</span>
+                    <span>→</span>
+                </a>
+            </div>
+            
+            <div class="topic-card">
+                <div class="topic-icon">🎯</div>
+                <h3 class="topic-title">Determinarea primelor n valori</h3>
+                <p class="topic-description">Problemă rezolvată cu explicații detaliate</p>
+                <a href="detprimn.html" class="topic-link">
+                    <span>Accesați</span>
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        function showSlide(n) {
+            // Hide all slides
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            // Handle boundary conditions
+            if (n >= totalSlides) currentSlideIndex = 0;
+            if (n < 0) currentSlideIndex = totalSlides - 1;
+            
+            // Show current slide
+            slides[currentSlideIndex].classList.add('active');
+        }
+        
+        function changeSlide(n) {
+            currentSlideIndex += n;
+            showSlide(currentSlideIndex);
+        }
+        
+        // Initialize slider properly
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make sure first slide is visible
+            showSlide(0);
+            
+            // Start auto-play
+            setInterval(() => {
+                changeSlide(1);
+            }, 5000);
+        });
+        
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Add hover effects to topic cards
+        document.querySelectorAll('.topic-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) rotateY(5deg) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-15px) rotateY(5deg) scale(1)';
+            });
+        });
+        
+        // Parallax effect for floating shapes
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const shapes = document.querySelectorAll('.shape');
+            
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 0.5;
+                shape.style.transform += ` translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

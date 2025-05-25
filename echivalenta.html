@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lecție interactivă - Echivalența structurilor repetitive">
+    <meta name="keywords" content="bucle, echivalenta, while, do-while, for, transformări">
+    <title>Echivalența Buclelor - Transformări Interactive</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --code-bg: #1e1e2e;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-light: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+        }
+        
+        .floating-transforms {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .transform-float {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.1);
+            animation: floatTransform 20s infinite linear;
+        }
+        
+        .transform-float:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .transform-float:nth-child(2) { left: 30%; animation-delay: -5s; }
+        .transform-float:nth-child(3) { left: 50%; animation-delay: -10s; }
+        .transform-float:nth-child(4) { left: 70%; animation-delay: -15s; }
+        .transform-float:nth-child(5) { left: 90%; animation-delay: -20s; }
+        
+        @keyframes floatTransform {
+            0% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { 
+                transform: translateY(-100px) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+        
+        /* Hero section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .transform-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-gradient);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: var(--shadow-light);
+            font-size: 3rem;
+        }
+        
+        /* Transformation showcase */
+        .transform-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .transform-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .transform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .transform-card.while-to-do::before { background: var(--primary-gradient); }
+        .transform-card.do-to-while::before { background: var(--secondary-gradient); }
+        .transform-card.for-to-while::before { background: var(--success-gradient); }
+        
+        .transform-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .transform-card.while-to-do:hover { border-color: #667eea; }
+        .transform-card.do-to-while:hover { border-color: #f093fb; }
+        .transform-card.for-to-while:hover { border-color: #11998e; }
+        
+        .transform-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .transform-arrow {
+            font-size: 2rem;
+            text-align: center;
+            margin: 1rem 0;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        /* Content sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .content-card.while-to-do::before { background: var(--primary-gradient); }
+        .content-card.do-to-while::before { background: var(--secondary-gradient); }
+        .content-card.for-to-while::before { background: var(--success-gradient); }
+        .content-card.interactive::before { background: var(--warning-gradient); }
+        
+        .content-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .content-card h2 .icon {
+            font-size: 2.5rem;
+        }
+        
+        /* Code comparison */
+        .code-comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+            align-items: center;
+        }
+        
+        .code-block {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .code-header {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .code-header .title {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .code-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .code-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .code-btn.red { background: #ff5f57; }
+        .code-btn.yellow { background: #ffbd2e; }
+        .code-btn.green { background: #28ca42; }
+        
+        pre {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 0;
+        }
+        
+        /* Syntax highlighting */
+        .keyword { color: #c792ea; font-weight: 500; }
+        .variable { color: #82aaff; }
+        .number { color: #f78c6c; }
+        .operator { color: #89ddff; }
+        .comment { color: #546e7a; font-style: italic; }
+        .string { color: #c3e88d; }
+        
+        .transform-arrow-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #667eea;
+            animation: pulse 2s infinite;
+        }
+        
+        .arrow-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        
+        /* Steps visualization */
+        .steps-container {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .steps-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .step-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .step-item:hover {
+            transform: translateX(10px);
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            font-weight: 600;
+            margin-right: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Warning boxes */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .warning-title {
+            color: #f59e0b;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Interactive transformer */
+        .interactive-transformer {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            border: 2px solid rgba(17, 153, 142, 0.2);
+        }
+        
+        .transformer-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .transformer-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .transformer-input {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .transformer-input label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .transformer-input select, .transformer-input textarea {
+            padding: 0.75rem;
+            border: 2px solid rgba(17, 153, 142, 0.3);
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .transformer-input textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .transformer-input select:focus, .transformer-input textarea:focus {
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+        }
+        
+        .transform-btn {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+        
+        .transform-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(17, 153, 142, 0.4);
+        }
+        
+        .transform-result {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-left: 4px solid #11998e;
+        }
+        
+        .result-code {
+            background: #1e1e2e;
+            color: #e1e5e9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 1rem 0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-card {
+                padding: 2rem;
+            }
+            
+            .code-comparison {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .transform-arrow-vertical {
+                transform: rotate(90deg);
+                margin: 1rem 0;
+            }
+            
+            .transformer-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-transforms">
+        <div class="transform-float">while→do</div>
+        <div class="transform-float">do→while</div>
+        <div class="transform-float">for→while</div>
+        <div class="transform-float">≡</div>
+        <div class="transform-float">⟷</div>
+    </div>
+    
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge">
+                🔄 Transformări Advanced
+            </div>
+            <div class="transform-icon">⟷</div>
+            <h1>Echivalența Structurilor</h1>
+            <p class="subtitle">Descoperă cum să transformi orice tip de buclă în altul - un superputer pentru orice programator care vrea flexibilitate maximă!</p>
+            
+            <div class="transform-showcase">
+                <div class="transform-card while-to-do">
+                    <h3 class="transform-title">🔍 While → Do-While</h3>
+                    <p>Transformă buclele cu test inițial în bucle cu test final</p>
+                    <div class="transform-arrow">↓</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Adaugă un test suplimentar înainte</p>
+                </div>
+                
+                <div class="transform-card do-to-while">
+                    <h3 class="transform-title">✅ Do-While → While</h3>
+                    <p>Conversie din test final în test inițial</p>
+                    <div class="transform-arrow">↓</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Execută codul o dată în plus</p>
+                </div>
+                
+                <div class="transform-card for-to-while">
+                    <h3 class="transform-title">🔢 For → While</h3>
+                    <p>Convertește buclele cu contor în bucle cu test</p>
+                    <div class="transform-arrow">↓</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Separă inițializarea și incrementarea</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="content-card while-to-do scroll-reveal">
+            <h2><span class="icon">🔍</span>While → Do-While</h2>
+            
+            <p style="margin-bottom: 2rem;">Transformarea unei bucle <strong>while</strong> (cu test inițial) într-o buclă <strong>do-while</strong> (cu test final) necesită atenție specială, deoarece bucla while poate să nu se execute deloc.</p>
+            
+            <div class="code-comparison">
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="title">🔍 Bucla While originală</span>
+                        <div class="code-buttons">
+                            <div class="code-btn red"></div>
+                            <div class="code-btn yellow"></div>
+                            <div class="code-btn green"></div>
+                        </div>
+                    </div>
+                    <pre><code><span class="keyword">while</span>(<span class="variable">conditie</span>) {
+    <span class="comment">// secvența</span>
+}</code></pre>
+                </div>
+                
+                <div class="transform-arrow-vertical">
+                    <div>⟷</div>
+                    <div class="arrow-label">TRANSFORMĂ</div>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="title">✅ Echivalentul Do-While</span>
+                        <div class="code-buttons">
+                            <div class="code-btn red"></div>
+                            <div class="code-btn yellow"></div>
+                            <div class="code-btn green"></div>
+                        </div>
+                    </div>
+                    <pre><code><span class="keyword">if</span>(<span class="variable">conditie</span>) {
+    <span class="keyword">do</span> {
+        <span class="comment">// secvența</span>
+    } <span class="keyword">while</span>(<span class="variable">conditie</span>);
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="steps-container">
+                <h3 class="steps-title">🎯 Pașii transformării</h3>
+                <div class="step-item">
+                    <span class="step-number">1</span>
+                    <strong>Testare preliminară:</strong> Adaugă un <code>if</code> pentru a verifica condiția înainte de a intra în bucla do-while
+                </div>
+                <div class="step-item">
+                    <span class="step-number">2</span>
+                    <strong>Corpul buclei:</strong> Copiază secvența din while în corpul do-while
+                </div>
+                <div class="step-item">
+                    <span class="step-number">3</span>
+                    <strong>Condiția finală:</strong> Pune aceeași condiție la sfârșitul buclei do-while
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <h4 class="warning-title">⚠️ Atenție!</h4>
+                <p>Deoarece bucla while nu execută secvența când condiția este falsă de la început, este necesară testarea condiției suplimentar înainte de a scrie structura cu test final.</p>
+            </div>
+        </div>
+        
+        <div class="content-card do-to-while scroll-reveal">
+            <h2><span class="icon">✅</span>Do-While → While</h2>
+            
+            <p style="margin-bottom: 2rem;">Transformarea unei bucle <strong>do-while</strong> într-o buclă <strong>while</strong> este mai directă, dar trebuie să garantăm că secvența se execută cel puțin o dată.</p>
+            
+            <div class="code-comparison">
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="title">✅ Bucla Do-While originală</span>
+                        <div class="code-buttons">
+                            <div class="code-btn red"></div>
+                            <div class="code-btn yellow"></div>
+                            <div class="code-btn green"></div>
+                        </div>
+                    </div>
+                    <pre><code><span class="keyword">do</span> {
+    <span class="comment">// secvența</span>
+} <span class="keyword">while</span>(<span class="variable">conditie</span>);</code></pre>
+                </div>
+                
+                <div class="transform-arrow-vertical">
+                    <div>⟷</div>
+                    <div class="arrow-label">TRANSFORMĂ</div>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="title">🔍 Echivalentul While</span>
+                        <div class="code-buttons">
+                            <div class="code-btn red"></div>
+                            <div class="code-btn yellow"></div>
+                            <div class="code-btn green"></div>
+                        </div>
+                    </div>
+                    <pre><code><span class="comment">// secvența (executată o dată)</span>
+<span class="keyword">while</span>(<span class="variable">conditie</span>) {
+    <span class="comment">// secvența</span>
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="steps-container">
+                <h3 class="steps-title">🎯 Pașii transformării</h3>
+                <div class="step-item">
+                    <span class="step-number">1</span>
+                    <strong>Execuție inițială:</strong> Scrie secvența o dată înainte de bucla while
+                </div>
+                <div class="step-item">
+                    <span class="step-number">2</span>
+                    <strong>Bucla while:</strong> Creează bucla while cu aceeași condiție
+                </div>
+                <div class="step-item">
+                    <span class="step-number">3</span>
+                    <strong>Corpul buclei:</strong> Repetă aceeași secvență în corpul while-ului
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <h4 class="warning-title">💡 Important!</h4>
+                <p>Deoarece bucla do-while execută secvența cel puțin o dată, este necesar să o scriem o dată în plus înainte de a scrie structura cu test inițial.</p>
+            </div>
+        </div>
+        
+        <div class="content-card for-to-while scroll-reveal">
+            <h2><span class="icon">🔢</span>For → While</h2>
+            
+            <p style="margin-bottom: 2rem;">Transformarea unei bucle <strong>for</strong> într-o buclă <strong>while</strong> implică separarea celor trei componente ale buclei for.</p>
+            
+            <div class="code-comparison">
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="title">🔢 Bucla For originală</span>
+                        <div class="code-buttons">
+                            <div class="code-btn red"></div>
+                            <div class="code-btn yellow"></div>
+                            <div class="code-btn green"></div>
+                        </div>
+                    </div>
+                    <pre><code><span class="keyword">for</span>(<span class="variable">init</span>; <span class="variable">conditie</span>; <span class="variable">increment</span>) {
+    <span class="comment">// secvența</span>
+}</code></pre>
+                </div>
+                
+                <div class="transform-arrow-vertical">
+                    <div>⟷</div>
+                    <div class="arrow-label">TRANSFORMĂ</div>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="title">🔍 Echivalentul While</span>
+                        <div class="code-buttons">
+                            <div class="code-btn red"></div>
+                            <div class="code-btn yellow"></div>
+                            <div class="code-btn green"></div>
+                        </div>
+                    </div>
+                    <pre><code><span class="variable">init</span>;
+<span class="keyword">while</span>(<span class="variable">conditie</span>) {
+    <span class="comment">// secvența</span>
+    <span class="variable">increment</span>;
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="steps-container">
+                <h3 class="steps-title">🎯 Pașii transformării</h3>
+                <div class="step-item">
+                    <span class="step-number">1</span>
+                    <strong>Inițializarea:</strong> Mută prima expresie (init) înainte de bucla while
+                </div>
+                <div class="step-item">
+                    <span class="step-number">2</span>
+                    <strong>Condiția:</strong> Folosește a doua expresie ca și condiție pentru while
+                </div>
+                <div class="step-item">
+                    <span class="step-number">3</span>
+                    <strong>Incrementarea:</strong> Adaugă a treia expresie la sfârșitul corpului buclei
+                </div>
+                <div class="step-item">
+                    <span class="step-number">4</span>
+                    <strong>Corpul:</strong> Păstrează secvența originală între inițializare și incrementare
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); border-radius: 15px; padding: 2rem; margin: 2rem 0; border: 2px solid rgba(17, 153, 142, 0.2);">
+                <h4 style="color: #11998e; margin-bottom: 1rem;">💡 Exemplu practic</h4>
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center;">
+                    <div style="background: #1e1e2e; color: #e1e5e9; padding: 1rem; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+for(i=1; i<=10; i++) {<br>
+&nbsp;&nbsp;cout << i;<br>
+}
+                    </div>
+                    <div style="font-size: 1.5rem; color: #11998e;">→</div>
+                    <div style="background: #1e1e2e; color: #e1e5e9; padding: 1rem; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+i = 1;<br>
+while(i <= 10) {<br>
+&nbsp;&nbsp;cout << i;<br>
+&nbsp;&nbsp;i++;<br>
+}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card interactive scroll-reveal">
+            <h2><span class="icon">🧪</span>Transformator interactiv</h2>
+            
+            <div class="interactive-transformer">
+                <h3 class="transformer-title">🚀 Convertește buclele automat!</h3>
+                
+                <div class="transformer-controls">
+                    <div class="transformer-input">
+                        <label for="source-type">Tipul buclei sursă:</label>
+                        <select id="source-type">
+                            <option value="while">While Loop</option>
+                            <option value="do-while">Do-While Loop</option>
+                            <option value="for">For Loop</option>
+                        </select>
+                    </div>
+                    
+                    <div class="transformer-input">
+                        <label for="target-type">Tipul buclei țintă:</label>
+                        <select id="target-type">
+                            <option value="do-while">Do-While Loop</option>
+                            <option value="while">While Loop</option>
+                            <option value="for">For Loop</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="transformer-input">
+                    <label for="source-code">Codul sursă (introdu bucla ta):</label>
+                    <textarea id="source-code" placeholder="Exemplu: while(i < 10) { cout << i; i++; }">while(i < 10) {
+    cout << i << " ";
+    i++;
+}</textarea>
+                </div>
+                
+                <div style="text-align: center; margin: 2rem 0;">
+                    <button class="transform-btn" onclick="transformCode()">🔄 Transformă codul</button>
+                    <button class="transform-btn" onclick="showExplanation()">💡 Explică transformarea</button>
+                    <button class="transform-btn" onclick="generateExample()">🎲 Generează exemplu</button>
+                </div>
+                
+                <div class="transform-result" id="transform-result">
+                    <h4 style="color: #11998e; margin-bottom: 1rem;">📋 Rezultatul transformării va apărea aici</h4>
+                    <p style="color: var(--text-secondary);">Selectează tipurile de bucle și introduce codul pentru a vedea transformarea!</p>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 3rem;">
+                <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); padding: 2rem; border-radius: 20px; text-align: center; border: 2px solid rgba(102, 126, 234, 0.2);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                    <h4 style="color: #6366f1; margin-bottom: 0.5rem;">Transformări automate</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Convertește instant între toate tipurile de bucle</p>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); padding: 2rem; border-radius: 20px; text-align: center; border: 2px solid rgba(240, 147, 251, 0.2);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">💡</div>
+                    <h4 style="color: #f093fb; margin-bottom: 0.5rem;">Explicații detaliate</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Înțelege logica din spatele fiecărei transformări</p>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); padding: 2rem; border-radius: 20px; text-align: center; border: 2px solid rgba(17, 153, 142, 0.2);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎲</div>
+                    <h4 style="color: #11998e; margin-bottom: 0.5rem;">Exemple generate</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Generează exemple practice pentru fiecare tip</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Interactive transformer functions
+        function transformCode() {
+            const sourceType = document.getElementById('source-type').value;
+            const targetType = document.getElementById('target-type').value;
+            const sourceCode = document.getElementById('source-code').value.trim();
+            const resultDiv = document.getElementById('transform-result');
+            
+            if (!sourceCode) {
+                resultDiv.innerHTML = `
+                    <h4 style="color: #ef4444; margin-bottom: 1rem;">❌ Eroare</h4>
+                    <p>Te rog introdu codul sursă pentru transformare!</p>
+                `;
+                return;
+            }
+            
+            if (sourceType === targetType) {
+                resultDiv.innerHTML = `
+                    <h4 style="color: #f59e0b; margin-bottom: 1rem;">⚠️ Atenție</h4>
+                    <p>Tipul sursă și tipul țintă sunt identice. Alege tipuri diferite pentru transformare!</p>
+                `;
+                return;
+            }
+            
+            let transformedCode = '';
+            let explanation = '';
+            
+            // Basic transformation logic (simplified)
+            if (sourceType === 'while' && targetType === 'do-while') {
+                transformedCode = `if(conditie) {
+    do {
+        // corpul buclei
+    } while(conditie);
+}`;
+                explanation = 'Transformarea while → do-while necesită un test inițial pentru a evita execuția când condiția este falsă de la început.';
+            } else if (sourceType === 'do-while' && targetType === 'while') {
+                transformedCode = `// execută secvența o dată
+while(conditie) {
+    // corpul buclei
+}`;
+                explanation = 'Transformarea do-while → while necesită execuția secvenței o dată înainte de bucla while.';
+            } else if (sourceType === 'for' && targetType === 'while') {
+                transformedCode = `init;
+while(conditie) {
+    // corpul buclei
+    increment;
+}`;
+                explanation = 'Transformarea for → while separă inițializarea, condiția și incrementarea în părți distincte.';
+            } else if (sourceType === 'while' && targetType === 'for') {
+                transformedCode = `// Această transformare necesită identificarea variabilei contor
+for(init; conditie; increment) {
+    // corpul buclei
+}`;
+                explanation = 'Transformarea while → for este posibilă doar dacă bucla while folosește un contor explicit.';
+            } else {
+                transformedCode = `// Transformarea ${sourceType} → ${targetType}
+// Cod transformat va apărea aici...`;
+                explanation = `Transformarea din ${sourceType} în ${targetType} necesită analiză specifică a structurii buclei.`;
+            }
+            
+            resultDiv.innerHTML = `
+                <h4 style="color: #11998e; margin-bottom: 1rem;">✅ Cod transformat (${sourceType} → ${targetType})</h4>
+                <div class="result-code">${transformedCode}</div>
+                <h4 style="color: #667eea; margin: 1.5rem 0 0.5rem;">💡 Explicație</h4>
+                <p style="color: var(--text-secondary);">${explanation}</p>
+            `;
+        }
+        
+        function showExplanation() {
+            const sourceType = document.getElementById('source-type').value;
+            const targetType = document.getElementById('target-type').value;
+            const resultDiv = document.getElementById('transform-result');
+            
+            const explanations = {
+                'while-do-while': {
+                    title: 'While → Do-While',
+                    steps: [
+                        'Adaugă un test if înainte de bucla do-while',
+                        'Copiază corpul buclei în do-while',
+                        'Folosește aceeași condiție în while final',
+                        'Rezultat: bucla se execută 0 sau mai multe ori'
+                    ]
+                },
+                'do-while-while': {
+                    title: 'Do-While → While',
+                    steps: [
+                        'Execută corpul buclei o dată înainte de while',
+                        'Creează bucla while cu aceeași condiție',
+                        'Copiază corpul în bucla while',
+                        'Rezultat: bucla se execută cel puțin o dată'
+                    ]
+                },
+                'for-while': {
+                    title: 'For → While',
+                    steps: [
+                        'Extrage inițializarea înainte de while',
+                        'Folosește condiția ca test pentru while',
+                        'Adaugă incrementarea la sfârșitul corpului',
+                        'Rezultat: control explicit asupra contorului'
+                    ]
+                }
+            };
+            
+            const key = `${sourceType}-${targetType}`;
+            const explanation = explanations[key] || {
+                title: `${sourceType} → ${targetType}`,
+                steps: ['Această transformare necesită analiză specifică', 'Identifică componentele buclei sursă', 'Adaptează structura la tipul țintă']
+            };
+            
+            const stepsHtml = explanation.steps.map((step, index) => 
+                `<div style="display: flex; align-items: center; gap: 1rem; margin: 0.5rem 0;">
+                    <div style="background: #11998e; color: white; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem;">${index + 1}</div>
+                    <span>${step}</span>
+                </div>`
+            ).join('');
+            
+            resultDiv.innerHTML = `
+                <h4 style="color: #11998e; margin-bottom: 1rem;">📚 Explicație: ${explanation.title}</h4>
+                <div style="background: rgba(17, 153, 142, 0.1); border-radius: 10px; padding: 1.5rem;">
+                    ${stepsHtml}
+                </div>
+            `;
+        }
+        
+        function generateExample() {
+            const sourceType = document.getElementById('source-type').value;
+            const targetType = document.getElementById('target-type').value;
+            
+            const examples = {
+                'while': `while(i <= 10) {
+    cout << i << " ";
+    i++;
+}`,
+                'do-while': `do {
+    cout << i << " ";
+    i++;
+} while(i <= 10);`,
+                'for': `for(i = 1; i <= 10; i++) {
+    cout << i << " ";
+}`
+            };
+            
+            const sourceCode = examples[sourceType];
+            document.getElementById('source-code').value = sourceCode;
+            
+            // Auto-transform after setting example
+            setTimeout(transformCode, 500);
+        }
+        
+        // Add hover effects
+        document.querySelectorAll('.transform-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        document.querySelectorAll('.step-item').forEach(step => {
+            step.addEventListener('click', function() {
+                this.style.background = 'rgba(102, 126, 234, 0.15)';
+                this.style.transform = 'translateX(15px) scale(1.02)';
+                setTimeout(() => {
+                    this.style.background = 'rgba(255, 255, 255, 0.8)';
+                    this.style.transform = 'translateX(0) scale(1)';
+                }, 300);
+            });
+        });
+        
+        // Auto-update target type based on source type
+        document.getElementById('source-type').addEventListener('change', function() {
+            const targetSelect = document.getElementById('target-type');
+            const sourceType = this.value;
+            
+            // Clear and repopulate target options
+            targetSelect.innerHTML = '';
+            
+            const allTypes = ['while', 'do-while', 'for'];
+            allTypes.forEach(type => {
+                if (type !== sourceType) {
+                    const option = document.createElement('option');
+                    option.value = type;
+                    option.textContent = type.charAt(0).toUpperCase() + type.slice(1) + ' Loop';
+                    targetSelect.appendChild(option);
+                }
+            });
+        });
+        
+        // Initialize with default example
+        document.addEventListener('DOMContentLoaded', function() {
+            generateExample();
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'Enter':
+                        e.preventDefault();
+                        transformCode();
+                        break;
+                    case 't':
+                        e.preventDefault();
+                        transformCode();
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        showExplanation();
+                        break;
+                    case 'g':
+                        e.preventDefault();
+                        generateExample();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

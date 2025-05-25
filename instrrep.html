@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lecție interactivă - Instrucțiuni repetitive în C++">
+    <meta name="keywords" content="C++, bucle, for, while, do-while, programare">
+    <title>C++ Loops - Instrucțiuni Repetitive</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --code-bg: #1e1e2e;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-light: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+        }
+        
+        .floating-loops {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .loop-float {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.1);
+            animation: floatLoop 20s infinite linear;
+        }
+        
+        .loop-float:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .loop-float:nth-child(2) { left: 30%; animation-delay: -5s; }
+        .loop-float:nth-child(3) { left: 50%; animation-delay: -10s; }
+        .loop-float:nth-child(4) { left: 70%; animation-delay: -15s; }
+        
+        @keyframes floatLoop {
+            0% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { 
+                transform: translateY(-100px) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+        
+        /* Hero section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cpp-logo {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-gradient);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: var(--shadow-light);
+            font-size: 3rem;
+        }
+        
+        /* Loop showcase */
+        .loop-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .loop-preview {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .loop-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .loop-preview.while::before { background: var(--primary-gradient); }
+        .loop-preview.do-while::before { background: var(--secondary-gradient); }
+        .loop-preview.for::before { background: var(--success-gradient); }
+        
+        .loop-preview:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .loop-preview.while:hover { border-color: #667eea; }
+        .loop-preview.do-while:hover { border-color: #f093fb; }
+        .loop-preview.for:hover { border-color: #11998e; }
+        
+        .loop-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .loop-code {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        
+        /* Content sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .content-card.while-section::before { background: var(--primary-gradient); }
+        .content-card.do-while-section::before { background: var(--secondary-gradient); }
+        .content-card.for-section::before { background: var(--success-gradient); }
+        .content-card.examples::before { background: var(--warning-gradient); }
+        
+        .content-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        /* Code containers */
+        .code-container {
+            position: relative;
+            margin: 2rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .code-header {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .code-header .title {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .code-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .code-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .code-btn.red { background: #ff5f57; }
+        .code-btn.yellow { background: #ffbd2e; }
+        .code-btn.green { background: #28ca42; }
+        
+        pre {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 0;
+        }
+        
+        /* Syntax highlighting */
+        .keyword { color: #c792ea; font-weight: 500; }
+        .variable { color: #82aaff; }
+        .number { color: #f78c6c; }
+        .operator { color: #89ddff; }
+        .comment { color: #546e7a; font-style: italic; }
+        .string { color: #c3e88d; }
+        
+        /* Loop comparison */
+        .loop-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .comparison-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .comparison-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .comparison-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .comparison-pros {
+            margin: 1.5rem 0;
+        }
+        
+        .pro-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+        
+        .pro-icon {
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        /* Interactive demo */
+        .interactive-demo {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            border: 2px solid rgba(17, 153, 142, 0.2);
+        }
+        
+        .demo-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .demo-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-input {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .demo-input label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .demo-input input, .demo-input select {
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(17, 153, 142, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .demo-input input:focus, .demo-input select:focus {
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .demo-btn {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(17, 153, 142, 0.4);
+        }
+        
+        .demo-output {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-left: 4px solid #11998e;
+            font-family: 'JetBrains Mono', monospace;
+            white-space: pre-wrap;
+            min-height: 100px;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .output-line {
+            padding: 0.25rem 0;
+        }
+        
+        /* Visual flowchart */
+        .flowchart {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .flowchart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+        
+        .flow-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .flow-step {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            min-width: 120px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .flow-step:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: #667eea;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(0); }
+            40% { transform: translateX(-5px); }
+            60% { transform: translateX(5px); }
+        }
+        
+        /* Notes and tips */
+        .note-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .note-title {
+            color: #f59e0b;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-card {
+                padding: 2rem;
+            }
+            
+            .loop-showcase {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .flow-steps {
+                flex-direction: column;
+            }
+            
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-loops">
+        <div class="loop-float">for(;;)</div>
+        <div class="loop-float">while()</div>
+        <div class="loop-float">do{}</div>
+        <div class="loop-float">for(i=0;i<n;i++)</div>
+    </div>
+    
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge">
+                🔄 C++ Fundamentals
+            </div>
+            <div class="cpp-logo">🔂</div>
+            <h1>Instrucțiuni Repetitive</h1>
+            <p class="subtitle">Stăpânește puterea buclelor în C++ - while, do-while și for - instrumentele esențiale pentru orice programator!</p>
+            
+            <div class="loop-showcase">
+                <div class="loop-preview while">
+                    <h3 class="loop-title">🔍 While Loop</h3>
+                    <div class="loop-code">
+                        <span class="keyword">while</span>(<span class="variable">conditie</span>) {<br>
+                        &nbsp;&nbsp;<span class="comment">// cod</span><br>
+                        }
+                    </div>
+                    <p>Test inițial - poate să nu se execute deloc</p>
+                </div>
+                
+                <div class="loop-preview do-while">
+                    <h3 class="loop-title">✅ Do-While Loop</h3>
+                    <div class="loop-code">
+                        <span class="keyword">do</span> {<br>
+                        &nbsp;&nbsp;<span class="comment">// cod</span><br>
+                        } <span class="keyword">while</span>(<span class="variable">conditie</span>);
+                    </div>
+                    <p>Test final - se execută cel puțin o dată</p>
+                </div>
+                
+                <div class="loop-preview for">
+                    <h3 class="loop-title">🔢 For Loop</h3>
+                    <div class="loop-code">
+                        <span class="keyword">for</span>(<span class="variable">init</span>; <span class="variable">conditie</span>; <span class="variable">increment</span>) {<br>
+                        &nbsp;&nbsp;<span class="comment">// cod</span><br>
+                        }
+                    </div>
+                    <p>Cu contor - ideal pentru iterații cunoscute</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="content-card while-section scroll-reveal">
+            <h2>🔍 While Loop - Cu test inițial</h2>
+            
+            <p style="margin-bottom: 2rem;">Bucla <strong>while</strong> verifică condiția înainte de fiecare execuție. Dacă condiția este falsă de la început, codul din buclă nu se va executa niciodată.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="title">🔄 Sintaxa While</span>
+                    <div class="code-buttons">
+                        <div class="code-btn red"></div>
+                        <div class="code-btn yellow"></div>
+                        <div class="code-btn green"></div>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">while</span>(<span class="variable">conditie</span>) {
+    <span class="comment">// instrucțiunile care se repetă</span>
+    <span class="comment">// IMPORTANT: să modifici variabila din condiție!</span>
+}</code></pre>
+            </div>
+            
+            <div class="flowchart">
+                <h4 class="flowchart-title">🎯 Fluxul de execuție While</h4>
+                <div class="flow-steps">
+                    <div class="flow-step">Verifică<br>condiția</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">Adevărat?<br>Execută codul</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">Repetă</div>
+                    <div class="flow-arrow">↵</div>
+                    <div class="flow-step">Fals?<br>Ieși din buclă</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card do-while-section scroll-reveal">
+            <h2>✅ Do-While Loop - Cu test final</h2>
+            
+            <p style="margin-bottom: 2rem;">Bucla <strong>do-while</strong> execută codul cel puțin o dată, apoi verifică condiția. Este utilă când vrei să garantezi că o acțiune se întâmplă măcar o dată.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="title">🔄 Sintaxa Do-While</span>
+                    <div class="code-buttons">
+                        <div class="code-btn red"></div>
+                        <div class="code-btn yellow"></div>
+                        <div class="code-btn green"></div>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">do</span> {
+    <span class="comment">// instrucțiunile care se repetă</span>
+    <span class="comment">// se execută ÎNTOTDEAUNA cel puțin o dată</span>
+} <span class="keyword">while</span>(<span class="variable">conditie</span>);</code></pre>
+            </div>
+            
+            <div class="note-box">
+                <h4 class="note-title">⚡ Diferența cheie</h4>
+                <ul style="color: var(--text-secondary); line-height: 1.8;">
+                    <li><strong>While:</strong> Test ÎNAINTE - poate să nu se execute</li>
+                    <li><strong>Do-While:</strong> Test DUPĂ - se execută întotdeauna cel puțin o dată</li>
+                    <li><strong>Atenție:</strong> Nu uita punctul și virgula după while în do-while!</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content-card for-section scroll-reveal">
+            <h2>🔢 For Loop - Cu contor</h2>
+            
+            <p style="margin-bottom: 2rem;">Bucla <strong>for</strong> este perfectă când știi exact de câte ori vrei să repeți o acțiune. Are trei părți: inițializare, condiție și incrementare.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="title">🔄 Sintaxa For</span>
+                    <div class="code-buttons">
+                        <div class="code-btn red"></div>
+                        <div class="code-btn yellow"></div>
+                        <div class="code-btn green"></div>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">for</span>(<span class="variable">expresie1</span>; <span class="variable">expresie2</span>; <span class="variable">expresie3</span>) {
+    <span class="comment">// codul care se repetă</span>
+}
+
+<span class="comment">// expresie1: inițializare (ex: i=0)</span>
+<span class="comment">// expresie2: condiție (ex: i<10)</span>
+<span class="comment">// expresie3: incrementare (ex: i++)</span></code></pre>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: rgba(17, 153, 142, 0.1); padding: 1.5rem; border-radius: 15px; border-left: 4px solid #11998e;">
+                    <h4 style="color: #11998e; margin-bottom: 0.5rem;">🚀 Prima expresie</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Dă contorului valoarea inițială. Poate conține mai multe inițializări separate prin virgulă.</p>
+                </div>
+                <div style="background: rgba(99, 102, 241, 0.1); padding: 1.5rem; border-radius: 15px; border-left: 4px solid #6366f1;">
+                    <h4 style="color: #6366f1; margin-bottom: 0.5rem;">🎯 A doua expresie</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Condiție care verifică dacă contorul a ajuns la valoarea finală.</p>
+                </div>
+                <div style="background: rgba(240, 147, 251, 0.1); padding: 1.5rem; border-radius: 15px; border-left: 4px solid #f093fb;">
+                    <h4 style="color: #f093fb; margin-bottom: 0.5rem;">📈 A treia expresie</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Crește sau descrește contorul. Poate conține mai multe instrucțiuni.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card examples scroll-reveal">
+            <h2>💡 Exemple practice</h2>
+            
+            <p style="margin-bottom: 2rem;">Să calculăm suma S = 2 + 4 + 6 + ... + 2*n cu diferite tipuri de bucle:</p>
+            
+            <div class="loop-comparison">
+                <div class="comparison-card">
+                    <h3 class="comparison-title">🔢 Varianta cu FOR clasică</h3>
+                    <div class="code-container">
+                        <pre><code><span class="variable">s</span> <span class="operator">=</span> <span class="number">0</span>;
+<span class="keyword">for</span>(<span class="variable">i</span> <span class="operator">=</span> <span class="number">2</span>; <span class="variable">i</span> <span class="operator"><=</span> <span class="number">2</span><span class="operator">*</span><span class="variable">n</span>; <span class="variable">i</span> <span class="operator">=</span> <span class="variable">i</span><span class="operator">+</span><span class="number">2</span>)
+    <span class="variable">s</span> <span class="operator">=</span> <span class="variable">s</span> <span class="operator">+</span> <span class="variable">i</span>;</code></pre>
+                    </div>
+                    <div class="comparison-pros">
+                        <div class="pro-item">
+                            <span class="pro-icon">✓</span>
+                            <span>Clar și concis</span>
+                        </div>
+                        <div class="pro-item">
+                            <span class="pro-icon">✓</span>
+                            <span>Variabilele sunt separate</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comparison-card">
+                    <h3 class="comparison-title">⚡ Varianta cu FOR compactă</h3>
+                    <div class="code-container">
+                        <pre><code><span class="keyword">for</span>(<span class="variable">s</span><span class="operator">=</span><span class="number">0</span>, <span class="variable">i</span><span class="operator">=</span><span class="number">2</span>; <span class="variable">i</span><span class="operator"><=</span><span class="number">2</span><span class="operator">*</span><span class="variable">n</span>; <span class="variable">s</span><span class="operator">=</span><span class="variable">s</span><span class="operator">+</span><span class="variable">i</span>, <span class="variable">i</span><span class="operator">=</span><span class="variable">i</span><span class="operator">+</span><span class="number">2</span>)
+    ; <span class="comment">// corpul buclei este gol!</span></code></pre>
+                    </div>
+                    <div class="comparison-pros">
+                        <div class="pro-item">
+                            <span class="pro-icon">✓</span>
+                            <span>Foarte compact</span>
+                        </div>
+                        <div class="pro-item">
+                            <span class="pro-icon">✓</span>
+                            <span>Totul într-o singură linie</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note-box">
+                <h4 class="note-title">📝 Note importante</h4>
+                <ul style="color: var(--text-secondary); line-height: 1.8;">
+                    <li>Dacă secvența are cel puțin două subinstrucțiuni, acestea se grupează între <code>{}</code></li>
+                    <li>Instrucțiunea <strong>for</strong> are între <code>()</code> trei expresii separate prin <code>;</code></li>
+                    <li>În varianta compactă, operațiunile sunt separate prin virgulă <code>,</code></li>
+                    <li>Corpul buclei poate fi chiar gol dacă toată logica e în header</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content-card interactive scroll-reveal">
+            <h2>🧪 Laborator interactiv</h2>
+            
+            <div class="interactive-demo">
+                <h3 class="demo-title">🚀 Testează buclele în acțiune!</h3>
+                
+                <div class="demo-controls">
+                    <div class="demo-input">
+                        <label for="loop-type">Tipul de buclă:</label>
+                        <select id="loop-type">
+                            <option value="for">For Loop</option>
+                            <option value="while">While Loop</option>
+                            <option value="do-while">Do-While Loop</option>
+                        </select>
+                    </div>
+                    
+                    <div class="demo-input">
+                        <label for="start-val">Valoarea inițială:</label>
+                        <input type="number" id="start-val" value="1" min="0">
+                    </div>
+                    
+                    <div class="demo-input">
+                        <label for="end-val">Valoarea finală:</label>
+                        <input type="number" id="end-val" value="5" min="1">
+                    </div>
+                    
+                    <div class="demo-input">
+                        <label for="step-val">Pasul:</label>
+                        <input type="number" id="step-val" value="1" min="1">
+                    </div>
+                </div>
+                
+                <div class="demo-buttons">
+                    <button class="demo-btn" onclick="runLoop()">🔄 Rulează bucla</button>
+                    <button class="demo-btn" onclick="showCode()">💻 Arată codul</button>
+                    <button class="demo-btn" onclick="clearOutput()">🗑️ Șterge rezultatul</button>
+                </div>
+                
+                <div class="demo-output" id="demo-output">
+                    <div class="output-line">Configurează parametrii și apasă "Rulează bucla" pentru a vedea rezultatul!</div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); padding: 2rem; border-radius: 20px; text-align: center; border: 2px solid rgba(102, 126, 234, 0.2);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                    <h4 style="color: #6366f1; margin-bottom: 0.5rem;">Învățare vizuală</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Vezi cum funcționează fiecare tip de buclă pas cu pas</p>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); padding: 2rem; border-radius: 20px; text-align: center; border: 2px solid rgba(17, 153, 142, 0.2);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                    <h4 style="color: #11998e; margin-bottom: 0.5rem;">Experimentare</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Modifică parametrii și observă diferențele</p>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); padding: 2rem; border-radius: 20px; text-align: center; border: 2px solid rgba(240, 147, 251, 0.2);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">💻</div>
+                    <h4 style="color: #f093fb; margin-bottom: 0.5rem;">Cod generat</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Generează codul C++ automat bazat pe setări</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Interactive demo functions
+        function getInputValues() {
+            const loopType = document.getElementById('loop-type').value;
+            const startVal = parseInt(document.getElementById('start-val').value) || 1;
+            const endVal = parseInt(document.getElementById('end-val').value) || 5;
+            const stepVal = parseInt(document.getElementById('step-val').value) || 1;
+            
+            return { loopType, startVal, endVal, stepVal };
+        }
+        
+        function runLoop() {
+            const { loopType, startVal, endVal, stepVal } = getInputValues();
+            const output = document.getElementById('demo-output');
+            
+            if (startVal > endVal) {
+                output.innerHTML = '<div class="output-line" style="color: #ef4444;">❌ Eroare: Valoarea inițială trebuie să fie mai mică decât cea finală!</div>';
+                return;
+            }
+            
+            let result = [];
+            let steps = [];
+            let iterations = 0;
+            
+            switch (loopType) {
+                case 'for':
+                    for (let i = startVal; i <= endVal; i += stepVal) {
+                        result.push(i);
+                        steps.push(`Iterația ${++iterations}: i = ${i}`);
+                        if (iterations > 20) break; // Prevent infinite loops
+                    }
+                    break;
+                    
+                case 'while':
+                    let i = startVal;
+                    while (i <= endVal && iterations < 20) {
+                        result.push(i);
+                        steps.push(`Iterația ${++iterations}: i = ${i}, condiția (${i} <= ${endVal}) este adevărată`);
+                        i += stepVal;
+                    }
+                    steps.push(`Iterația ${iterations + 1}: i = ${i}, condiția (${i} <= ${endVal}) este falsă - STOP`);
+                    break;
+                    
+                case 'do-while':
+                    let j = startVal;
+                    do {
+                        result.push(j);
+                        steps.push(`Iterația ${++iterations}: j = ${j}, execută corpul buclei`);
+                        j += stepVal;
+                        if (iterations > 20) break;
+                    } while (j <= endVal);
+                    steps.push(`După iterația ${iterations}: j = ${j}, condiția (${j} <= ${endVal}) este ${j <= endVal ? 'adevărată' : 'falsă'} - ${j <= endVal ? 'CONTINUĂ' : 'STOP'}`);
+                    break;
+            }
+            
+            const outputHtml = `
+                <div class="output-line"><strong>🎯 Rezultat:</strong> [${result.join(', ')}]</div>
+                <div class="output-line"><strong>📊 Total iterații:</strong> ${iterations}</div>
+                <div class="output-line"><strong>📋 Pași de execuție:</strong></div>
+                ${steps.map(step => `<div class="output-line" style="margin-left: 1rem;">• ${step}</div>`).join('')}
+            `;
+            
+            output.innerHTML = outputHtml;
+        }
+        
+        function showCode() {
+            const { loopType, startVal, endVal, stepVal } = getInputValues();
+            const output = document.getElementById('demo-output');
+            
+            let code = '';
+            
+            switch (loopType) {
+                case 'for':
+                    code = `// Bucla FOR
+for (int i = ${startVal}; i <= ${endVal}; i += ${stepVal}) {
+    cout << i << " ";
+}`;
+                    break;
+                    
+                case 'while':
+                    code = `// Bucla WHILE
+int i = ${startVal};
+while (i <= ${endVal}) {
+    cout << i << " ";
+    i += ${stepVal};
+}`;
+                    break;
+                    
+                case 'do-while':
+                    code = `// Bucla DO-WHILE
+int i = ${startVal};
+do {
+    cout << i << " ";
+    i += ${stepVal};
+} while (i <= ${endVal});`;
+                    break;
+            }
+            
+            const outputHtml = `
+                <div class="output-line"><strong>💻 Codul C++ generat:</strong></div>
+                <div style="background: #1e1e2e; color: #e1e5e9; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; white-space: pre-wrap;">${code}</div>
+                <div class="output-line" style="color: #10b981;">✨ Codul este gata să fie copiat și folosit în programul tău!</div>
+            `;
+            
+            output.innerHTML = outputHtml;
+        }
+        
+        function clearOutput() {
+            document.getElementById('demo-output').innerHTML = '<div class="output-line">Output șters. Configurează parametrii și rulează din nou!</div>';
+        }
+        
+        // Add hover effects to loop previews
+        document.querySelectorAll('.loop-preview').forEach(preview => {
+            preview.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            preview.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Add click effects to flow steps
+        document.querySelectorAll('.flow-step').forEach(step => {
+            step.addEventListener('click', function() {
+                this.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1.05)';
+                }, 200);
+            });
+        });
+        
+        // Add hover effects to comparison cards
+        document.querySelectorAll('.comparison-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+                this.style.borderColor = '#667eea';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.borderColor = 'transparent';
+            });
+        });
+        
+        // Demo button hover effects
+        document.querySelectorAll('.demo-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Code button animations
+        document.querySelectorAll('.code-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(1.3)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+        
+        // Auto-run demo on parameter change
+        document.getElementById('loop-type').addEventListener('change', function() {
+            setTimeout(runLoop, 500);
+        });
+        
+        // Initialize demo
+        document.addEventListener('DOMContentLoaded', function() {
+            runLoop();
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'Enter':
+                        e.preventDefault();
+                        runLoop();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        runLoop();
+                        break;
+                    case 'c':
+                        e.preventDefault();
+                        showCode();
+                        break;
+                }
+            }
+        });
+        
+        // Add visual feedback for successful operations
+        function showSuccess(message) {
+            const output = document.getElementById('demo-output');
+            const successDiv = document.createElement('div');
+            successDiv.className = 'output-line';
+            successDiv.style.color = '#10b981';
+            successDiv.style.fontWeight = '600';
+            successDiv.innerHTML = `✅ ${message}`;
+            output.appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.style.opacity = '0.7';
+            }, 2000);
+        }
+        
+        // Add tooltips for better UX
+        document.querySelectorAll('.demo-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                const tooltips = {
+                    '🔄 Rulează bucla': 'Simulează execuția buclei cu parametrii setați',
+                    '💻 Arată codul': 'Generează codul C++ echivalent',
+                    '🗑️ Șterge rezultatul': 'Curăță zona de output'
+                };
+                
+                const tooltip = tooltips[this.textContent];
+                if (tooltip) {
+                    this.title = tooltip;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

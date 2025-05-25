@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tutorial complet pentru schimbarea extensiilor de fișiere în Windows">
+    <meta name="keywords" content="windows, extensii, fișiere, tutorial, file explorer">
+    <title>Windows Mastery - Schimbarea Extensiilor de Fișiere</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
+            opacity: 0.1;
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        .shape:nth-child(1) { 
+            width: 80px; height: 80px; 
+            left: 10%; top: 20%; 
+            animation-delay: 0s; 
+        }
+        .shape:nth-child(2) { 
+            width: 120px; height: 120px; 
+            left: 70%; top: 60%; 
+            animation-delay: -5s; 
+        }
+        .shape:nth-child(3) { 
+            width: 60px; height: 60px; 
+            left: 50%; top: 10%; 
+            animation-delay: -10s; 
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        /* Header */
+        .header {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .windows-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: 0 20px 40px rgba(0, 120, 212, 0.3);
+        }
+        
+        .windows-icon::after {
+            content: '📄';
+            font-size: 2.5rem;
+        }
+        
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        
+        /* Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        
+        .section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        .section h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        /* Step-by-step guide */
+        .steps {
+            display: grid;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .step {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Example box */
+        .example {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .example::before {
+            content: '💡';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--accent);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .file-example {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .file-extension {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        /* Warning/Note boxes */
+        .note {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .note::before {
+            content: '💡';
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--warning);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .warning::before {
+            content: '⚠️';
+            background: var(--warning);
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--danger);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .danger::before {
+            content: '🚨';
+            background: var(--danger);
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 2rem;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <header class="header">
+        <div class="header-content">
+            <div class="windows-icon"></div>
+            <h1>Schimbarea Extensiilor de Fișiere</h1>
+            <p class="subtitle">Ghidul complet pentru modificarea extensiilor fișierelor în Windows</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">📄</div>
+                <h2>Ce sunt extensiile de fișiere?</h2>
+            </div>
+            
+            <p>Orice fișier în Windows are un nume și o extensie. Extensia este de obicei ascunsă și indică tipul fișierului și cu ce program se poate deschide.</p>
+            
+            <div class="example">
+                <strong>Exemplu:</strong>
+                <div class="file-example">
+                    <div class="file-icon">🖼️</div>
+                    <div class="file-info">
+                        <div class="file-name">imagine.png</div>
+                        <div class="file-extension">Nume: "imagine" | Extensie: ".png"</div>
+                    </div>
+                </div>
+            </div>
+            
+            <p>Pentru a schimba un fișier cu extensia ".png" să devină unul cu extensia ".jpg", trebuie să urmați pașii de mai jos.</p>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">👁️</div>
+                <h2>Afișarea extensiilor de fișiere</h2>
+            </div>
+            
+            <p>Înainte de a putea schimba extensiile, trebuie să le facem vizibile în Windows Explorer.</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Deschiderea File Explorer</div>
+                    <div class="step-description">Deschide "This PC" sau "File Explorer" folosind scurtătura Windows + E sau din bara de activități</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Accesarea meniului View</div>
+                    <div class="step-description">Selectează opțiunea "View" din bara de meniuri din partea de sus a File Explorer</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Deschiderea opțiunilor</div>
+                    <div class="step-description">Click pe opțiunea "Options" și apoi pe "Change folder and search options"</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Modificarea setărilor</div>
+                    <div class="step-description">În secțiunea "View", debifează opțiunea "Hide extensions for known file types"</div>
+                </div>
+            </div>
+            
+            <div class="note">
+                <strong>Rezultat:</strong> Acum pentru fiecare fișier vei observa numele și extensia. De exemplu: "document.pdf", "muzica.mp3", "video.mp4"
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>Schimbarea extensiei</h2>
+            </div>
+            
+            <p>Odată ce extensiile sunt vizibile, procesul de schimbare devine foarte simplu:</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Selectarea fișierului</div>
+                    <div class="step-description">Click dreapta pe fișierul ale cărui extensie vrei să o schimbi</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Redenumirea fișierului</div>
+                    <div class="step-description">Selectează "Rename" din meniul contextual sau apasă tasta F2</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Modificarea extensiei</div>
+                    <div class="step-description">Schimbă partea finală a numelui fișierului (extensia) în formatul dorit, de exemplu din ".png" în ".jpg"</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Confirmarea modificării</div>
+                    <div class="step-description">Apasă Enter pentru a confirma modificarea și Windows va întreba dacă ești sigur - confirmă modificarea</div>
+                </div>
+            </div>
+            
+            <div class="warning">
+                <strong>Atenție:</strong> Schimbarea extensiei nu convertește automat fișierul în noul format. Pentru conversii reale, ai nevoie de software specializat.
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>Exemple de extensii comune</h2>
+            </div>
+            
+            <div class="example">
+                <strong>Extensii de imagini:</strong> .jpg, .png, .gif, .bmp, .svg<br>
+                <strong>Extensii de documente:</strong> .pdf, .doc, .docx, .txt, .rtf<br>
+                <strong>Extensii de audio:</strong> .mp3, .wav, .flac, .aac<br>
+                <strong>Extensii de video:</strong> .mp4, .avi, .mkv, .mov<br>
+                <strong>Extensii de arhive:</strong> .zip, .rar, .7z, .tar
+            </div>
+            
+            <div class="note">
+                <strong>Tip profesionist:</strong> Această metodă este utilă când ai nevoie să schimbi rapid extensia pentru compatibilitate cu anumite programe care sunt sensibile la extensii.
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Add click animation to steps
+        document.querySelectorAll('.step').forEach(step => {
+            step.addEventListener('click', function() {
+                this.style.transform = 'translateX(15px) scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = 'translateX(10px) scale(1)';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lecție interactivă C++ - Determinarea primelor n valori cu proprietăți specifice">
+    <meta name="keywords" content="C++, programare, algoritmi, tutoriale">
+    <title>C++ Interactive - Primele n valori</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --code-bg: #1e1e2e;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-light: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+        
+        /* Header section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .hero-text {
+            animation: slideInLeft 1s ease-out;
+        }
+        
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero-text .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+        
+        .cpp-logo {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-gradient);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .cpp-logo::after {
+            content: 'C++';
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .hero-visual {
+            animation: slideInRight 1s ease-out;
+            position: relative;
+        }
+        
+        .code-preview {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: var(--shadow-heavy);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: all 0.3s ease;
+        }
+        
+        .code-preview:hover {
+            transform: perspective(1000px) rotateY(0deg) translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Content section */
+        .content-section {
+            padding: 4rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--secondary-gradient);
+        }
+        
+        .content-card h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            position: relative;
+        }
+        
+        .content-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+        }
+        
+        /* Code block styling */
+        .code-container {
+            position: relative;
+            margin: 2rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .code-header {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .code-header .title {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .code-header .title::before {
+            content: '⚡';
+            font-size: 1.2rem;
+        }
+        
+        .code-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .code-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .code-btn.red { background: #ff5f57; }
+        .code-btn.yellow { background: #ffbd2e; }
+        .code-btn.green { background: #28ca42; }
+        
+        .code-btn:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px currentColor;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 0;
+        }
+        
+        /* Syntax highlighting */
+        .keyword { color: #c792ea; font-weight: 500; }
+        .string { color: #c3e88d; }
+        .number { color: #f78c6c; }
+        .comment { color: #546e7a; font-style: italic; }
+        .operator { color: #89ddff; }
+        .function { color: #82aaff; }
+        
+        /* Interactive elements */
+        .interactive-demo {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            position: relative;
+        }
+        
+        .demo-input {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+        
+        .demo-input label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .demo-input input {
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .demo-input input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .run-btn {
+            background: var(--secondary-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .run-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.4);
+        }
+        
+        .output {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-left: 4px solid #4facfe;
+            font-family: 'JetBrains Mono', monospace;
+            white-space: pre-wrap;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+            
+            .code-preview {
+                transform: none;
+            }
+            
+            .content-card {
+                padding: 2rem;
+            }
+            
+            .demo-input {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="cpp-logo"></div>
+                <h1>Determinarea primelor n valori</h1>
+                <p class="subtitle">Învață să găsești primele n numere care îndeplinesc o proprietate specifică - un algoritm fundamental în programare!</p>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="code-preview">
+                    <div class="code-header">
+                        <span class="title">Algoritm C++</span>
+                        <div class="code-buttons">
+                            <div class="code-btn red"></div>
+                            <div class="code-btn yellow"></div>
+                            <div class="code-btn green"></div>
+                        </div>
+                    </div>
+                    <pre><code><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; count < n; i++) {
+    <span class="keyword">if</span>(<span class="function">hasProperty</span>(i)) {
+        <span class="function">cout</span> << i << <span class="string">" "</span>;
+        count++;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="content-section">
+        <div class="content-card scroll-reveal">
+            <h2>🎯 Cerința problemei</h2>
+            <p>Să se determine primele <strong>n numere</strong> cu suma cifrelor <strong>pară</strong>.</p>
+            <p>Aceasta este o problemă clasică care ne învață cum să căutăm elemente care respectă o anumită condiție și să ne oprim după ce am găsit un număr specificat de elemente.</p>
+        </div>
+        
+        <div class="content-card scroll-reveal">
+            <h2>💡 Soluția explicată</h2>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="title">Codul complet</span>
+                    <div class="code-buttons">
+                        <div class="code-btn red"></div>
+                        <div class="code-btn yellow"></div>
+                        <div class="code-btn green"></div>
+                    </div>
+                </div>
+                <pre><code><span class="comment">// Citim numărul de valori dorite</span>
+<span class="keyword">cin</span> >> n;
+
+<span class="comment">// Inițializăm contorul și primul număr de verificat</span>
+nr = <span class="number">0</span>; 
+x = <span class="number">0</span>; <span class="comment">// primul număr cu suma cifrelor pară</span>
+
+<span class="keyword">do</span> {
+    <span class="comment">// Calculăm suma cifrelor lui x</span>
+    s = <span class="number">0</span>; 
+    y = x; <span class="comment">// păstrăm valoarea originală</span>
+    
+    <span class="keyword">while</span>(y != <span class="number">0</span>) {
+        s = s + y % <span class="number">10</span>; <span class="comment">// adunăm ultima cifră</span>
+        y = y / <span class="number">10</span>;   <span class="comment">// eliminăm ultima cifră</span>
+    }
+    
+    <span class="comment">// Verificăm dacă suma este pară</span>
+    <span class="keyword">if</span>(s % <span class="number">2</span> == <span class="number">0</span>) {
+        <span class="keyword">cout</span> << x << <span class="string">" "</span>;
+        nr++; <span class="comment">// incrementăm contorul</span>
+    }
+    
+    x++; <span class="comment">// trecem la următorul număr</span>
+} <span class="keyword">while</span>(nr < n); <span class="comment">// continuăm până găsim n numere</span></code></pre>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">🔍 Pas cu pas:</h3>
+                <ol style="color: var(--text-secondary); line-height: 2;">
+                    <li><strong>Inițializare:</strong> Setăm contorul `nr = 0` și începem cu `x = 0`</li>
+                    <li><strong>Bucla principală:</strong> Repetăm până găsim `n` numere valide</li>
+                    <li><strong>Calculul sumei:</strong> Pentru fiecare `x`, calculăm suma cifrelor</li>
+                    <li><strong>Verificarea:</strong> Dacă suma e pară, afișăm numărul și incrementăm contorul</li>
+                    <li><strong>Continuarea:</strong> Trecem la următorul număr și repetăm</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="content-card scroll-reveal">
+            <h2>🚀 Testează algoritmul!</h2>
+            
+            <div class="interactive-demo">
+                <div class="demo-input">
+                    <label for="n-input">Câte numere vrei să găsești?</label>
+                    <input type="number" id="n-input" value="5" min="1" max="20">
+                    <button class="run-btn" onclick="runAlgorithm()">Rulează ⚡</button>
+                </div>
+                
+                <div class="output" id="output">
+                    Introdu un număr și apasă "Rulează" pentru a vedea rezultatul!
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card scroll-reveal">
+            <h2>🎓 De ce este important acest algoritm?</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                <div style="background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%); padding: 1.5rem; border-radius: 15px; border-left: 4px solid #667eea;">
+                    <h4 style="color: #667eea; margin-bottom: 0.5rem;">🔄 Pattern fundamental</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Înveți să cauți elemente până găsești un număr specificat - foarte util în multe probleme.</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #f093fb20 0%, #f5576c20 100%); padding: 1.5rem; border-radius: 15px; border-left: 4px solid #f093fb;">
+                    <h4 style="color: #f093fb; margin-bottom: 0.5rem;">🧮 Manipularea cifrelor</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Practici operații cu cifrele unui număr - o tehnică frecvent folosită.</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #4facfe20 0%, #00f2fe20 100%); padding: 1.5rem; border-radius: 15px; border-left: 4px solid #4facfe;">
+                    <h4 style="color: #4facfe; margin-bottom: 0.5rem;">⚡ Optimizare</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Înveți să te oprești când ai găsit suficiente rezultate - eficiență maximă!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Interactive algorithm demo
+        function runAlgorithm() {
+            const n = parseInt(document.getElementById('n-input').value);
+            const output = document.getElementById('output');
+            
+            if (n < 1 || n > 20) {
+                output.textContent = 'Te rog introdu un număr între 1 și 20!';
+                return;
+            }
+            
+            let result = [];
+            let count = 0;
+            let x = 0;
+            
+            output.textContent = 'Se calculează...';
+            
+            setTimeout(() => {
+                while (count < n) {
+                    // Calculate sum of digits
+                    let sum = 0;
+                    let temp = x;
+                    
+                    while (temp > 0) {
+                        sum += temp % 10;
+                        temp = Math.floor(temp / 10);
+                    }
+                    
+                    // Check if sum is even
+                    if (sum % 2 === 0) {
+                        result.push(x);
+                        count++;
+                    }
+                    
+                    x++;
+                }
+                
+                output.innerHTML = `<strong>Primele ${n} numere cu suma cifrelor pară:</strong><br>${result.join(', ')}`;
+            }, 500);
+        }
+        
+        // Add sparkle effect on code hover
+        document.querySelectorAll('.code-preview, .code-container').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.transform += ' scale(1.02)';
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                this.style.transform = this.style.transform.replace(' scale(1.02)', '');
+            });
+        });
+    </script>
+</body>
+</html>

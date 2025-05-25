@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lecție interactivă - Lucrul cu fișiere în C++">
+    <meta name="keywords" content="C++, fisiere, fstream, ifstream, ofstream, file handling">
+    <title>C++ File Handling - Tutorial Interactiv Complet</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --code-bg: #1e1e2e;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-light: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+        }
+        
+        .floating-files {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .file-float {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.1);
+            animation: floatFile 20s infinite linear;
+        }
+        
+        .file-float:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .file-float:nth-child(2) { left: 30%; animation-delay: -4s; }
+        .file-float:nth-child(3) { left: 50%; animation-delay: -8s; }
+        .file-float:nth-child(4) { left: 70%; animation-delay: -12s; }
+        .file-float:nth-child(5) { left: 90%; animation-delay: -16s; }
+        
+        @keyframes floatFile {
+            0% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { 
+                transform: translateY(-100px) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+        
+        /* Hero section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .file-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-gradient);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: var(--shadow-light);
+            font-size: 3rem;
+        }
+        
+        /* File operations showcase */
+        .operations-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .operation-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .operation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .operation-card.read::before { background: var(--success-gradient); }
+        .operation-card.write::before { background: var(--secondary-gradient); }
+        .operation-card.append::before { background: var(--warning-gradient); }
+        
+        .operation-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .operation-card.read:hover { border-color: #11998e; }
+        .operation-card.write:hover { border-color: #f093fb; }
+        .operation-card.append:hover { border-color: #f59e0b; }
+        
+        .operation-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .operation-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .operation-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Content sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .content-card.definition::before { background: var(--primary-gradient); }
+        .content-card.steps::before { background: var(--secondary-gradient); }
+        .content-card.operations::before { background: var(--success-gradient); }
+        .content-card.examples::before { background: var(--warning-gradient); }
+        .content-card.simulator::before { background: var(--accent-gradient); }
+        
+        .content-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .content-card h2 .icon {
+            font-size: 2.5rem;
+        }
+        
+        /* Definition box */
+        .definition-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border-left: 4px solid #667eea;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .definition-box::before {
+            content: '📚';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .definition-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Steps timeline */
+        .steps-timeline {
+            position: relative;
+            margin: 2rem 0;
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .step-number {
+            background: var(--secondary-gradient);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 4px solid #f093fb;
+            transition: all 0.3s ease;
+        }
+        
+        .step-content:hover {
+            transform: translateX(10px);
+            background: rgba(240, 147, 251, 0.1);
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Connect steps with line */
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            width: 2px;
+            height: calc(100% + 2rem);
+            background: linear-gradient(to bottom, #f093fb, rgba(240, 147, 251, 0.3));
+            z-index: 1;
+        }
+        
+        /* Code containers */
+        .code-container {
+            position: relative;
+            margin: 2rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .code-header {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .code-header .title {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .code-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .code-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .code-btn.red { background: #ff5f57; }
+        .code-btn.yellow { background: #ffbd2e; }
+        .code-btn.green { background: #28ca42; }
+        
+        pre {
+            background: var(--code-bg);
+            color: #e1e5e9;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 0;
+        }
+        
+        /* Syntax highlighting */
+        .keyword { color: #c792ea; font-weight: 500; }
+        .function { color: #82aaff; }
+        .string { color: #c3e88d; }
+        .comment { color: #546e7a; font-style: italic; }
+        .variable { color: #ffcb6b; }
+        .type { color: #f78c6c; }
+        
+        /* File operation modes */
+        .modes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .mode-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .mode-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .mode-card.input { border-color: #11998e; }
+        .mode-card.output { border-color: #f093fb; }
+        .mode-card.append { border-color: #f59e0b; }
+        
+        .mode-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .mode-title.input { color: #11998e; }
+        .mode-title.output { color: #f093fb; }
+        .mode-title.append { color: #f59e0b; }
+        
+        /* File simulator */
+        .file-simulator {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            border: 2px solid rgba(79, 172, 254, 0.2);
+        }
+        
+        .simulator-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .simulator-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .simulator-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .simulator-section h4 {
+            color: #4facfe;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .sim-input {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .sim-input label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        
+        .sim-input input, .sim-input select, .sim-input textarea {
+            padding: 0.75rem;
+            border: 2px solid rgba(79, 172, 254, 0.3);
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .sim-input textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .sim-input input:focus, .sim-input select:focus, .sim-input textarea:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+        
+        .sim-btn {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            margin: 0.5rem;
+        }
+        
+        .sim-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+        }
+        
+        .file-content {
+            background: #1e1e2e;
+            color: #e1e5e9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 1rem 0;
+            min-height: 100px;
+            white-space: pre-wrap;
+            border: 2px solid #4facfe;
+        }
+        
+        .output-console {
+            background: #0d1117;
+            color: #58a6ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 1rem 0;
+            min-height: 80px;
+            border: 2px solid #21262d;
+        }
+        
+        /* Warning boxes */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .warning-title {
+            color: #f59e0b;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-card {
+                padding: 2rem;
+            }
+            
+            .operations-showcase, .modes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .simulator-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .step-item::after {
+                display: none;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-files">
+        <div class="file-float">📄</div>
+        <div class="file-float">📁</div>
+        <div class="file-float">💾</div>
+        <div class="file-float">📝</div>
+        <div class="file-float">🗂️</div>
+    </div>
+    
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge">
+                💾 C++ File Handling
+            </div>
+            <div class="file-icon">📁</div>
+            <h1>Fișiere în C++</h1>
+            <p class="subtitle">Stăpânește arta manipulării fișierelor - de la citire și scriere la operații avansate cu streams!</p>
+            
+            <div class="operations-showcase">
+                <div class="operation-card read">
+                    <span class="operation-icon">📖</span>
+                    <h3 class="operation-title">Citire din fișier</h3>
+                    <p class="operation-desc">Accesează și procesează datele din fișiere externe</p>
+                </div>
+                
+                <div class="operation-card write">
+                    <span class="operation-icon">✍️</span>
+                    <h3 class="operation-title">Scriere în fișier</h3>
+                    <p class="operation-desc">Salvează rezultatele și datele în fișiere</p>
+                </div>
+                
+                <div class="operation-card append">
+                    <span class="operation-icon">➕</span>
+                    <h3 class="operation-title">Adăugare la sfârșit</h3>
+                    <p class="operation-desc">Extinde fișierele existente cu informații noi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="content-card definition scroll-reveal">
+            <h2><span class="icon">📚</span>Ce sunt fișierele?</h2>
+            
+            <div class="definition-box">
+                <h4 class="definition-title">Definiție</h4>
+                <p>Un <strong>fișier</strong> este o colecție omogenă de date, identificată prin <strong>nume.extensie</strong>. Fișierele ne permit să salvăm și să recuperăm informații în mod persistent.</p>
+            </div>
+            
+            <p style="margin-bottom: 2rem;">În C++ lucrăm cu fișiere text sau binare. Noi ne vom concentra pe <strong>fișierele text</strong>, care sunt mai ușor de înțeles și manipulat.</p>
+            
+            <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); border-radius: 20px; padding: 2rem; margin: 2rem 0; border: 2px solid rgba(102, 126, 234, 0.2);">
+                <h3 style="color: #667eea; margin-bottom: 1.5rem; text-align: center;">⚡ Operațiuni permise</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📖</div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Citire</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Accesare date din fișier</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">✍️</div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Scriere</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Salvare date în fișier</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">➕</div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Adăugare</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Extindere fișier existent</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card steps scroll-reveal">
+            <h2><span class="icon">🔧</span>Etapele de lucru cu fișiere</h2>
+            
+            <div class="steps-timeline">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3 class="step-title">📁 Crearea fișierelor</h3>
+                        <p class="step-description">Primul pas este să creezi fișierele necesare. Un fișier deschis pentru citire trebuie să existe înainte de rularea programului, cu datele de intrare salvate în el.</p>
+                        <div class="code-container" style="margin-top: 1rem;">
+                            <div class="code-header">
+                                <span class="title">📝 Exemplu fișier input.txt</span>
+                                <div class="code-buttons">
+                                    <div class="code-btn red"></div>
+                                    <div class="code-btn yellow"></div>
+                                    <div class="code-btn green"></div>
+                                </div>
+                            </div>
+                            <pre><code><span class="comment">// Conținutul fișierului input.txt</span>
+<span class="number">10</span> <span class="number">20</span>
+<span class="string">Ana Maria</span>
+<span class="number">3.14</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3 class="step-title">📚 Includerea bibliotecii</h3>
+                        <p class="step-description">Include biblioteca <code>&lt;fstream&gt;</code> pentru lucrul cu fișiere.</p>
+                        <div class="code-container" style="margin-top: 1rem;">
+                            <pre><code><span class="keyword">#include</span> <span class="string">&lt;fstream&gt;</span>
+<span class="comment">// Dacă folosești și cin/cout, include și:</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3 class="step-title">🔓 Deschiderea fișierului</h3>
+                        <p class="step-description">Deschide fișierul în modul dorit: citire, scriere sau adăugare.</p>
+                        <div class="modes-grid" style="margin-top: 1rem;">
+                            <div class="mode-card input">
+                                <h4 class="mode-title input">📖 Pentru citire</h4>
+                                <div class="code-container">
+                                    <pre><code><span class="type">ifstream</span> <span class="variable">f</span>(<span class="string">"input.txt"</span>);
+<span class="comment">// sau</span>
+<span class="type">fstream</span> <span class="variable">f</span>(<span class="string">"input.txt"</span>, <span class="variable">ios::in</span>);</code></pre>
+                                </div>
+                            </div>
+                            
+                            <div class="mode-card output">
+                                <h4 class="mode-title output">✍️ Pentru scriere</h4>
+                                <div class="code-container">
+                                    <pre><code><span class="type">ofstream</span> <span class="variable">g</span>(<span class="string">"output.txt"</span>);
+<span class="comment">// sau</span>
+<span class="type">fstream</span> <span class="variable">g</span>(<span class="string">"output.txt"</span>, <span class="variable">ios::out</span>);</code></pre>
+                                </div>
+                            </div>
+                            
+                            <div class="mode-card append">
+                                <h4 class="mode-title append">➕ Pentru adăugare</h4>
+                                <div class="code-container">
+                                    <pre><code><span class="type">fstream</span> <span class="variable">h</span>(<span class="string">"data.txt"</span>, <span class="variable">ios::app</span>);</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3 class="step-title">⚡ Prelucrarea datelor</h3>
+                        <p class="step-description">Citește sau scrie datele în fișier folosind operatorii >> și <<.</p>
+                        <div class="code-container" style="margin-top: 1rem;">
+                            <div class="code-header">
+                                <span class="title">💻 Operații cu fișiere</span>
+                                <div class="code-buttons">
+                                    <div class="code-btn red"></div>
+                                    <div class="code-btn yellow"></div>
+                                    <div class="code-btn green"></div>
+                                </div>
+                            </div>
+                            <pre><code><span class="comment">// Citire din fișier</span>
+<span class="variable">f</span> >> <span class="variable">a</span> >> <span class="variable">b</span>;
+
+<span class="comment">// Scriere în fișier</span>
+<span class="variable">g</span> << <span class="string">"Rezultatul: "</span> << <span class="variable">suma</span> << <span class="variable">endl</span>;
+
+<span class="comment">// Parcurgere fișier (număr necunoscut de valori)</span>
+<span class="keyword">while</span>(<span class="variable">f</span> >> <span class="variable">x</span>) {
+    <span class="comment">// procesează x</span>
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3 class="step-title">🔒 Închiderea fișierului</h3>
+                        <p class="step-description">Întotdeauna închide fișierele deschise pentru a elibera resursele.</p>
+                        <div class="code-container" style="margin-top: 1rem;">
+                            <pre><code><span class="variable">f</span>.<span class="function">close</span>();
+<span class="variable">g</span>.<span class="function">close</span>();
+<span class="variable">h</span>.<span class="function">close</span>();</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card examples scroll-reveal">
+            <h2><span class="icon">💡</span>Exemple practice</h2>
+            
+            <div style="display: grid; gap: 3rem;">
+                <div style="background: linear-gradient(135度, rgba(17, 153, 142, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); border-radius: 20px; padding: 2rem; border: 2px solid rgba(17, 153, 142, 0.2);">
+                    <h3 style="color: #11998e; margin-bottom: 1rem;">📖 Exemplu: Citire și procesare</h3>
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="title">🔢 Suma numerelor din fișier</span>
+                            <div class="code-buttons">
+                                <div class="code-btn red"></div>
+                                <div class="code-btn yellow"></div>
+                                <div class="code-btn green"></div>
+                            </div>
+                        </div>
+                        <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;fstream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="type">int</span> <span class="function">main</span>() {
+    <span class="type">ifstream</span> <span class="variable">input</span>(<span class="string">"numere.txt"</span>);
+    <span class="type">ofstream</span> <span class="variable">output</span>(<span class="string">"rezultat.txt"</span>);
+    
+    <span class="type">int</span> <span class="variable">x</span>, <span class="variable">suma</span> = <span class="number">0</span>;
+    
+    <span class="keyword">while</span>(<span class="variable">input</span> >> <span class="variable">x</span>) {
+        <span class="variable">suma</span> += <span class="variable">x</span>;
+    }
+    
+    <span class="variable">output</span> << <span class="string">"Suma: "</span> << <span class="variable">suma</span>;
+    
+    <span class="variable">input</span>.<span class="function">close</span>();
+    <span class="variable">output</span>.<span class="function">close</span>();
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%); border-radius: 20px; padding: 2rem; border: 2px solid rgba(240, 147, 251, 0.2);">
+                    <h3 style="color: #f093fb; margin-bottom: 1rem;">📊 Exemplu: Statistici avansate</h3>
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="title">📈 Analiză completă date</span>
+                            <div class="code-buttons">
+                                <div class="code-btn red"></div>
+                                <div class="code-btn yellow"></div>
+                                <div class="code-btn green"></div>
+                            </div>
+                        </div>
+                        <pre><code><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;fstream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="type">int</span> <span class="function">main</span>() {
+    <span class="type">ifstream</span> <span class="variable">f</span>(<span class="string">"date.txt"</span>);
+    <span class="type">ofstream</span> <span class="variable">g</span>(<span class="string">"statistici.txt"</span>);
+    
+    <span class="type">double</span> <span class="variable">x</span>, <span class="variable">suma</span> = <span class="number">0</span>, <span class="variable">minim</span> = <span class="number">1e9</span>, <span class="variable">maxim</span> = <span class="number">-1e9</span>;
+    <span class="type">int</span> <span class="variable">count</span> = <span class="number">0</span>;
+    
+    <span class="keyword">while</span>(<span class="variable">f</span> >> <span class="variable">x</span>) {
+        <span class="variable">suma</span> += <span class="variable">x</span>;
+        <span class="variable">count</span>++;
+        
+        <span class="keyword">if</span>(<span class="variable">x</span> < <span class="variable">minim</span>) <span class="variable">minim</span> = <span class="variable">x</span>;
+        <span class="keyword">if</span>(<span class="variable">x</span> > <span class="variable">maxim</span>) <span class="variable">maxim</span> = <span class="variable">x</span>;
+    }
+    
+    <span class="variable">g</span> << <span class="string">"Statistici pentru "</span> << <span class="variable">count</span> << <span class="string">" numere:\n"</span>;
+    <span class="variable">g</span> << <span class="string">"Suma: "</span> << <span class="variable">suma</span> << <span class="variable">endl</span>;
+    <span class="variable">g</span> << <span class="string">"Media: "</span> << <span class="variable">suma</span> / <span class="variable">count</span> << <span class="variable">endl</span>;
+    <span class="variable">g</span> << <span class="string">"Minim: "</span> << <span class="variable">minim</span> << <span class="variable">endl</span>;
+    <span class="variable">g</span> << <span class="string">"Maxim: "</span> << <span class="variable">maxim</span> << <span class="variable">endl</span>;
+    
+    <span class="variable">f</span>.<span class="function">close</span>();
+    <span class="variable">g</span>.<span class="function">close</span>();
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card simulator scroll-reveal">
+            <h2><span class="icon">🧪</span>Simulator interactiv</h2>
+            
+            <div class="file-simulator">
+                <h3 class="simulator-title">🚀 Testează operațiile cu fișiere!</h3>
+                
+                <div class="simulator-controls">
+                    <div class="simulator-section">
+                        <h4>📝 Creează conținut fișier</h4>
+                        <div class="sim-input">
+                            <label>Numele fișierului:</label>
+                            <input type="text" id="filename" value="test.txt" placeholder="exemplu: date.txt">
+                        </div>
+                        <div class="sim-input">
+                            <label>Conținutul fișierului:</label>
+                            <textarea id="file-content" placeholder="Introdu datele pentru fișier (una pe linie)">10
+20
+30
+Ana
+4.5</textarea>
+                        </div>
+                        <button class="sim-btn" onclick="createFile()">📁 Creează fișier</button>
+                    </div>
+                    
+                    <div class="simulator-section">
+                        <h4>🔧 Operații cu fișierul</h4>
+                        <div class="sim-input">
+                            <label>Tipul operației:</label>
+                            <select id="operation-type">
+                                <option value="read">📖 Citire completă</option>
+                                <option value="sum">🧮 Suma numerelor</option>
+                                <option value="count">🔢 Numără liniile</option>
+                                <option value="append">➕ Adaugă la sfârșit</option>
+                            </select>
+                        </div>
+                        <div class="sim-input" id="append-data" style="display: none;">
+                            <label>Date de adăugat:</label>
+                            <input type="text" id="append-text" placeholder="Textul de adăugat">
+                        </div>
+                        <button class="sim-btn" onclick="performOperation()">⚡ Execută operația</button>
+                        <button class="sim-btn" onclick="generateCode()">💻 Generează cod C++</button>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                    <div>
+                        <h4 style="color: #4facfe; margin-bottom: 1rem;">📄 Conținutul fișierului</h4>
+                        <div class="file-content" id="file-display">Fișierul va fi afișat aici...</div>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #4facfe; margin-bottom: 1rem;">🖥️ Output program</h4>
+                        <div class="output-console" id="program-output">Rezultatul operației va apărea aici...</div>
+                    </div>
+                </div>
+                
+                <div id="generated-code" style="margin-top: 2rem; display: none;">
+                    <h4 style="color: #4facfe; margin-bottom: 1rem;">💻 Cod C++ generat</h4>
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="title">🔧 Cod generat automat</span>
+                            <div class="code-buttons">
+                                <div class="code-btn red"></div>
+                                <div class="code-btn yellow"></div>
+                                <div class="code-btn green"></div>
+                            </div>
+                        </div>
+                        <pre id="code-content"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <h4 class="warning-title">⚠️ Note importante</h4>
+            <ul style="color: var(--text-secondary); line-height: 1.8; list-style: none; padding-left: 0;">
+                <li style="margin: 0.5rem 0;"><strong>📁 Fișiere pentru citire:</strong> Trebuie să existe înainte de rularea programului</li>
+                <li style="margin: 0.5rem 0;"><strong>🔒 Închidere:</strong> Întotdeauna închide fișierele cu .close() pentru a evita problemelor</li>
+                <li style="margin: 0.5rem 0;"><strong>📝 Numele logic:</strong> Este identificatorul care reprezintă fișierul în program (ex: f, g, input)</li>
+                <li style="margin: 0.5rem 0;"><strong>📚 Biblioteci:</strong> Dacă folosești cin/cout, include și &lt;iostream&gt; pe lângă &lt;fstream&gt;</li>
+                <li style="margin: 0.5rem 0;"><strong>⚡ Performanță:</strong> Pentru fișiere mari, citește pe bucăți în loc să încarci totul în memorie</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // File simulator variables
+        let currentFile = {
+            name: 'test.txt',
+            content: ''
+        };
+        
+        // Show/hide append input based on operation type
+        document.getElementById('operation-type').addEventListener('change', function() {
+            const appendDiv = document.getElementById('append-data');
+            if (this.value === 'append') {
+                appendDiv.style.display = 'flex';
+            } else {
+                appendDiv.style.display = 'none';
+            }
+        });
+        
+        // Create file function
+        function createFile() {
+            const filename = document.getElementById('filename').value || 'test.txt';
+            const content = document.getElementById('file-content').value;
+            
+            currentFile.name = filename;
+            currentFile.content = content;
+            
+            // Display file content
+            document.getElementById('file-display').textContent = content || '(fișier gol)';
+            
+            // Show success message
+            document.getElementById('program-output').innerHTML = `<span style="color: #4ade80;">✅ Fișierul "${filename}" a fost creat cu succes!</span>`;
+        }
+        
+        // Perform operation function
+        function performOperation() {
+            const operation = document.getElementById('operation-type').value;
+            const outputDiv = document.getElementById('program-output');
+            
+            if (!currentFile.content && operation !== 'append') {
+                outputDiv.innerHTML = '<span style="color: #ef4444;">❌ Creează mai întâi un fișier cu conținut!</span>';
+                return;
+            }
+            
+            let result = '';
+            
+            switch (operation) {
+                case 'read':
+                    result = `<span style="color: #4ade80;">📖 Conținutul fișierului "${currentFile.name}":</span>\n${currentFile.content}`;
+                    break;
+                    
+                case 'sum':
+                    const numbers = currentFile.content.split('\n')
+                        .map(line => parseFloat(line.trim()))
+                        .filter(num => !isNaN(num));
+                    
+                    if (numbers.length === 0) {
+                        result = '<span style="color: #ef4444;">❌ Nu s-au găsit numere valide în fișier!</span>';
+                    } else {
+                        const sum = numbers.reduce((a, b) => a + b, 0);
+                        result = `<span style="color: #4ade80;">🧮 Suma numerelor: ${sum}</span>\n<span style="color: #94a3b8;">Numere găsite: ${numbers.join(', ')}</span>`;
+                    }
+                    break;
+                    
+                case 'count':
+                    const lines = currentFile.content.split('\n').filter(line => line.trim() !== '');
+                    result = `<span style="color: #4ade80;">🔢 Numărul de linii: ${lines.length}</span>`;
+                    break;
+                    
+                case 'append':
+                    const appendText = document.getElementById('append-text').value;
+                    if (!appendText) {
+                        result = '<span style="color: #ef4444;">❌ Introdu textul de adăugat!</span>';
+                        break;
+                    }
+                    
+                    currentFile.content += (currentFile.content ? '\n' : '') + appendText;
+                    document.getElementById('file-display').textContent = currentFile.content;
+                    result = `<span style="color: #4ade80;">➕ Text adăugat cu succes!</span>\n<span style="color: #94a3b8;">Adăugat: "${appendText}"</span>`;
+                    break;
+            }
+            
+            outputDiv.innerHTML = result;
+        }
+        
+        // Generate C++ code
+        function generateCode() {
+            const operation = document.getElementById('operation-type').value;
+            const filename = currentFile.name;
+            const codeDiv = document.getElementById('generated-code');
+            const codeContent = document.getElementById('code-content');
+            
+            let code = '';
+            
+            switch (operation) {
+                case 'read':
+                    code = `#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    ifstream f("${filename}");
+    string line;
+    
+    cout << "Continutul fisierului:" << endl;
+    while(getline(f, line)) {
+        cout << line << endl;
+    }
+    
+    f.close();
+    return 0;
+}`;
+                    break;
+                    
+                case 'sum':
+                    code = `#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    ifstream f("${filename}");
+    double x, suma = 0;
+    int count = 0;
+    
+    while(f >> x) {
+        suma += x;
+        count++;
+    }
+    
+    cout << "Suma: " << suma << endl;
+    cout << "Numere procesate: " << count << endl;
+    
+    f.close();
+    return 0;
+}`;
+                    break;
+                    
+                case 'count':
+                    code = `#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    ifstream f("${filename}");
+    string line;
+    int count = 0;
+    
+    while(getline(f, line)) {
+        if(!line.empty()) count++;
+    }
+    
+    cout << "Numar de linii: " << count << endl;
+    
+    f.close();
+    return 0;
+}`;
+                    break;
+                    
+                case 'append':
+                    const appendText = document.getElementById('append-text').value;
+                    code = `#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    ofstream f("${filename}", ios::app);
+    
+    f << "${appendText}" << endl;
+    cout << "Text adaugat cu succes!" << endl;
+    
+    f.close();
+    return 0;
+}`;
+                    break;
+            }
+            
+            codeContent.innerHTML = `<code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code>`;
+            codeDiv.style.display = 'block';
+            
+            // Scroll to code
+            codeDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Add hover effects
+        document.querySelectorAll('.operation-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        document.querySelectorAll('.mode-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Step item click effects
+        document.querySelectorAll('.step-content').forEach(step => {
+            step.addEventListener('click', function() {
+                this.style.transform = 'translateX(15px) scale(1.02)';
+                this.style.background = 'rgba(240, 147, 251, 0.15)';
+                setTimeout(() => {
+                    this.style.transform = 'translateX(0) scale(1)';
+                    this.style.background = 'rgba(255, 255, 255, 0.8)';
+                }, 300);
+            });
+        });
+        
+        // Initialize with default file
+        document.addEventListener('DOMContentLoaded', function() {
+            createFile();
+        });
+        
+        // Auto-hide code when operation changes
+        document.getElementById('operation-type').addEventListener('change', function() {
+            document.getElementById('generated-code').style.display = 'none';
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'Enter':
+                        e.preventDefault();
+                        performOperation();
+                        break;
+                    case 'n':
+                        e.preventDefault();
+                        createFile();
+                        break;
+                    case 'g':
+                        e.preventDefault();
+                        generateCode();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

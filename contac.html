@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contactează echipa Info pentru toți - Răspunsuri la întrebări IT">
+    <meta name="keywords" content="contact, suport, IT, programare, informatica">
+    <title>Contact - Info pentru toți</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
+            --blue: #3b82f6;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
+            opacity: 0.1;
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite linear;
+        }
+        
+        .shape:nth-child(1) { 
+            width: 80px; height: 80px; 
+            left: 10%; top: 20%; 
+            animation-delay: 0s;
+            border-radius: 50%;
+        }
+        .shape:nth-child(2) { 
+            width: 120px; height: 120px; 
+            left: 70%; top: 60%; 
+            animation-delay: -5s;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        .shape:nth-child(3) { 
+            width: 60px; height: 60px; 
+            left: 50%; top: 10%; 
+            animation-delay: -10s;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        /* Interactive particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(99, 102, 241, 0.6);
+            border-radius: 50%;
+            animation: particleFloat 15s infinite linear;
+        }
+        
+        @keyframes particleFloat {
+            0% { 
+                transform: translateY(100vh) translateX(0) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(-100px) translateX(100px) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+        
+        /* Mouse trail effect */
+        .mouse-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .header-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+            color: white;
+            animation: pulse 2s infinite;
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        }
+        
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .header-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        
+        /* Typing effect */
+        .typing-text {
+            border-right: 3px solid var(--primary);
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: var(--primary); }
+            51%, 100% { border-color: transparent; }
+        }
+        
+        /* Main content grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+        
+        /* Section base styles */
+        .section {
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0;
+        }
+        
+        /* Info section */
+        .info-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .info-text p {
+            margin-bottom: 1rem;
+        }
+        
+        /* Social links */
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .social-link:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .social-link:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Form section */
+        .form-section {
+            position: relative;
+        }
+        
+        .form-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s ease;
+            z-index: 2;
+        }
+        
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .form-label {
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background: white;
+            padding: 0 0.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--text-primary);
+        }
+        
+        .form-input::placeholder {
+            color: transparent;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            top: -10px;
+            left: 1rem;
+            font-size: 0.8rem;
+            color: var(--primary);
+            transform: scale(0.9);
+        }
+        
+        .form-input.valid {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .form-input.invalid {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+        
+        .char-counter {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .form-button {
+            flex: 1;
+            min-width: 140px;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .form-button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f8fafc;
+            color: var(--text-secondary);
+            border: 2px solid #e2e8f0;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+        }
+        
+        /* Messages */
+        .message {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            color: var(--accent);
+            font-weight: 600;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .message::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: messageSlide 2s ease-in-out;
+        }
+        
+        @keyframes messageSlide {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .message.error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(248, 113, 113, 0.1) 100%);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        
+        /* Contact details grid */
+        .contact-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .contact-card {
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 2.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+        
+        .contact-card:hover::before {
+            opacity: 1;
+        }
+        
+        .contact-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: white;
+            position: relative;
+            z-index: 2;
+            animation: iconBounce 2s ease-in-out infinite alternate;
+        }
+        
+        .contact-card:nth-child(1) .contact-icon {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .contact-card:nth-child(2) .contact-icon {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        
+        .contact-card:nth-child(3) .contact-icon {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .contact-card:nth-child(4) .contact-icon {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+        
+        @keyframes iconBounce {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+        
+        .contact-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .contact-info {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .contact-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        
+        .contact-action:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+        
+        /* Floating action buttons */
+        .floating-actions {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+        
+        .fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+            animation: fabPulse 2s infinite;
+        }
+        
+        .fab:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
+        }
+        
+        @keyframes fabPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Additional sections styling */
+        .additional-sections {
+            display: grid;
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+            }
+            
+            .form-button {
+                min-width: auto;
+            }
+            
+            .social-links {
+                flex-direction: column;
+            }
+            
+            .contact-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .floating-actions {
+                bottom: 20px;
+                right: 15px;
+            }
+            
+            .fab {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <!-- Interactive particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Mouse trail -->
+    <div class="mouse-trail" id="mouseTrail"></div>
+    
+    <!-- Floating action buttons -->
+    <div class="floating-actions">
+        <button class="fab" onclick="scrollToTop()" title="Sus">↑</button>
+        <button class="fab" onclick="clearForm()" title="Resetează">🔄</button>
+       
+    </div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-icon">💬</div>
+            <h1>Date de contact</h1>
+            <p class="header-subtitle">
+                <span class="typing-text" id="typingText">Suntem aici să vă răspundem la orice întrebare din domeniul IT!</span>
+            </p>
+        </div>
+        
+        <!-- Main content grid -->
+        <div class="content-grid">
+            <!-- Info section -->
+            <div class="section">
+                <div class="section-header">
+                    <div class="info-icon">🤝</div>
+                    <h2>De ce să ne contactați?</h2>
+                </div>
+                
+                <div class="info-text">
+                    <p>Contactați-ne și vă vom răspunde cât de repede vom putea!</p>
+                    
+                    <p>Dacă pur și simplu nu aveți nicio întrebare, vă puteți exprima opinia despre experiența pe pagina noastră!</p>
+                    
+                    <p>Contează foarte mult părerea dumneavoastră despre pagina aferentă. Sugestiile de îmbunătățire și criticile sunt bine venite!</p>
+                </div>
+                
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.3rem;">📱 Urmăriți-ne pe social media:</h3>
+                
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/mariateodorapopescu/" class="social-link" target="_blank">
+                        <span>💼</span>
+                        <span>LinkedIn</span>
+                    </a>
+                    
+                    <a href="https://github.com/mariateodorapopescu" class="social-link" target="_blank">
+                        <span>💻</span>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Form section -->
+            <div class="section form-section">
+                <div class="form-progress" id="formProgress"></div>
+                <div class="section-header">
+                    <div class="info-icon">📧</div>
+                    <h2>Trimite-ne un mesaj</h2>
+                </div>
+                
+                <form id="contactForm" action="mailto:sciencepc@yahoo.com" method="post" enctype="text/plain">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" class="form-input" placeholder=" " required>
+                        <label class="form-label" for="name">Nume *</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="email" id="email" name="mail" class="form-input" placeholder=" " required>
+                        <label class="form-label" for="email">E-mail *</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea id="message" name="message" class="form-input form-textarea" placeholder=" " maxlength="500" required></textarea>
+                        <label class="form-label" for="message">Conținut mesaj *</label>
+                        <div class="char-counter" id="charCounter">0/500</div>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="submit" class="form-button btn-primary">
+                            <span>📤 Trimite</span>
+                        </button>
+                        <button type="reset" class="form-button btn-secondary">
+                            <span>🔄 Resetează</span>
+                        </button>
+                    </div>
+                    
+                    <div class="message" id="successMessage">
+                        ✅ Mesajul a fost trimis cu succes! Vă vom răspunde în cel mai scurt timp.
+                    </div>
+                    <div class="message error" id="errorMessage">
+                        ❌ A apărut o eroare. Vă rugăm să încercați din nou.
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Contact Details Cards -->
+        <div class="contact-details">
+            
+            <div class="contact-card">
+                <div class="contact-icon">📱</div>
+                <h3 class="contact-title">Telefon Direct</h3>
+                <p class="contact-info">+40 787 763 178</p>
+                <button class="contact-action" onclick="window.location.href='tel:+40787763178'">
+                    <span>Sună Acum</span>
+                    <span>📞</span>
+                </button>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-icon">📍</div>
+                <h3 class="contact-title">Adresa Fizică</h3>
+                <p class="contact-info">Bd. Preciziei nr. 24<br>București, Sector 6</p>
+                <button class="contact-action" onclick="openMap()">
+                    <span>Vezi Harta</span>
+                    <span>🗺️</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Additional sections could go here -->
+        <div class="additional-sections">
+            <!-- Future sections like FAQ, Working Hours, etc. -->
+        </div>
+    </div>
+
+    <script>
+        // Create interactive particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            
+            setInterval(() => {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.background = `rgba(${99 + Math.random() * 100}, ${102 + Math.random() * 100}, 241, ${0.3 + Math.random() * 0.7})`;
+                
+                particlesContainer.appendChild(particle);
+                
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 15000);
+            }, 300);
+        }
+        
+        // Typing effect
+        function typeWriterEffect() {
+            const text = "Suntem aici să vă răspundem la orice întrebare din domeniul IT!";
+            const typingElement = document.getElementById('typingText');
+            let i = 0;
+            
+            typingElement.textContent = '';
+            
+            function typeWriter() {
+                if (i < text.length) {
+                    typingElement.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Mouse trail effect
+        function initMouseTrail() {
+            const trail = document.getElementById('mouseTrail');
+            
+            document.addEventListener('mousemove', (e) => {
+                trail.style.left = e.clientX - 10 + 'px';
+                trail.style.top = e.clientY - 10 + 'px';
+                trail.style.transform = 'scale(1)';
+                trail.style.opacity = '1';
+                
+                setTimeout(() => {
+                    trail.style.transform = 'scale(0)';
+                    trail.style.opacity = '0';
+                }, 100);
+            });
+        }
+        
+        // Enhanced form validation
+        function initFormValidation() {
+            const form = document.getElementById('contactForm');
+            const inputs = form.querySelectorAll('.form-input');
+            const progress = document.getElementById('formProgress');
+            const charCounter = document.getElementById('charCounter');
+            const messageTextarea = document.getElementById('message');
+            
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    validateInput(this);
+                    updateProgress();
+                });
+                
+                input.addEventListener('blur', function() {
+                    validateInput(this);
+                });
+            });
+            
+            messageTextarea.addEventListener('input', function() {
+                const current = this.value.length;
+                const max = this.getAttribute('maxlength');
+                charCounter.textContent = `${current}/${max}`;
+                
+                if (current > max * 0.8) {
+                    charCounter.style.color = '#ef4444';
+                } else {
+                    charCounter.style.color = 'var(--text-muted)';
+                }
+            });
+            
+            function validateInput(input) {
+                const value = input.value.trim();
+                
+                input.classList.remove('valid', 'invalid');
+                
+                if (input.type === 'email') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (value && emailRegex.test(value)) {
+                        input.classList.add('valid');
+                    } else if (value) {
+                        input.classList.add('invalid');
+                    }
+                } else if (input.required) {
+                    if (value.length >= 2) {
+                        input.classList.add('valid');
+                    } else if (value) {
+                        input.classList.add('invalid');
+                    }
+                }
+            }
+            
+            function updateProgress() {
+                const validInputs = form.querySelectorAll('.form-input.valid').length;
+                const totalInputs = form.querySelectorAll('.form-input[required]').length;
+                const progressPercent = (validInputs / totalInputs) * 100;
+                
+                progress.style.width = progressPercent + '%';
+            }
+        }
+        
+        // Form submission
+        function initFormSubmission() {
+            const form = document.getElementById('contactForm');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            form.addEventListener('submit', function(e) {
+                const validInputs = form.querySelectorAll('.form-input.valid').length;
+                const requiredInputs = form.querySelectorAll('.form-input[required]').length;
+                
+                if (validInputs !== requiredInputs) {
+                    e.preventDefault();
+                    showMessage(errorMessage, 'Vă rugăm să completați corect toate câmpurile obligatorii.');
+                    return;
+                }
+                
+                showMessage(successMessage, '✅ Mesajul a fost trimis cu succes! Vă vom răspunde în cel mai scurt timp.');
+                createConfetti();
+            });
+            
+            form.addEventListener('reset', function() {
+                hideMessages();
+                document.getElementById('formProgress').style.width = '0%';
+                document.getElementById('charCounter').textContent = '0/500';
+                
+                form.querySelectorAll('.form-input').forEach(input => {
+                    input.classList.remove('valid', 'invalid');
+                });
+            });
+        }
+        
+        function showMessage(element, text) {
+            element.textContent = text;
+            element.style.display = 'block';
+            element.style.animation = 'slideInUp 0.5s ease-out';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+        
+        function hideMessages() {
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#6366f1', '#ec4899', '#10b981', '#f59e0b'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.zIndex = '10000';
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.animation = 'confettiFall 3s ease-out forwards';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        if (confetti.parentNode) {
+                            confetti.parentNode.removeChild(confetti);
+                        }
+                    }, 3000);
+                }, i * 50);
+            }
+        }
+        
+        // Live chat simulation
+        function openLiveChat() {
+            const chatButton = event.target.closest('.contact-action');
+            const originalText = chatButton.innerHTML;
+            
+            chatButton.innerHTML = '<span>Conectare...</span> <span>⏳</span>';
+            chatButton.disabled = true;
+            
+            setTimeout(() => {
+                chatButton.innerHTML = '<span>Chat Activ!</span> <span>✅</span>';
+                chatButton.style.background = 'var(--accent)';
+                
+                setTimeout(() => {
+                    createChatWindow();
+                    chatButton.innerHTML = originalText;
+                    chatButton.disabled = false;
+                    chatButton.style.background = '';
+                }, 2000);
+            }, 1500);
+        }
+        
+        function createChatWindow() {
+            const chatWindow = document.createElement('div');
+            chatWindow.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 300px;
+                height: 400px;
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                z-index: 10000;
+                display: flex;
+                flex-direction: column;
+                animation: slideInUp 0.5s ease-out;
+            `;
+            
+            chatWindow.innerHTML = `
+                <div style="background: var(--primary); color: white; padding: 1rem; border-radius: 20px 20px 0 0; display: flex; justify-content: space-between; align-items: center;">
+                    <span><strong>💬 Chat Suport</strong></span>
+                    <button onclick="this.closest('div').remove()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">✕</button>
+                </div>
+                <div style="flex: 1; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="background: #f0f0f0; padding: 0.5rem; border-radius: 10px; margin-bottom: 1rem;">
+                            👋 Salut! Sunt aici să te ajut. Cum te pot ajuta astăzi?
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" placeholder="Scrie mesajul..." style="flex: 1; padding: 0.5rem; border: 1px solid #ddd; border-radius: 10px;">
+                        <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 10px; cursor: pointer;">📤</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(chatWindow);
+            
+            setTimeout(() => {
+                if (chatWindow.parentNode) {
+                    chatWindow.remove();
+                }
+            }, 10000);
+        }
+        
+        // Map functionality
+        function openMap() {
+            const mapUrl = 'https://www.google.com/maps/search/București+Sector+6/@44.4267674,26.0777222,12z';
+            window.open(mapUrl, '_blank');
+        }
+        
+        // Floating action buttons
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        function clearForm() {
+            document.getElementById('contactForm').reset();
+            hideMessages();
+            document.getElementById('formProgress').style.width = '0%';
+            document.getElementById('charCounter').textContent = '0/500';
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+        
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            typeWriterEffect();
+            initMouseTrail();
+            initFormValidation();
+            initFormSubmission();
+        });
+        
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes confettiFall {
+                0% { 
+                    transform: translateY(-10px) rotate(0deg); 
+                    opacity: 1; 
+                }
+                100% { 
+                    transform: translateY(100vh) rotate(720deg); 
+                    opacity: 0; 
+                }
+            }
+            
+            .dark-theme {
+                filter: invert(1) hue-rotate(180deg);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tutorial complet pentru schimbarea imaginii de log on în Windows 7">
+    <meta name="keywords" content="windows, log on, imagine, tutorial, registry, regedit">
+    <title>Windows Mastery - Schimbarea Imaginii de Log On</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
+            opacity: 0.1;
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        .shape:nth-child(1) { 
+            width: 80px; height: 80px; 
+            left: 10%; top: 20%; 
+            animation-delay: 0s; 
+        }
+        .shape:nth-child(2) { 
+            width: 120px; height: 120px; 
+            left: 70%; top: 60%; 
+            animation-delay: -5s; 
+        }
+        .shape:nth-child(3) { 
+            width: 60px; height: 60px; 
+            left: 50%; top: 10%; 
+            animation-delay: -10s; 
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        /* Header */
+        .header {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .windows-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: 0 20px 40px rgba(0, 120, 212, 0.3);
+        }
+        
+        .windows-icon::after {
+            content: '🖼️';
+            font-size: 2.5rem;
+        }
+        
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        
+        /* Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        
+        .section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        .section h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        /* Step-by-step guide */
+        .steps {
+            display: grid;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .step {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Path highlight */
+        .path {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px solid var(--primary-light);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+            color: var(--primary);
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .path::before {
+            content: '📁';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+        
+        /* Warning/Note boxes */
+        .note {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .note::before {
+            content: '💡';
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+         .warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--warning);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .warning::before {
+            content: '⚠️';
+            background: var(--warning);
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid var(--danger);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .danger::before {
+            content: '🚨';
+            background: var(--danger);
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-left: 4px solid #3b82f6;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .info-box::before {
+            content: 'ℹ️';
+            position: absolute;
+            top: 1rem;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 2rem;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <header class="header">
+        <div class="header-content">
+            <div class="windows-icon"></div>
+            <h1>Schimbarea Imaginii de Log On</h1>
+            <p class="subtitle">Ghidul complet pentru personalizarea ecranului de autentificare în Windows 7</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">🖼️</div>
+                <h2>Ce este imaginea de log on?</h2>
+            </div>
+            
+            <p>Imaginea de log on este acea imagine care apare la deschiderea/închiderea calculatorului, în timpul procesului de autentificare. Personalizarea acestei imagini îți permite să dai o notă personală sistemului tău Windows.</p>
+            
+            <div class="info-box">
+                <strong>Informații importante:</strong> Imaginea trebuie să aibă extensia .bmp sau .jpg și mărimea acesteia trebuie să fie mai mică decât 245KB pentru a funcționa corect.
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">⚙️</div>
+                <h2>Pașii pentru schimbarea imaginii</h2>
+            </div>
+            
+            <h3>🔧 Modificarea registrului Windows</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Deschiderea Registry Editor</div>
+                    <div class="step-description">Deschide meniul "Start" și în locul special de căutare, scrie "regedit". Apoi intră în aplicație.</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Navigarea în registru</div>
+                    <div class="step-description">Intră în dosarul numit "HKEY_LOCAL_MACHINE" și dă click dreapta pe dosar, apoi apasă "Find..."</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Căutarea cheii OEMBackground</div>
+                    <div class="step-description">În spațiul special caută/tastează "OEMBackground" și apoi dă pe "Find Next"</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Modificarea valorii</div>
+                    <div class="step-description">În partea dreaptă vei avea două fișiere. Pe cel numit "OEMBackground" dă click dreapta și schimbă valoarea din "0" în "1"</div>
+                </div>
+            </div>
+            
+            <h3>📁 Crearea structurii de dosare</h3>
+            <div class="path">C:\Windows\System32\oobe\info\backgrounds</div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Navigarea la dosarul oobe</div>
+                    <div class="step-description">Deschide "Windows Explorer", intră în partiția "Disk Local (C:)" → "Windows" → "System32" → "oobe"</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Crearea dosarelor necesare</div>
+                    <div class="step-description">În dosarul "oobe" creează altul numit "info" și în el creează un altul numit "backgrounds"</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">7</div>
+                    <div class="step-title">Adăugarea imaginii</div>
+                    <div class="step-description">În dosarul "backgrounds" pune imaginea dorită cu extensia .bmp sau .jpg și mărimea mai mică de 245KB</div>
+                </div>
+            </div>
+            
+            <div class="warning">
+                <strong>Atenție:</strong> Pentru a schimba extensia unui fișier, consultă <a href="ext.html" style="color: var(--primary); text-decoration: none;">tutorialul dedicat schimbării extensiilor</a>.
+            </div>
+        </section>
+        
+        <section class="section scroll-reveal">
+            <div class="section-header">
+                <div class="section-icon">✅</div>
+                <h2>Finalizarea procesului</h2>
+            </div>
+            
+            <p>După ce ai completat toți pașii de mai sus, imaginea ta personalizată va apărea pe ecranul de log on la următoarea pornire a calculatorului. Procesul este complet și nu necesită restart forțat.</p>
+            
+            <div class="note">
+                <strong>Tip profesionist:</strong> Dacă imaginea nu apare, verifică să fie respectate cerințele de format și mărime, și asigură-te că toate dosarele au fost create în locația corectă.
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const scrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', scrollReveal);
+        scrollReveal(); // Check on load
+        
+        // Add click animation to steps
+        document.querySelectorAll('.step').forEach(step => {
+            step.addEventListener('click', function() {
+                this.style.transform = 'translateX(15px) scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = 'translateX(10px) scale(1)';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>

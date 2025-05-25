@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Despre echipa Info pentru toți - Misiunea și viziunea noastră în educația IT">
+    <meta name="keywords" content="despre noi, misiune, viziune, educatie IT, programare">
+    <title>Despre noi - Info pentru toți</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
+            --blue: #3b82f6;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
+            opacity: 0.1;
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 18s infinite linear;
+        }
+        
+        .shape:nth-child(1) { 
+            width: 100px; height: 100px; 
+            left: 15%; top: 25%; 
+            animation-delay: 0s;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+        .shape:nth-child(2) { 
+            width: 80px; height: 80px; 
+            left: 75%; top: 15%; 
+            animation-delay: -6s;
+            border-radius: 50%;
+        }
+        .shape:nth-child(3) { 
+            width: 120px; height: 120px; 
+            left: 60%; top: 70%; 
+            animation-delay: -12s;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+        .shape:nth-child(4) { 
+            width: 90px; height: 90px; 
+            left: 20%; top: 80%; 
+            animation-delay: -3s;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { opacity: 0.9; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0.6; }
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 6rem;
+            animation: slideInUp 1s ease-out;
+        }
+        
+        .header-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 4rem;
+            color: white;
+            animation: pulse 3s infinite;
+            box-shadow: 0 25px 50px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 3s ease-in-out infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .header-subtitle {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        
+        /* Story section */
+        .story-section {
+            background: var(--surface);
+            border-radius: 30px;
+            padding: 4rem;
+            margin-bottom: 4rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            animation: fadeInUp 1s ease-out 0.3s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .story-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 50%, var(--purple) 100%);
+        }
+        
+        .story-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .story-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .story-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 2px;
+        }
+        
+        .story-text {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: var(--text-secondary);
+            text-align: justify;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .story-text p {
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .story-text p:hover {
+            color: var(--text-primary);
+            transform: translateX(10px);
+        }
+        
+        /* Mission & Vision */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        
+        .value-card {
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 3rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+        
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-15px) rotateY(5deg);
+            border-color: var(--primary);
+            box-shadow: 0 30px 60px rgba(99, 102, 241, 0.25);
+        }
+        
+        .value-card:hover::before {
+            opacity: 1;
+        }
+        
+        .value-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--blue) 100%);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+            color: white;
+            position: relative;
+            z-index: 2;
+            animation: iconFloat 2s ease-in-out infinite alternate;
+        }
+        
+        .value-card:nth-child(2) .value-icon {
+            background: linear-gradient(135deg, var(--warning) 0%, var(--secondary) 100%);
+        }
+        
+        .value-card:nth-child(3) .value-icon {
+            background: linear-gradient(135deg, var(--purple) 0%, var(--primary) 100%);
+        }
+        
+        @keyframes iconFloat {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+        
+        .value-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .value-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Timeline */
+        .timeline-section {
+            background: var(--surface);
+            border-radius: 30px;
+            padding: 4rem;
+            margin-bottom: 4rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            animation: fadeInUp 1s ease-out 0.9s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timeline-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--primary) 50%, var(--secondary) 100%);
+        }
+        
+        .timeline-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .timeline-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--primary) 100%);
+            border-radius: 2px;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 2px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin: 3rem 0;
+            animation: slideInTimeline 0.8s ease-out;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            padding-right: 50%;
+            text-align: right;
+        }
+        
+        .timeline-item:nth-child(even) {
+            padding-left: 50%;
+            text-align: left;
+        }
+        
+        .timeline-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .timeline-content:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            transform: translateY(-50%);
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px var(--primary);
+            animation: pulse 2s infinite;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -60px;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -60px;
+        }
+        
+        .timeline-date {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-title-item {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Statistics */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .stat-card {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out 1.2s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+        
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Call to action */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 30px;
+            padding: 4rem;
+            text-align: center;
+            color: white;
+            animation: fadeInUp 1s ease-out 1.5s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: twinkle 4s ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+        
+        .cta-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .cta-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            color: var(--primary);
+            padding: 1.2rem 2.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInTimeline {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.1); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+            
+            .story-section,
+            .timeline-section,
+            .cta-section {
+                padding: 2.5rem 2rem;
+            }
+            
+            .values-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                padding-left: 60px !important;
+                padding-right: 0 !important;
+                text-align: left !important;
+            }
+            
+            .timeline-dot {
+                left: 10px !important;
+                right: auto !important;
+            }
+            
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">🚀</div>
+            <h1>Despre noi</h1>
+            <p class="header-subtitle">Povestea noastră în educația IT și pasiunea pentru partajarea cunoștințelor</p>
+        </div>
+        
+        <div class="story-section">
+            <h2 class="story-title">Povestea noastră</h2>
+            <div class="story-content">
+                <div class="story-text">
+                    <p>Această pagină vă oferă tips & tricks pentru posesorii de calculatoare cu Windows 7 și Windows 10, tips & tricks pentru iPhone dar și pentru dispozitive Android, tutoriale programare, lecții informatică, TIC și nu numai!</p>
+                    
+                    <p>Am creat această pagină din dorința de a le arăta și celorlalți ceea ce am învățat din propria experiență, prin informare. De asemenea, am descoperit că anumite lucruri de care aveam nevoie la un moment dat nu le puteam găsi pe internet.</p>
+                    
+                    <p>Și m-am decis să vin în ajutor celor care erau în situația mea. La început pagina avea numai câteva noțiuni, arăta destul de basic, dar cu timpul s-a dezvoltat destul de armonios, chiar și cu o pauză de un an și ceva.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">🎯</div>
+                <h3 class="value-title">Misiunea noastră</h3>
+                <p class="value-description">Să facem tehnologia accesibilă tuturor prin explicații clare, tutoriale practice și ghiduri pas cu pas care transformă complexitatea în simplitate.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">👁️</div>
+                <h3 class="value-title">Viziunea noastră</h3>
+                <p class="value-description">Să devenim resursa de încredere pentru oricine dorește să învețe și să se dezvolte în domeniul IT, indiferent de nivelul de experiență.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">💎</div>
+                <h3 class="value-title">Valorile noastre</h3>
+                <p class="value-description">Calitate, accesibilitate și pasiune pentru educație. Credem că fiecare persoană merită să aibă acces la cunoștințe IT de calitate.</p>
+            </div>
+        </div>
+        
+        <div class="timeline-section">
+            <h2 class="timeline-title">Călătoria noastră</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Începuturile</div>
+                        <h4 class="timeline-title-item">Primii pași</h4>
+                        <p class="timeline-description">Am început cu câteva noțiuni de bază și un design simplu, dorind să împărtășesc ceea ce am învățat din experiența personală.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Dezvoltarea</div>
+                        <h4 class="timeline-title-item">Creșterea conținutului</h4>
+                        <p class="timeline-description">Pagina a început să se dezvolte organic, adăugând tutoriale pentru Windows, programare și diverse tips & tricks utile.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Pauza</div>
+                        <h4 class="timeline-title-item">Perioada de reflecție</h4>
+                        <p class="timeline-description">Am luat o pauză de aproximativ un an pentru a mă concentra pe alte proiecte și pentru a acumula mai multă experiență.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Revenirea</div>
+                        <h4 class="timeline-title-item">Dezvoltarea armonioasă</h4>
+                        <p class="timeline-description">Am revenit cu o viziune clară și am continuat să dezvolt platforma, focusându-mă pe calitatea conținutului și experiența utilizatorilor.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number" data-target="15">0</div>
+                <div class="stat-label">Tutoriale</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number" data-target="5">0</div>
+                <div class="stat-label">Categorii</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number" data-target="100">0</div>
+                <div class="stat-label">Vizitatori</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number" data-target="24">0</div>
+                <div class="stat-label">Suport 24/7</div>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <h2 class="cta-title">Hai să învățăm împreună!</h2>
+            <p class="cta-description">Explorează tutorialele noastre și descoperă cât de ușor poate fi să înveți tehnologie nouă</p>
+            <a href="hom.html" class="cta-button">
+                <span>🏠</span>
+                <span>Începe acum</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current);
+                    }
+                }, 20);
+            });
+        }
+        
+        // Intersection Observer for counter animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+        
+        observer.observe(document.querySelector('.stats-section'));
+        
+        // Parallax effect for floating shapes
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const shapes = document.querySelectorAll('.shape');
+            
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 0.2;
+                shape.style.transform += ` translateY(${scrolled * speed}px)`;
+            });
+        });
+        
+        // Add hover effects to story paragraphs
+        const storyParagraphs = document.querySelectorAll('.story-text p');
+        storyParagraphs.forEach((p, index) => {
+            p.addEventListener('mouseenter', function() {
+                this.style.background = `linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%)`;
+                this.style.padding = '1rem';
+                this.style.borderRadius = '10px';
+            });
+            
+            p.addEventListener('mouseleave', function() {
+                this.style.background = 'none';
+                this.style.padding = '0';
+                this.style.borderRadius = '0';
+            });
+        });
+        
+        // Timeline items stagger animation
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach((item, index) => {
+            item.style.animationDelay = `${index * 0.2}s`;
+        });
+    </script>
+</body>
+</html>
